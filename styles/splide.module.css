@@ -1,0 +1,43 @@
+.carousel-container {
+  margin: 0 auto;
+  height: 100%;
+  position: relative;
+}
+.carousel__item:hover {
+  transition: transform 0.2s ease-out;
+  transform: scale(1.03);
+}
+
+.carousel__img {
+  border-radius: 15px;
+  overflow: hidden;
+  width: 90%;
+  max-height: 450px;
+  object-fit: cover;
+  aspect-ratio: 5/4;
+  margin: 10px 20px;
+  cursor: pointer;
+  @media screen and (max-width: 600px) {
+    max-height: 100%;
+  }
+}
+.carousel__next-btn {
+  position: absolute;
+  top: 50%;
+  right: -50px;
+  height: fit-content;
+}
+.carousel__prev-btn {
+  position: absolute;
+  top: 50%;
+  left: -50px;
+  height: fit-content;
+}
+.container {
+  padding: 40px;
+  background: #419be0;
+}
+
+.slick-slide img {
+  margin: auto;
+}
