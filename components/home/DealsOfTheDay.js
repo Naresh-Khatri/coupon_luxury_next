@@ -4,14 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import OfferCard from "../DealCard";
 
-function DealsOfTheDay() {
-  const [deals, setDeals] = useState([]);
-  useEffect(() => {
-    axios.get("http://localhost:4000/offers?limit=20").then((res) => {
-      setDeals(res.data);
-    });
-  }, []);
-
+function DealsOfTheDay({ deals }) {
   return (
     <Box as="section" mt={10}>
       <Text
@@ -56,6 +49,7 @@ function DealsOfTheDay() {
             fontSize={20}
             px={5}
             mb={5}
+            borderRadius={10}
           >
             VIEW ALL DEAL
           </Button>
