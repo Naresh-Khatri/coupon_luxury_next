@@ -1,5 +1,3 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
 import { Box } from "@chakra-ui/react";
 import Image from "next/image";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
@@ -7,8 +5,7 @@ import "@splidejs/react-splide/css";
 import styles from "../../styles/splide.module.css";
 import Link from "next/link";
 
-function MainCarousel() {
-  const [slidesList, setSlidesList] = useState([]);
+function MainCarousel({ slides }) {
   const options = {
     type: "loop",
     autoplay: true,
@@ -30,17 +27,6 @@ function MainCarousel() {
       },
     },
   };
-  useEffect(() => {
-    axios
-      .get("http://localhost:4000/slides")
-      .then((res) => {
-        setSlidesList(res.data);
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
 
   return (
     <Box>
@@ -49,7 +35,7 @@ function MainCarousel() {
         options={options}
         className="carousel-container"
       >
-        {slidesList.map((slide) => (
+        {slides.map((slide) => (
           <SplideSlide key={slide.imgURL}>
             <Link href={slide.link}>
               <a target="_blank">
