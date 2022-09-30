@@ -1,14 +1,19 @@
-import { Box, Flex, Text, VisuallyHidden } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 import Head from "next/head";
 import MainCarousel from "../components/home/MainCarousel";
 import CategoriesCarousel from "../components/home/CategoriesCarousel";
 import DealsOfTheDay from "../components/home/DealsOfTheDay";
 import StoresCarousel from "../components/home/StoresCarousel";
 import FeaturedCategories from "../components/home/FeaturedCategories";
+import SubscribeBanner from "../components/home/SubscribeBanner";
 
-import styles from "../styles/Home.module.css";
-
-export default function Home() {
+export default function Home({
+  slides,
+  carouselCat,
+  deals,
+  featuredStores,
+  featuredCat,
+}) {
   return (
     <>
       <Head>
@@ -21,54 +26,35 @@ export default function Home() {
           Couponluxury: Deals, coupon codes, Discounts & offers
         </Text>
         <Box pt={5} w={"100vw"} maxW={1300}>
-          <MainCarousel />
-          <CategoriesCarousel />
-          <DealsOfTheDay />
+          <MainCarousel slides={slides} />
+          <CategoriesCarousel carouselCat={carouselCat} />
+          <DealsOfTheDay deals={deals} />
         </Box>
       </Flex>
-      <StoresCarousel />
-      <FeaturedCategories />
-
-      {/* <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Nextd.js!</a>
-        </h1>
-
-        <p className={styles.description}>
-          Get started by editing{" "}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h2>Documentation &rarr;</h2>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h2>Learn &rarr;</h2>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/canary/examples"
-            className={styles.card}
-          >
-            <h2>Examples &rarr;</h2>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h2>Deploy &rarr;</h2>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main> */}
+      <StoresCarousel featuredStores={featuredStores} />
+      <FeaturedCategories featuredCat={featuredCat} />
+      <SubscribeBanner />
     </>
   );
 }
+export const getServerSideProps = async () => {
+  let res = await fetch("http://localhost:4000/slides");
+  const slides = await res.json();
+  res = await fetch("http://localhost:4000/categories");
+  const carouselCat = await res.json();
+  const featuredCat = carouselCat;
+  res = await fetch("http://localhost:4000/offers?feature=true&limit=20");
+  const deals = await res.json();
+  res = await fetch("http://localhost:4000/stores?limit=20");
+  const featuredStores = await res.json();
+
+  return {
+    props: {
+      slides,
+      carouselCat,
+      featuredCat,
+      deals,
+      featuredStores,
+    },
+  };
+};
