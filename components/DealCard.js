@@ -33,14 +33,16 @@ function OfferCard({
       }}
     >
       <Link href={`/deals/${slug}`}>
-        <Image
-          width={200}
-          height={100}
-          style={{ borderRadius: "15px" }}
-          title={`Open ${slug} store`}
-          alt={`${title} - logo`}
-          src={storeImg}
-        />
+        <Box>
+          <Image
+            width={200}
+            height={100}
+            style={{ borderRadius: "15px" }}
+            title={`Open ${slug} store`}
+            alt={`${title} - logo`}
+            src={storeImg}
+          />
+        </Box>
       </Link>
       <Text
         fontSize={{ base: 14, lg: 18 }}
