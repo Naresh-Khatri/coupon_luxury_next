@@ -7,8 +7,7 @@ import "@splidejs/react-splide/css";
 import styles from "../../styles/splide.module.css";
 import Link from "next/link";
 
-function MainCarousel() {
-  const [categories, setCategories] = useState([]);
+function MainCarousel({ carouselCat }) {
   const options = {
     type: "loop",
     autoplay: true,
@@ -33,18 +32,6 @@ function MainCarousel() {
     rewind: true,
     easing: "cubic-bezier(0.25, 1, 0.5, 1)",
   };
-  useEffect(() => {
-    axios
-      .get("http://localhost:4000/categories")
-      .then((res) => {
-        setCategories(res.data);
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
-
   return (
     <Flex justifyContent={"center"}>
       <Splide
@@ -52,7 +39,7 @@ function MainCarousel() {
         options={options}
         className="carousel-container"
       >
-        {categories.map((slide) => (
+        {carouselCat.map((slide) => (
           <SplideSlide key={slide._id}>
             <Link href={`/categories/${slide.slug}`}>
               <a>
@@ -61,7 +48,7 @@ function MainCarousel() {
                   width="200"
                   height="120"
                   src={slide.image}
-                  alt={`Category imga: ${slide.categoryName}`}
+                  alt={`Category image: ${slide.categoryName}`}
                 />
                 <Text textAlign={"center"} fontSize={14} noOfLines={1}>
                   {slide.categoryName}
