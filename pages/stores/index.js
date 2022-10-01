@@ -7,9 +7,7 @@ import {
   Flex,
   SimpleGrid,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
 import Banner from "../../components/Banner";
-import axios from "axios";
 import StoreCard from "../../components/StoreCard";
 import Header from "../../components/Header";
 import { ChevronRightIcon } from "@chakra-ui/icons";
