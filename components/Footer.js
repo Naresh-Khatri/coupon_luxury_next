@@ -33,7 +33,8 @@ export default function LargeWithAppLinksAndSocial() {
             <Text fontSize="2xl" fontWeight="bold">
               CONTACT
             </Text>
-            <Text opacity={0.5}>
+            <Text as='address' opacity={0.5}>
+
               81a, National House, Alkapuri, Vadodara, Gujarat - 390005
             </Text>
             <Link href={"#"}>contact@couponluxury.com</Link>
