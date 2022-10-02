@@ -11,7 +11,12 @@ function Banner({ title, subTitle }) {
       h={subTitle ? 136 : 110}
       _hover={{}}
     >
-      <Text as="h1" fontSize="4xl" fontWeight={"extrabold"} textAlign="center">
+      <Text
+        as="h1"
+        fontSize={{ base: "xl", md: "4xl" }}
+        fontWeight={"extrabold"}
+        textAlign="center"
+      >
         {title}
       </Text>
       {subTitle && (
