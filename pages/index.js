@@ -37,7 +37,7 @@ export default function Home({
     </>
   );
 }
-export const getServerSideProps = async () => {
+export const getStaticProps = async () => {
   let res = await fetch("http://localhost:4000/slides");
   const slides = await res.json();
   res = await fetch("http://localhost:4000/categories");
@@ -56,5 +56,6 @@ export const getServerSideProps = async () => {
       deals,
       featuredStores,
     },
+    revalidate: 60,
   };
 };
