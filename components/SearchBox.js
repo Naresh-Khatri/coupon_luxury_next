@@ -8,13 +8,11 @@ import {
   Input,
   InputGroup,
   InputRightElement,
-  Menu,
-  MenuItem,
-  ModalOverlay,
   Popover,
   PopoverBody,
   PopoverContent,
   PopoverTrigger,
+  Portal,
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
@@ -50,6 +48,12 @@ function SearchBox() {
     console.log(allRes);
     setSearchResults(allRes);
   };
+  const clearSearch = () => {
+    console.log(searchText);
+    setSearchText("");
+    console.log("clearing");
+    console.log(searchText);
+  };
 
   // const handleKeyDown = (e) => {
   //   // console.log(e)
@@ -60,7 +64,12 @@ function SearchBox() {
   // };
 
   return (
-    <Flex alignItems={"center"} flexGrow={1} maxW={350} position="relative">
+    <Flex
+      alignItems={"center"}
+      flexGrow={1}
+      maxW={{ base: 200, lg: 350 }}
+      position="relative"
+    >
       <Popover
         isOpen={searchText?.length > 0}
         onClose={onClose}
@@ -77,6 +86,7 @@ function SearchBox() {
               placeholder="Search"
               bg="white"
               color={"black"}
+              value={searchText}
               onInput={(e) => handleSearch(e)}
               // onKeyDown={(e) => handleKeyDown(e)}
             />
@@ -94,35 +104,42 @@ function SearchBox() {
             </InputRightElement>
           </InputGroup>
         </PopoverTrigger>
-        <PopoverContent maxW={"100vw"}>
-          <PopoverBody color={"black"}>
-            {searchResults.length == 0 && (
-              <Box p={2}>No results found for &quot;{searchText}&quot; :(</Box>
-            )}
+        <Portal>
+          <PopoverContent>
+            <PopoverBody color={"black"}>
+              {searchResults.length == 0 && (
+                <Box p={2}>
+                  No results found for &quot;{searchText}&quot; :(
+                </Box>
+              )}
 
-            {searchResults.map((result) => (
-              <Box key={result.slug} mb={2}>
-                <Link
-                  href={
-                    result.storeName
-                      ? `/stores/${result.slug}`
-                      : `/categories/${result.slug}`
-                  }
-                >
-                  <a>
-                    <HStack justifyContent={"space-between"}>
-                      <Text>{result.storeName || result.categoryName}</Text>
-                      <Text fontSize={10}>
-                        {result.storeName ? "Store" : "Category"}
-                      </Text>
-                    </HStack>
-                  </a>
-                </Link>
-                <Divider style={{ height: "1px", background: "#888" }} />
-              </Box>
-            ))}
-          </PopoverBody>
-        </PopoverContent>
+              {searchResults.map((result) => (
+                <Box key={result.slug} mb={2}>
+                  <Link
+                    href={
+                      result.storeName
+                        ? `/stores/${result.slug}`
+                        : `/categories/${result.slug}`
+                    }
+                  >
+                    <a>
+                      <HStack
+                        justifyContent={"space-between"}
+                        onClick={clearSearch}
+                      >
+                        <Text>{result.storeName || result.categoryName}</Text>
+                        <Text fontSize={10}>
+                          {result.storeName ? "Store" : "Category"}
+                        </Text>
+                      </HStack>
+                    </a>
+                  </Link>
+                  <Divider style={{ height: "1px", background: "#888" }} />
+                </Box>
+              ))}
+            </PopoverBody>
+          </PopoverContent>
+        </Portal>
       </Popover>
     </Flex>
   );
