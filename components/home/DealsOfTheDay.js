@@ -2,7 +2,7 @@ import { Box, Button, Center, Grid, SimpleGrid, Text } from "@chakra-ui/react";
 import axios from "axios";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import OfferCard from "../DealCard";
+import DealCard from "../DealCard";
 
 function DealsOfTheDay({ deals }) {
   return (
@@ -20,12 +20,13 @@ function DealsOfTheDay({ deals }) {
       <Center>
         <SimpleGrid columns={[2, 3, 5]} spacing={5} justifyContent="center">
           {deals.map((deal) => (
-            <OfferCard
+            <DealCard
               key={deal._id}
               affURL={deal.affURL}
-              slug={deal.store.slug}
+              storeName={deal.store.storeName}
+              storeSlug={deal.store.slug}
+              dealSlug={deal.slug}
               title={deal.title}
-              offerSlug={deal.slug}
               code={deal.couponCode ? deal.couponCode : ""}
               type={deal.offerType}
               endDate={deal.endDate}
