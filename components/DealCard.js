@@ -4,13 +4,13 @@ import Image from "next/image";
 import Link from "next/link";
 // import Button from './utils/Button'
 
-function OfferCard({
+function DealCard({
   affURL,
   showValidTill,
   storeImg,
-  slug,
-  offerSlug,
   storeName,
+  storeSlug,
+  dealSlug,
   code,
   title,
   type,
@@ -32,17 +32,19 @@ function OfferCard({
         transition: "all 0.2s ease-in-out",
       }}
     >
-      <Link href={`/deals/${slug}`}>
-        <Box>
-          <Image
-            width={200}
-            height={100}
-            style={{ borderRadius: "15px" }}
-            title={`Open ${slug} store`}
-            alt={`${title} - logo`}
-            src={storeImg}
-          />
-        </Box>
+      <Link href={`/stores/${storeSlug}`}>
+        <a>
+          <Box>
+            <Image
+              width={200}
+              height={100}
+              style={{ borderRadius: "15px" }}
+              title={`Open ${storeName} store`}
+              alt={`${title} - logo`}
+              src={storeImg}
+            />
+          </Box>
+        </a>
       </Link>
       <Text
         fontSize={{ base: 14, lg: 18 }}
@@ -53,26 +55,28 @@ function OfferCard({
       >
         {title}
       </Text>
-      <Link href={`/deals/${slug}`}>
-        <Button
-          bg="brand.900"
-          color="white"
-          shadow="0px 10px 33px -3px rgba(42, 129, 251, 0.5);"
-          _hover={{
-            bg: "brand.800",
-            shadow: "0px 10px 33px -3px rgba(42, 129, 251, 0.8)",
-          }}
-          w={{ base: "100", lg: "136" }}
-          h={{ base: "9", lg: "50" }}
-          fontSize={{ base: 14, lg: 20 }}
-          px={5}
-          mb={5}
-        >
-          VIEW DEAL
-        </Button>
+      <Link href={`/deals/${dealSlug}`}>
+        <a>
+          <Button
+            bg="brand.900"
+            color="white"
+            shadow="0px 10px 33px -3px rgba(42, 129, 251, 0.5);"
+            _hover={{
+              bg: "brand.800",
+              shadow: "0px 10px 33px -3px rgba(42, 129, 251, 0.8)",
+            }}
+            w={{ base: "100", lg: "136" }}
+            h={{ base: "9", lg: "50" }}
+            fontSize={{ base: 14, lg: 20 }}
+            px={5}
+            mb={5}
+          >
+            VIEW DEAL
+          </Button>
+        </a>
       </Link>
     </Flex>
   );
 }
 
-export default OfferCard;
+export default DealCard;
