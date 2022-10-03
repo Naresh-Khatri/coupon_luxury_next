@@ -88,8 +88,14 @@ function NavBar() {
   }, []);
   return (
     <>
-      <Flex bg="brand.900" justify={"center"}>
-        <Box color="white" px={4} h={75} maxW={1200} w={"100vw"}>
+      <Flex as={'header'} bg="brand.900" justify={"center"} >
+        <Box
+          color="white"
+          px={4}
+          h={{ base: 59, md: 75 }}
+          maxW={1200}
+          w={"100vw"}
+        >
           <Flex h="100%" alignItems={"center"} justifyContent={"space-between"}>
             <HStack spacing={8}>
               <Link href="https://www.couponluxury.com/">
@@ -98,8 +104,9 @@ function NavBar() {
                     title="Home"
                     src="https://ik.imagekit.io/couponluxury/main_logo_noj4ZyPyq"
                     alt="logo"
-                    width="120"
-                    height="60"
+                    width={120}
+                    height={60}
+                    // sizes="100%"
                   />
                 </a>
               </Link>
@@ -108,11 +115,6 @@ function NavBar() {
                 display={{ base: "none", md: "flex" }}
                 alignItems="center"
               >
-                {/* {Links.map((link) => (
-                  <NavLink key={link.name} slug={link.slug}>
-                    {link.name}
-                  </NavLink>
-                ))} */}
                 <NavLink slug={"/"}>{"Home"}</NavLink>
                 <Menu>
                   <MenuButton
@@ -152,10 +154,6 @@ function NavBar() {
                         </Link>
                       </MenuItem>
                     ))}
-                    {/* <MenuItem>Create a Copy</MenuItem>
-                    <MenuItem>Mark as Draft</MenuItem>
-                    <MenuItem>Delete</MenuItem>
-                    <MenuItem>Attend a Workshop</MenuItem> */}
                   </MenuList>
                 </Menu>
                 <Menu>
@@ -183,19 +181,13 @@ function NavBar() {
                     </MenuItem>
                     {featuredCategories.map((category) => (
                       <MenuItem key={category._id}>
-                        <Link href={`/stores/${category.slug}`}>
+                        <Link href={`/categories/${category.slug}`}>
                           <a>{category.categoryName}</a>
                         </Link>
                       </MenuItem>
                     ))}
-                    {/* <MenuItem>Create a Copy</MenuItem>
-                    <MenuItem>Mark as Draft</MenuItem>
-                    <MenuItem>Delete</MenuItem>
-                    <MenuItem>Attend a Workshop</MenuItem> */}
                   </MenuList>
                 </Menu>
-                {/* <NavLink slug={link.slug}>{link.name}</NavLink>
-                <NavLink slug={link.slug}>{link.name}</NavLink> */}
                 <NavLink slug={"/blogs"}>{"Blogs"}</NavLink>
               </HStack>
             </HStack>
