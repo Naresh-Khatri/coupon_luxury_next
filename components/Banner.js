@@ -13,7 +13,7 @@ function Banner({ title, subTitle }) {
     >
       <Text
         as="h1"
-        fontSize={{ base: "xl", md: "4xl" }}
+        fontSize={{ base: "2xl", md: "4xl" }}
         fontWeight={"extrabold"}
         textAlign="center"
       >
@@ -22,7 +22,7 @@ function Banner({ title, subTitle }) {
       {subTitle && (
         <Text
           as="h2"
-          fontSize="xl"
+        fontSize={{ base: "1xl", md: "xl" }}
           fontWeight={"thin"}
           textAlign="center"
           opacity={0.6}
