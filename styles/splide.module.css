@@ -11,12 +11,10 @@
 .carousel__img {
   border-radius: 15px;
   overflow: hidden;
-  width: 90%;
   max-height: 450px;
+  width: 95%;
   object-fit: cover;
-  aspect-ratio: 5/4;
-  margin: 10px 20px;
-  cursor: pointer;
+  margin: 10px 10px;
   @media screen and (max-width: 600px) {
     max-height: 100%;
   }
