@@ -4,6 +4,7 @@ import "@splidejs/react-splide/css";
 import styles from "../../styles/splide.module.css";
 import Image from "next/future/image";
 import Link from "next/link";
+import transformPath from "../../utils/transformImagePath";
 
 function MainCarousel({ carouselCat }) {
   const options = {
@@ -15,6 +16,8 @@ function MainCarousel({ carouselCat }) {
     perPage: 6,
     pagination: true,
     arrows: true,
+    pagination: false,
+
     breakpoints: {
       850: { perPage: 4, arrows: false, width: "100%", pagination: false },
       600: {
@@ -35,17 +38,24 @@ function MainCarousel({ carouselCat }) {
         options={options}
         className="carousel-container"
       >
-        {carouselCat.map((slide) => (
+        {carouselCat.map((slide, index) => (
           <SplideSlide key={slide._id}>
             <Link href={`/categories/${slide.slug}`}>
-              <a target="_blank">
+              <a
+                target="_blank"
+                style={{
+                  position: "relative",
+                  width: "650px",
+                  height: "160px",
+                }}
+              >
                 <Image
                   className={styles.carousel__img}
-                  width={200}
+                  width={100}
                   height={50}
-                  src={slide.image}
-                  sizes={"100vw"}
+                  src={transformPath(slide.image, 150)}
                   alt={`Category image: ${slide.categoryName}`}
+                  priority={index <= 6 ? true : false}
                 />
                 <Text textAlign={"center"} fontSize={14} noOfLines={1}>
                   {slide.categoryName}
