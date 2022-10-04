@@ -1,14 +1,12 @@
-import React from "react";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 function NotFoundPage() {
+  const router = useRouter();
+  useEffect(() => {
+    console.log("no from 404");
+    router.push("/not-found");
+  });
   return <></>;
 }
-export const getStaticProps = async (ctx) => {
-  return {
-    redirect: {
-      destination: "/not-found",
-      permanent: false,
-    },
-  };
-};
 export default NotFoundPage;
