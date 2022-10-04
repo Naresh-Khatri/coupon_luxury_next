@@ -8,7 +8,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
-import Image from "next/image";
+import Image from "next/future/image";
 
 function DealsOfTheDay({ featuredStores }) {
   const options = {
@@ -64,9 +64,8 @@ function DealsOfTheDay({ featuredStores }) {
               <Box w={"100px"} h={"50px"} mt={5}>
                 <Image
                   style={{ borderRadius: "5px" }}
-                  width={100}
-                  height={50}
-                  sizes={"100%"}
+                  width={80}
+                  height={40}
                   src={store.image}
                   alt={store.name}
                 />
@@ -85,8 +84,8 @@ function DealsOfTheDay({ featuredStores }) {
                 <Image
                   style={{ borderRadius: "5px" }}
                   sizes={"100%"}
-                  width={100}
-                  height={50}
+                  width={80}
+                  height={40}
                   src={store.image}
                   alt={store.name}
                 />
