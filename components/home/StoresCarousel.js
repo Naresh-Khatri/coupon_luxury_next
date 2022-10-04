@@ -67,7 +67,7 @@ function DealsOfTheDay({ featuredStores }) {
                   width={80}
                   height={40}
                   src={store.image}
-                  alt={store.name}
+                  alt={`${store.storeName} logo`}
                 />
               </Box>
             </SplideSlide>
@@ -87,7 +87,7 @@ function DealsOfTheDay({ featuredStores }) {
                   width={80}
                   height={40}
                   src={store.image}
-                  alt={store.name}
+                  alt={`${store.storeName} logo`}
                 />
               </Box>
             </SplideSlide>
