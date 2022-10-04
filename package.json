@@ -14,6 +14,7 @@
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
     "@fortawesome/fontawesome-svg-core": "^6.2.0",
+    "@fortawesome/free-brands-svg-icons": "^6.2.0",
     "@fortawesome/free-regular-svg-icons": "^6.2.0",
     "@fortawesome/free-solid-svg-icons": "^6.2.0",
     "@fortawesome/react-fontawesome": "^0.2.0",
@@ -23,12 +24,14 @@
     "next": "12.3.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-icons": "^4.4.0",
     "react-slick": "^0.29.0",
+    "sass": "^1.55.0",
+    "sharp": "^0.31.1",
     "slick-carousel": "^1.8.1"
   },
   "devDependencies": {
     "eslint": "8.24.0",
     "eslint-config-next": "12.3.1"
-  }
+  },
+  "proxy": "http://localhost:4000"
 }
