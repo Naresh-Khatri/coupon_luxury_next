@@ -18,7 +18,7 @@ import {
 } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-export default function LargeWithAppLinksAndSocial() {
+function Footer() {
   return (
     <Box
       as="footer"
@@ -56,7 +56,7 @@ export default function LargeWithAppLinksAndSocial() {
             <Text fontSize="2xl" fontWeight="bold">
               Categories
             </Text>
-            <Link href={"#"}>
+            <Link href={"/categories/appliances"}>
               <Box
                 outline={"1px solid white"}
                 borderRadius={50}
@@ -67,7 +67,7 @@ export default function LargeWithAppLinksAndSocial() {
                 Appliances
               </Box>
             </Link>
-            <Link href={"#"}>
+            <Link href={"/categories/books"}>
               <Box
                 outline={"1px solid white"}
                 borderRadius={50}
@@ -78,7 +78,7 @@ export default function LargeWithAppLinksAndSocial() {
                 books
               </Box>
             </Link>
-            <Link href={"#"}>
+            <Link href={"/categories/travel"}>
               <Box
                 outline={"1px solid white"}
                 borderRadius={50}
@@ -89,7 +89,7 @@ export default function LargeWithAppLinksAndSocial() {
                 Travel
               </Box>
             </Link>
-            <Link href={"#"}>
+            <Link href={"/categories/beauty"}>
               <Box
                 outline={"1px solid white"}
                 borderRadius={50}
@@ -103,76 +103,76 @@ export default function LargeWithAppLinksAndSocial() {
           </Stack>
 
           <Stack align={"flex-start"}>
-            {/* FaTwitter, FaYoutube, FaInstagram, FaPinterest, FaFacebook */}
-
             <Text fontSize="2xl" fontWeight="bold">
               Follow us
             </Text>
             <HStack as={"nav"} spacing={3} mt={2}>
-              <Link href="https://facebook.com/CouponLuxury/">
-                <a target="_blank">
-                  <IconButton
-                    bg="tranparent"
-                    _hover={{
-                      transform: "scale(1.2)",
-                      bg: "white",
-                      color: "#4267B2",
-                    }}
-                    icon={<FontAwesomeIcon size="2x" icon={faFacebook} />}
-                  />
-                </a>
+              <Link href="https://facebook.com/CouponLuxury/" target="_blank">
+                <IconButton
+                  bg="tranparent"
+                  borderRadius={100}
+                  _hover={{
+                    transform: "scale(1.2)",
+                    bg: "white",
+                    color: "#4267B2",
+                  }}
+                  icon={<FontAwesomeIcon size="2x" icon={faFacebook} />}
+                />
               </Link>
-              <Link href="https://twitter.com/coupon_luxury">
-                <a target="_blank">
-                  <IconButton
-                    bg="tranparent"
-                    _hover={{
-                      transform: "scale(1.2)",
-                      bg: "white",
-                      color: "#1DA1F2",
-                    }}
-                    icon={<FontAwesomeIcon size="2x" icon={faTwitter} />}
-                  />
-                </a>
+              <Link href="https://twitter.com/coupon_luxury" target="_blank">
+                <IconButton
+                  bg="tranparent"
+                  _hover={{
+                    transform: "scale(1.2)",
+                    bg: "white",
+                    color: "#1DA1F2",
+                  }}
+                  icon={<FontAwesomeIcon size="2x" icon={faTwitter} />}
+                />
               </Link>
-              <Link href="https://www.instagram.com/couponluxury/">
-                <a target="_blank">
-                  <IconButton
-                    bg="tranparent"
-                    _hover={{
-                      transform: "scale(1.2)",
-                      bg: "white",
-                      color: "#E1306C",
-                    }}
-                    icon={<FontAwesomeIcon size="2x" icon={faInstagram} />}
-                  />
-                </a>
+              <Link
+                href="https://www.instagram.com/couponluxury/"
+                target="_blank"
+              >
+                <IconButton
+                  bg="tranparent"
+                  borderRadius={100}
+                  _hover={{
+                    transform: "scale(1.2)",
+                    bg: "white",
+                    color: "#E1306C",
+                  }}
+                  icon={<FontAwesomeIcon size="2x" icon={faInstagram} />}
+                />
               </Link>
-              <Link href="https://youtube.com/channel/UCiGBpYZFIzyw_R5W1KUocJQ">
-                <a target="_blank">
-                  <IconButton
-                    bg="tranparent"
-                    _hover={{
-                      transform: "scale(1.2)",
-                      bg: "white",
-                      color: "#FF0000",
-                    }}
-                    icon={<FontAwesomeIcon size="2x" icon={faYoutube} />}
-                  />
-                </a>
+              <Link
+                href="https://youtube.com/channel/UCiGBpYZFIzyw_R5W1KUocJQ"
+                target="_blank"
+              >
+                <IconButton
+                  bg="tranparent"
+                  _hover={{
+                    transform: "scale(1.2)",
+                    bg: "white",
+                    color: "#FF0000",
+                  }}
+                  icon={<FontAwesomeIcon size="2x" icon={faYoutube} />}
+                />
               </Link>
-              <Link href="https://www.pinterest.com/couponluxury/">
-                <a target="_blank">
-                  <IconButton
-                    bg="tranparent"
-                    _hover={{
-                      transform: "scale(1.2)",
-                      bg: "white",
-                      color: "#E60023",
-                    }}
-                    icon={<FontAwesomeIcon size="2x" icon={faPinterest} />}
-                  />
-                </a>
+              <Link
+                href="https://www.pinterest.com/couponluxury/"
+                target="_blank"
+              >
+                <IconButton
+                  bg="tranparent"
+                  borderRadius={100}
+                  _hover={{
+                    transform: "scale(1.2)",
+                    bg: "white",
+                    color: "#E60023",
+                  }}
+                  icon={<FontAwesomeIcon size="2x" icon={faPinterest} />}
+                />
               </Link>
             </HStack>
           </Stack>
@@ -193,35 +193,8 @@ export default function LargeWithAppLinksAndSocial() {
           </Text>
         </Box>
       </Container>
-
-      {/* <Box
-        borderTopWidth={1}
-        borderStyle={"solid"}
-        borderColor={useColorModeValue("gray.200", "gray.700")}
-      >
-        <Container
-          as={Stack}
-          maxW={"6xl"}
-          py={4}
-          direction={{ base: "column", md: "row" }}
-          spacing={4}
-          justify={{ md: "space-between" }}
-          align={{ md: "center" }}
-        >
-          <Text>© 2022 Chakra Templates. All rights reserved</Text>
-          <Stack direction={"row"} spacing={6}>
-            <SocialButton label={"Twitter"} href={"#"}>
-              <FaTwitter />
-            </SocialButton>
-            <SocialButton label={"YouTube"} href={"#"}>
-              <FaYoutube />
-            </SocialButton>
-            <SocialButton label={"Instagram"} href={"#"}>
-              <FaInstagram />
-            </SocialButton>
-          </Stack>
-        </Container>
-      </Box> */}
     </Box>
   );
 }
+
+export default Footer;
