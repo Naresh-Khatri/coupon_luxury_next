@@ -38,7 +38,7 @@ function StorePage({ categoryInfo, featuredStores }) {
   ).length;
   useEffect(() => {
     handleFilterChange("all");
-  }, []);
+  });
 
   const handleFilterChange = (key) => {
     setFilterBy(key);
