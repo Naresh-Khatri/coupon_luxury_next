@@ -37,7 +37,6 @@ function CodeRevealingButton({ code, affURL, storeName, image }) {
       isClosable: true,
     });
     setTimeout(() => {
-      console.log(affURL)
       window.open(affURL, "_blank");
     }, 1500);
   };
