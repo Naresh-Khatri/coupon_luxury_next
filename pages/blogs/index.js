@@ -49,7 +49,7 @@ export const getStaticProps = async () => {
       props: {
         blogsData: blogs,
       },
-      revalidated: 60,
+      revalidate: 60,
     };
   } catch (err) {
     return { redirect: { destination: "/not-found", permanent: false } };
