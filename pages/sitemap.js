@@ -1,0 +1,91 @@
+import { Box, Container, SimpleGrid, Text, transition } from "@chakra-ui/react";
+import Link from "next/link";
+import Banner from "../components/Banner";
+import SetMeta from "../utils/SetMeta";
+
+function SitemapPage({ sitemapData }) {
+  console.log(sitemapData);
+  return (
+    <>
+      <SetMeta
+        title="Sitemap - CouponLuxury"
+        description="The complete directory of everything we have on our website."
+        url="https://www.couponluxury.com/sitemap"
+      />
+      <Text as={"h1"} hidden>
+        Sitemap - CouponLuxury
+      </Text>
+
+      <Banner title={"Sitemap"} subTitle={"Your guide to CouponLuxury"} />
+      <Box>
+        <Container maxW={"1240"} w="full">
+          <SimpleGrid
+            columns={{ base: 1, sm: 2, md: 3, lg: 4 }}
+            spacing={10}
+            my={10}
+          >
+            {sitemapData.map((category) => {
+              return (
+                <Box
+                  key={category._id}
+                  shadow={"xl"}
+                  _hover={{
+                    shadow: "2xl",
+                    transform: "scale(1.02)",
+                    transition: "all .1s ease-in-out",
+                  }}
+                  style={{ transition: "all .1s ease-in-out" }}
+                  borderRadius={15}
+                  p={5}
+                  h="fit-content"
+                >
+                  <Link href={`/categories/${category.slug}`}>
+                    <a>
+                      <Text
+                        fontSize={"4xl"}
+                        _hover={{
+                          color: "brand.900",
+                          transition: "all .1s ease-in-out",
+                        }}
+                        style={{ transition: "all .1s ease-in-out" }}
+                      >
+                        {category.categoryName}
+                      </Text>
+                    </a>
+                  </Link>
+                  {category.subCategories.map((subCat) => {
+                    return (
+                      <Link key={subCat._id} href={"#"}>
+                        <a>
+                          <Text pb={1}>{subCat.subCategoryName}</Text>
+                        </a>
+                      </Link>
+                    );
+                  })}
+                </Box>
+              );
+            })}
+          </SimpleGrid>
+        </Container>
+      </Box>
+    </>
+  );
+}
+
+export const getStaticProps = async () => {
+  try {
+    const res = await fetch("http://localhost:4000/misc/sitemap");
+    const sitemapData = await res.json();
+    return {
+      props: {
+        sitemapData,
+        revalidate: 60,
+      },
+    };
+  } catch (err) {
+    return { redirect: { destination: "/not-found", permanent: false } };
+  }
+  s;
+};
+
+export default SitemapPage;
