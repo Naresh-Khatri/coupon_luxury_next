@@ -2,7 +2,7 @@ import { Html, Head, Main, NextScript } from "next/document";
 
 export default function Document() {
   return (
-    <Html>
+    <Html lang="en">
       <Head>
         <meta
           name="title"
@@ -110,17 +110,22 @@ export default function Document() {
           sizes="16x16"
           href="https://ik.imagekit.io/couponluxury/tr:w-16/logo_13BHLbKp9"
         />
-        <link rel="icon" type="image/ico" href="favicon.ico" />
+        {/* <link rel="icon" type="image/ico" href="favicon.ico" /> */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin='true' />
         <link
-          href="https://fonts.googleapis.com/css2?family=Rubik:wght@200;500;600;700&display=swap"
-          rel="stylesheet"
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="true"
         />
         <link
           href="https://fonts.googleapis.com/css2?family=Rubik:wght@200;500;600;700&display=swap"
           rel="stylesheet"
         />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Rubik:wght@200;500;600;700&display=swap"
+          rel="stylesheet"
+        />
+        <link rel="icon" href="/favicon.ico" />
       </Head>
       <body>
         <Main />
