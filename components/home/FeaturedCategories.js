@@ -63,7 +63,7 @@ function FeaturedCategories({ featuredCat }) {
                     {category.categoryName}
                   </Text>
                   <Text as={"p"} alignContent="center" color="white">
-                    2 Deals / Coupons
+                    {category.offers.length} Deals / Coupons
                   </Text>
                 </Flex>
               </Box>
@@ -72,7 +72,7 @@ function FeaturedCategories({ featuredCat }) {
         </SimpleGrid>
       </Center>
       <Center mt={10}>
-        <Link href={`/deals`}>
+        <Link href={`/categories`}>
           <Button
             bg="brand.900"
             color="white"
