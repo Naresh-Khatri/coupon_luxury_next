@@ -2,6 +2,7 @@ import { Box } from "@chakra-ui/react";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import "@splidejs/react-splide/css";
 import styles from "../../styles/splide.module.css";
+import transform from "../../utils/transformImagePath";
 import Image from "next/future/image";
 import Link from "next/link";
 
@@ -35,21 +36,24 @@ function MainCarousel({ slides }) {
         options={options}
         className="carousel-container"
       >
-        {slides.map((slide) => (
+        {slides.map((slide, index) => (
           <SplideSlide key={slide.imgURL}>
             <Link href={slide.link}>
               <a
                 target="_blank"
                 style={{ display: "flex", justifyContent: "center" }}
               >
-                <Image
-                  style={{ aspectRatio: "5/4" }}
-                  className={styles.carousel__img}
-                  width="610"
-                  height="500"
-                  src={slide.imgURL}
-                  alt={slide.imgAlt}
-                />
+                <Box h={{ base: "auto", lg: "470px" }} w="full">
+                  <Image
+                    style={{ aspectRatio: "5/4" }}
+                    className={styles.carousel__img}
+                    width={350}
+                    height={300}
+                    src={transform(slide.imgURL, 500)}
+                    alt={slide.imgAlt}
+                    priority={index <= 1 ? true : false}
+                  />
+                </Box>
               </a>
             </Link>
           </SplideSlide>
