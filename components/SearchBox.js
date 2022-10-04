@@ -45,14 +45,10 @@ function SearchBox() {
     const res = await Promise.allSettled(promises);
     //since categories are more imp
     const allRes = res[1].value.data.concat(res[0].value.data);
-    console.log(allRes);
     setSearchResults(allRes);
   };
   const clearSearch = () => {
-    console.log(searchText);
     setSearchText("");
-    console.log("clearing");
-    console.log(searchText);
   };
 
   // const handleKeyDown = (e) => {
@@ -67,8 +63,8 @@ function SearchBox() {
     <Flex
       alignItems={"center"}
       flexGrow={1}
-      maxW={{ base: 200, lg: 350 }}
       position="relative"
+      maxW={350}
     >
       <Popover
         isOpen={searchText?.length > 0}
