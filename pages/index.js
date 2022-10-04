@@ -43,15 +43,24 @@ export default function Home({
 }
 export const getStaticProps = async () => {
   try {
-    let res = await fetch("http://localhost:4000/slides");
-    const slides = await res.json();
-    res = await fetch("http://localhost:4000/categories");
-    const carouselCat = await res.json();
+    // let res = await fetch("http://localhost:4000/slides");
+    // const slides = await res.json();
+    // res = await fetch("http://localhost:4000/categories");
+    // const carouselCat = await res.json();
+    // const featuredCat = carouselCat;
+    // res = await fetch("http://localhost:4000/offers?feature=true&limit=20");
+    // const deals = await res.json();
+    // res = await fetch("http://localhost:4000/stores?limit=20");
+    // const featuredStores = await res.json();
+
+    const res = await fetch("http://localhost:4000/main");
+    const {
+      slides,
+      featuredStores,
+      featuredOffers: deals,
+      categories: carouselCat,
+    } = await res.json();
     const featuredCat = carouselCat;
-    res = await fetch("http://localhost:4000/offers?feature=true&limit=20");
-    const deals = await res.json();
-    res = await fetch("http://localhost:4000/stores?limit=20");
-    const featuredStores = await res.json();
 
     return {
       props: {
@@ -64,6 +73,7 @@ export const getStaticProps = async () => {
       revalidate: 60,
     };
   } catch (err) {
+    console.log(err);
     return { redirect: { destination: "/not-found", permanent: false } };
   }
 };
