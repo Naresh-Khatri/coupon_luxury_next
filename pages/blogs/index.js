@@ -1,10 +1,23 @@
-import { Center, Container, SimpleGrid } from "@chakra-ui/react";
+import { Center, Container, SimpleGrid, Text } from "@chakra-ui/react";
 import React from "react";
 import BlogPreview from "../../components/BlogPreview";
 import Banner from "../../components/Banner";
+
+import SetMeta from "../../utils/SetMeta";
+
 function index({ blogsData }) {
   return (
     <>
+      <SetMeta
+        title={"CouponLuxury Blog: Money Saving Tips & Updates"}
+        description={
+          "Couponluxury Blog section gives every valued user a different understanding of online shopping, money saving, coupon redemption, product reviews & many more."
+        }
+        url={"https://www.couponluxury.com/blogs"}
+      />
+      <Text as={"h1"} hidden>
+        CouponLuxury Blog: Money Saving Tips & Updates
+      </Text>
       <Banner title={"All Blogs"} subTitle={`${blogsData.length} blogs`} />
       <Container mt={10} maxW={"6xl"} w="90vw">
         <Center>
@@ -28,14 +41,19 @@ function index({ blogsData }) {
   );
 }
 
-export const getServerSideProps = async () => {
-  const res = await fetch("http://localhost:4000/blogs");
-  const blogs = await res.json();
-  return {
-    props: {
-      blogsData: blogs,
-    },
-  };
+export const getStaticProps = async () => {
+  try {
+    const res = await fetch("http://localhost:4000/blogs");
+    const blogs = await res.json();
+    return {
+      props: {
+        blogsData: blogs,
+      },
+      revalidated: 60,
+    };
+  } catch (err) {
+    return { redirect: { destination: "/not-found", permanent: false } };
+  }
 };
 
 export default index;
