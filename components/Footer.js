@@ -6,22 +6,23 @@ import {
   Text,
   Badge,
   Link,
+  HStack,
+  IconButton,
 } from "@chakra-ui/react";
 import {
-  FaTwitter,
-  FaYoutube,
-  FaInstagram,
-  FaPinterest,
-  FaFacebook,
-} from "react-icons/fa";
-
-// import AppStoreBadge from "@/components/AppStoreBadge";
-// import PlayStoreBadge from "@/components/PlayStoreBadge";
+  faFacebook,
+  faInstagram,
+  faPinterest,
+  faTwitter,
+  faYoutube,
+} from "@fortawesome/free-brands-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function LargeWithAppLinksAndSocial() {
   return (
     <Box
-      borderTopLeftRadius={50}
+      as="footer"
+      borderTopLeftRadius={100}
       bg={"brand.900"}
       color={"white"}
       py={10}
@@ -45,10 +46,10 @@ export default function LargeWithAppLinksAndSocial() {
             <Text fontSize="2xl" fontWeight="bold">
               QUICK LINKS
             </Text>
-            <Link href={"#"}>Privacy policy</Link>
-            <Link href={"#"}>Sitemap</Link>
-            <Link href={"#"}>About us</Link>
-            <Link href={"#"}>Contact us</Link>
+            <Link href={"/privacy-policy"}>Privacy policy</Link>
+            <Link href={"/sitemap"}>Sitemap</Link>
+            <Link href={"/about"}>About us</Link>
+            <Link href={"/contact"}>Contact us</Link>
           </Stack>
 
           <Stack align={"flex-start"}>
@@ -56,16 +57,48 @@ export default function LargeWithAppLinksAndSocial() {
               Categories
             </Text>
             <Link href={"#"}>
-              <Badge>Appliances</Badge>
+              <Box
+                outline={"1px solid white"}
+                borderRadius={50}
+                py={1}
+                px={3}
+                fontSize={14}
+              >
+                Appliances
+              </Box>
             </Link>
             <Link href={"#"}>
-              <Badge>books</Badge>
+              <Box
+                outline={"1px solid white"}
+                borderRadius={50}
+                py={1}
+                px={3}
+                fontSize={14}
+              >
+                books
+              </Box>
             </Link>
             <Link href={"#"}>
-              <Badge>Travel</Badge>
+              <Box
+                outline={"1px solid white"}
+                borderRadius={50}
+                py={1}
+                px={3}
+                fontSize={14}
+              >
+                Travel
+              </Box>
             </Link>
             <Link href={"#"}>
-              <Badge>Beauty</Badge>
+              <Box
+                outline={"1px solid white"}
+                borderRadius={50}
+                py={1}
+                px={3}
+                fontSize={14}
+              >
+                Beauty
+              </Box>
             </Link>
           </Stack>
 
@@ -75,31 +108,92 @@ export default function LargeWithAppLinksAndSocial() {
             <Text fontSize="2xl" fontWeight="bold">
               Follow us
             </Text>
-            <Link fontWeight={500} href={"#"}>
-              Facebook
-            </Link>
-            <Link href={"#"}>Twitter</Link>
-            <Link href={"#"}>Instagram</Link>
-            <Link href={"#"}>Pinterest</Link>
-            <Link href={"#"}>YouTube</Link>
+            <HStack as={"nav"} spacing={3} mt={2}>
+              <Link href="https://facebook.com/CouponLuxury/">
+                <a target="_blank">
+                  <IconButton
+                    bg="tranparent"
+                    _hover={{
+                      transform: "scale(1.2)",
+                      bg: "white",
+                      color: "#4267B2",
+                    }}
+                    icon={<FontAwesomeIcon size="2x" icon={faFacebook} />}
+                  />
+                </a>
+              </Link>
+              <Link href="https://twitter.com/coupon_luxury">
+                <a target="_blank">
+                  <IconButton
+                    bg="tranparent"
+                    _hover={{
+                      transform: "scale(1.2)",
+                      bg: "white",
+                      color: "#1DA1F2",
+                    }}
+                    icon={<FontAwesomeIcon size="2x" icon={faTwitter} />}
+                  />
+                </a>
+              </Link>
+              <Link href="https://www.instagram.com/couponluxury/">
+                <a target="_blank">
+                  <IconButton
+                    bg="tranparent"
+                    _hover={{
+                      transform: "scale(1.2)",
+                      bg: "white",
+                      color: "#E1306C",
+                    }}
+                    icon={<FontAwesomeIcon size="2x" icon={faInstagram} />}
+                  />
+                </a>
+              </Link>
+              <Link href="https://youtube.com/channel/UCiGBpYZFIzyw_R5W1KUocJQ">
+                <a target="_blank">
+                  <IconButton
+                    bg="tranparent"
+                    _hover={{
+                      transform: "scale(1.2)",
+                      bg: "white",
+                      color: "#FF0000",
+                    }}
+                    icon={<FontAwesomeIcon size="2x" icon={faYoutube} />}
+                  />
+                </a>
+              </Link>
+              <Link href="https://www.pinterest.com/couponluxury/">
+                <a target="_blank">
+                  <IconButton
+                    bg="tranparent"
+                    _hover={{
+                      transform: "scale(1.2)",
+                      bg: "white",
+                      color: "#E60023",
+                    }}
+                    icon={<FontAwesomeIcon size="2x" icon={faPinterest} />}
+                  />
+                </a>
+              </Link>
+            </HStack>
           </Stack>
         </SimpleGrid>
+        <Box px={3}>
+          <Text
+            fontSize="20px"
+            lineHeight="32px"
+            fontWeight={500}
+            letterSpacing={0.2}
+          >
+            © 2022 All rights reserved by Coupon Luxury.
+          </Text>
+          <Text as="p" opacity={0.5}>
+            If you make a purchase after clicking on the links on this site,
+            couponluxury.com may earn an affiliate commission from the site you
+            visit.
+          </Text>
+        </Box>
       </Container>
-      <Box px={3}>
-        <Text
-          fontSize="20px"
-          lineHeight="32px"
-          fontWeight={500}
-          letterSpacing={0.2}
-        >
-          © 2022 All rights reserved by Coupon Luxury.
-        </Text>
-        <Text as="p" opacity={0.5}>
-          If you make a purchase after clicking on the links on this site,
-          couponluxury.com may earn an affiliate commission from the site you
-          visit.
-        </Text>
-      </Box>
+
       {/* <Box
         borderTopWidth={1}
         borderStyle={"solid"}
