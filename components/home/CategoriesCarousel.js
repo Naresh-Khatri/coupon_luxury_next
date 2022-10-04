@@ -1,10 +1,8 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
 import { Flex, Text } from "@chakra-ui/react";
-import Image from "next/image";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import "@splidejs/react-splide/css";
 import styles from "../../styles/splide.module.css";
+import Image from "next/future/image";
 import Link from "next/link";
 
 function MainCarousel({ carouselCat }) {
@@ -13,7 +11,6 @@ function MainCarousel({ carouselCat }) {
     autoplay: true,
     interval: 3000,
     speed: 3000,
-    gap: "2rem",
     width: "95%",
     perPage: 6,
     pagination: true,
@@ -25,7 +22,6 @@ function MainCarousel({ carouselCat }) {
         arrows: false,
         width: "100%",
         pagination: false,
-        padding: "1rem",
       },
     },
     perMove: 1,
@@ -42,12 +38,13 @@ function MainCarousel({ carouselCat }) {
         {carouselCat.map((slide) => (
           <SplideSlide key={slide._id}>
             <Link href={`/categories/${slide.slug}`}>
-              <a>
+              <a target="_blank">
                 <Image
                   className={styles.carousel__img}
-                  width="200"
-                  height="120"
+                  width={200}
+                  height={50}
                   src={slide.image}
+                  sizes={"100vw"}
                   alt={`Category image: ${slide.categoryName}`}
                 />
                 <Text textAlign={"center"} fontSize={14} noOfLines={1}>
