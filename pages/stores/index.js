@@ -6,6 +6,7 @@ import {
   Center,
   Flex,
   SimpleGrid,
+  Text,
 } from "@chakra-ui/react";
 import Banner from "../../components/Banner";
 import StoreCard from "../../components/StoreCard";
@@ -15,10 +16,21 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faHouse, faShop } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 
+import SetMeta from "../../utils/SetMeta";
+
 function Stores({ stores }) {
   return (
     <Box bg={"#eeeeee"}>
+      <SetMeta
+        title="CouponLuxury - Deals, Promo codes & exclusive coupons"
+        description="Grab the greatest deals on all exclusive stores using luxury coupons, promo & discount codes. Shop the biggest brands like Nike, amazon, domino's using our offers"
+        url="https://www.couponluxury.com/stores"
+      />
+      <Text as={"h1"} hidden>
+        CouponLuxury - Deals, Promo codes & exclusive coupons
+      </Text>
       <Banner title="All Stores" />
+
       <Center display={"flex"} flexDirection="column">
         <Box maxW={1200} w="100vw" px={4} justifyContent={"center"}>
           <Box my={4}>
@@ -74,12 +86,17 @@ function Stores({ stores }) {
   );
 }
 
-export const getServerSideProps = async () => {
-  const res = await fetch("http://localhost:4000/stores?limit=20");
-  const data = await res.json();
-  return {
-    props: { stores: data },
-  };
+export const getStaticProps = async () => {
+  try {
+    const res = await fetch("http://localhost:4000/stores?limit=20");
+    const data = await res.json();
+    return {
+      props: { stores: data },
+      revalidate: 60,
+    };
+  } catch (err) {
+    return { redirect: { destination: "/not-found", permanent: false } };
+  }
 };
 
 export default Stores;
