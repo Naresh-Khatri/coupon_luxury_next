@@ -9,7 +9,7 @@ function Layout({ children }) {
       <Box position={"fixed"} w={"100%"} zIndex={10} top={0}>
         <NavBar />
       </Box>
-      <Box mt={75}>{children}</Box>
+      <Box mt={{ base: "59px", md: "75px" }}>{children}</Box>
       <Footer />
     </>
   );
