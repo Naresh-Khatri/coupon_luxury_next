@@ -22,10 +22,10 @@ function Banner({ title, subTitle }) {
       {subTitle && (
         <Text
           as="h2"
-        fontSize={{ base: "1xl", md: "xl" }}
+          fontSize={{ base: "1xl", md: "xl" }}
           fontWeight={"thin"}
           textAlign="center"
-          opacity={0.6}
+          color={"gray.400"}
         >
           {subTitle}
         </Text>
