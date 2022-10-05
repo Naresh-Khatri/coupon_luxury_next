@@ -9,7 +9,7 @@ function DealsOfTheDay({ deals }) {
     <Box as="section" mt={10}>
       <Text
         textAlign="center"
-        fontSize="3rem"
+        fontSize={{ base: "4xl", md: "5xl" }}
         lineHeight="3.125rem"
         fontWeight={400}
         letterSpacing="normal"
