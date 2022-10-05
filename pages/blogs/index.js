@@ -43,7 +43,7 @@ function index({ blogsData }) {
 
 export const getStaticProps = async () => {
   try {
-    const res = await fetch("http://localhost:4000/blogs");
+    const res = await fetch(process.env.domain + "/blogs");
     const blogs = await res.json();
     return {
       props: {

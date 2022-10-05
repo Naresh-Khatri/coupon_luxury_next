@@ -88,7 +88,7 @@ function Stores({ stores }) {
 
 export const getStaticProps = async () => {
   try {
-    const res = await fetch("http://localhost:4000/stores?limit=20");
+    const res = await fetch(process.env.domain + "/stores?limit=20");
     const data = await res.json();
     return {
       props: { stores: data },

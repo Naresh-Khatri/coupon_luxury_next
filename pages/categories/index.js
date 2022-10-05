@@ -128,7 +128,7 @@ function index({ featuredCat }) {
 
 export const getStaticProps = async () => {
   try {
-    let res = await fetch("http://localhost:4000/categories");
+    let res = await fetch(process.env.domain + "/categories");
     const featuredCat = await res.json();
     return {
       props: {

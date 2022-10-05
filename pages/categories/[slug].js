@@ -190,10 +190,10 @@ export default StorePage;
 export const getServerSideProps = async (ctx) => {
   try {
     let res = await fetch(
-      "http://localhost:4000/categories/getUsingSlug/" + ctx.params.slug
+      process.env.domain + "/categories/getUsingSlug/" + ctx.params.slug
     );
     const categoryInfo = await res.json();
-    res = await fetch("http://localhost:4000/stores?featured=true&limit=16");
+    res = await fetch(process.env.domain + "/stores?featured=true&limit=16");
     const featuredStores = await res.json();
     return {
       props: {

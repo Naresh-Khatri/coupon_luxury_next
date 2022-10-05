@@ -131,12 +131,13 @@ export default DealPage;
 export const getServerSideProps = async (ctx) => {
   try {
     let res = await fetch(
-      `http://localhost:4000/offers/getWithSlug/${ctx.query.slug}`
+      process.env.domain + `/offers/getWithSlug/${ctx.query.slug}`
     );
     const dealsInfo = await res.json();
 
     res = await fetch(
-      `http://localhost:4000/offers?offerType=deal&category=${dealsInfo.category}&featured=true&limit=20`
+      process.env.domain +
+        `/offers?offerType=deal&category=${dealsInfo.category}&featured=true&limit=20`
     );
     let recommendedDeals = await res.json();
     recommendedDeals = recommendedDeals.filter(

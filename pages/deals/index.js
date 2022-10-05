@@ -49,7 +49,7 @@ export default DealsPage;
 export const getStaticProps = async () => {
   try {
     const res = await fetch(
-      `http://localhost:4000/offers?offerType=deal&limit=50`
+      process.env.domain + `/offers?offerType=deal&limit=50`
     );
     const dealsList = await res.json();
     return {
