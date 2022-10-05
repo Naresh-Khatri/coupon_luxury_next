@@ -27,19 +27,31 @@ function SearchBox() {
   const { isOpen, onOpen, onClose, onToggle } = useDisclosure();
 
   const [canFocus, setCanFocus] = useState(false);
+  const [timeoutId, setTimeoutId] = useState(null);
+
+  const debounce = (func, delay) => {
+    // Cancels the setTimeout method execution
+    clearTimeout(timeoutId);
+
+    console.log("debounce", searchText);
+    // Executes the func after delay time.
+    const newTimeoutId = setTimeout(func, delay);
+    setTimeoutId(newTimeoutId);
+  };
+
   const handleSearch = async (e) => {
     // console.log(e.key)
     // if (e.key === "Down") {
     //   setCanFocus(true);
     //   console.log('focusing')
     // }
-    setSearchText(e.target.value);
+    // setSearchText(e.target.value);
     const promises = [
-      axios.post("http://localhost:4000/stores/getAutoCompleteData", {
-        searchText: e.target.value,
+      axios.post(process.env.domain + "/stores/getAutoCompleteData", {
+        searchText,
       }),
-      axios.post("http://localhost:4000/categories/getAutoCompleteData", {
-        searchText: e.target.value,
+      axios.post(process.env.domain + "/categories/getAutoCompleteData", {
+        searchText,
       }),
     ];
     const res = await Promise.allSettled(promises);
@@ -60,12 +72,7 @@ function SearchBox() {
   // };
 
   return (
-    <Flex
-      alignItems={"center"}
-      flexGrow={1}
-      position="relative"
-      maxW={350}
-    >
+    <Flex alignItems={"center"} flexGrow={1} position="relative" maxW={350}>
       <Popover
         isOpen={searchText?.length > 0}
         onClose={onClose}
@@ -75,15 +82,20 @@ function SearchBox() {
         // initialFocusRef={initialRef}
       >
         <PopoverTrigger>
-          <InputGroup size="sm">
+          <InputGroup size="sm" role={"search"} aria-label={"search"}>
             <Input
               h={"40px"}
               borderRadius={10}
               placeholder="Search"
+              role={"search"}
+              aria-label={"search"}
               bg="white"
               color={"black"}
               value={searchText}
-              onInput={(e) => handleSearch(e)}
+              onInput={(e) => {
+                setSearchText(e.target.value);
+                debounce(handleSearch, 1000);
+              }}
               // onKeyDown={(e) => handleKeyDown(e)}
             />
             <InputRightElement h={"40px"}>
@@ -110,7 +122,7 @@ function SearchBox() {
               )}
 
               {searchResults.map((result) => (
-                <Box key={result.slug} mb={2}>
+                <Box key={result.slug} mb={2} _hover={{ bg: "gray.200" }}>
                   <Link
                     href={
                       result.storeName
