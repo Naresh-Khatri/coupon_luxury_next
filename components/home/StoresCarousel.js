@@ -49,7 +49,7 @@ function DealsOfTheDay({ featuredStores }) {
         </Text>
       </Center>
       <Center>
-        <Text as={"p"} opacity={0.5} mt={2}>
+        <Text as={"p"}  color={"gray.800"} >
           Search your favourite store & get many deals
         </Text>
       </Center>
