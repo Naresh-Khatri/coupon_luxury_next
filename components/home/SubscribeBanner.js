@@ -22,7 +22,6 @@ function SubscribeBanner() {
       const result = await axios.post("http://localhost:4000/subscribers", {
         email: email,
       });
-      console.log(result);
       toast({
         title: "Subscribed successfully",
         status: "success",
@@ -30,7 +29,6 @@ function SubscribeBanner() {
       });
       setEmail("");
     } catch (err) {
-      console.log(err);
       toast({
         title: "Something went wrong",
         status: "error",
@@ -50,7 +48,6 @@ function SubscribeBanner() {
         justifyContent={"center"}
       >
         <Text
-          as={"h4"}
           fontSize={{ base: "4xl", lg: "6xl" }}
           fontWeight={"extrabold"}
           textAlign="center"
