@@ -36,8 +36,8 @@ function DealCard({
         <a>
           <Box>
             <Image
-              width={200}
-              height={100}
+              width={350}
+              height={175}
               style={{ borderRadius: "15px" }}
               title={`Open ${storeName} store`}
               alt={`${title} - logo`}
