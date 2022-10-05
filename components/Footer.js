@@ -34,7 +34,7 @@ function Footer() {
             <Text fontSize="2xl" fontWeight="bold">
               CONTACT
             </Text>
-            <Text as="address" opacity={0.5}>
+            <Text as="address" color={"gray.100"}>
               81a, National House, Alkapuri, Vadodara, Gujarat - 390005
             </Text>
             <a href="mailto:contact@couponluxury.com">
@@ -107,8 +107,10 @@ function Footer() {
               Follow us
             </Text>
             <HStack as={"nav"} spacing={3} mt={2}>
-              <Link href="https://facebook.com/CouponLuxury/" target="_blank">
+              <Link href="https://facebook.com/CouponLuxury/" target="_blank"
+              aria-label="Visit our Facebook page">
                 <IconButton
+                  aria-label="facebook icon"
                   bg="tranparent"
                   borderRadius={100}
                   _hover={{
@@ -119,8 +121,10 @@ function Footer() {
                   icon={<FontAwesomeIcon size="2x" icon={faFacebook} />}
                 />
               </Link>
-              <Link href="https://twitter.com/coupon_luxury" target="_blank">
+              <Link href="https://twitter.com/coupon_luxury" target="_blank"
+              aria-label="Visit our Twitter page">
                 <IconButton
+                  aria-label="twitter icon"
                   bg="tranparent"
                   _hover={{
                     transform: "scale(1.2)",
@@ -133,8 +137,10 @@ function Footer() {
               <Link
                 href="https://www.instagram.com/couponluxury/"
                 target="_blank"
+                aria-label="Visit our Instagram page"
               >
                 <IconButton
+                  aria-label="instagram icon"
                   bg="tranparent"
                   borderRadius={100}
                   _hover={{
@@ -148,8 +154,10 @@ function Footer() {
               <Link
                 href="https://youtube.com/channel/UCiGBpYZFIzyw_R5W1KUocJQ"
                 target="_blank"
+                aria-label="Visit our Youtube page"
               >
                 <IconButton
+                  aria-label="youtube icon"
                   bg="tranparent"
                   _hover={{
                     transform: "scale(1.2)",
@@ -162,8 +170,10 @@ function Footer() {
               <Link
                 href="https://www.pinterest.com/couponluxury/"
                 target="_blank"
+                aria-label="Visit our Pinterest page"
               >
                 <IconButton
+                  aria-label="pinterest icon"
                   bg="tranparent"
                   borderRadius={100}
                   _hover={{
@@ -186,7 +196,7 @@ function Footer() {
           >
             © 2022 All rights reserved by Coupon Luxury.
           </Text>
-          <Text as="p" opacity={0.5}>
+          <Text as="p" color={"gray.100"}>
             If you make a purchase after clicking on the links on this site,
             couponluxury.com may earn an affiliate commission from the site you
             visit.
