@@ -53,7 +53,7 @@ export const getStaticProps = async () => {
     // res = await fetch("http://localhost:4000/stores?limit=20");
     // const featuredStores = await res.json();
 
-    const res = await fetch("http://localhost:4000/main");
+    const res = await fetch(process.env.domain + "/main");
     const {
       slides,
       featuredStores,
