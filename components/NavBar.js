@@ -28,7 +28,7 @@ import {
   SearchIcon,
   ChevronDownIcon,
 } from "@chakra-ui/icons";
-import Image from "next/image";
+import Image from "next/future/image";
 import Link from "next/link";
 import { Link as CLink } from "@chakra-ui/react";
 import { useRouter } from "next/router";
@@ -77,8 +77,10 @@ function NavBar() {
 
   useEffect(() => {
     const promises = [
-      axios.get("http://localhost:4000/stores?featered=true&limit=10"),
-      axios.get("http://localhost:4000/categories?featered=true&limit=10"),
+      axios.get("https://api.couponluxury.com/stores?featered=true&limit=10"),
+      axios.get(
+        "https://api.couponluxury.com/categories?featered=true&limit=10"
+      ),
     ];
     Promise.allSettled(promises).then((res) => {
       setFeaturedStores(res[0].value.data);
@@ -88,7 +90,7 @@ function NavBar() {
   }, []);
   return (
     <>
-      <Flex as={'header'} bg="brand.900" justify={"center"} >
+      <Flex as={"header"} bg="brand.900" justify={"center"}>
         <Box
           color="white"
           px={4}
@@ -102,11 +104,13 @@ function NavBar() {
                 <a>
                   <Image
                     title="Home"
-                    src="https://ik.imagekit.io/couponluxury/main_logo_noj4ZyPyq"
-                    alt="logo"
-                    width={120}
-                    height={60}
-                    // sizes="100%"
+                    src="https://ik.imagekit.io/couponluxury/tr:w-200:h-100/main_logo_noj4ZyPyq"
+                    alt="CouponLuxury logo"
+                    width={107}
+                    height={50}
+                    style={{
+                      aspectRatio: 2.15,
+                    }}
                   />
                 </a>
               </Link>
@@ -146,7 +150,7 @@ function NavBar() {
                           <a>
                             <Image
                               src={store.image}
-                              alt={store.name}
+                              alt={`${store.storeName} - Logo`}
                               width={80}
                               height={40}
                             />
