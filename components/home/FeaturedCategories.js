@@ -24,7 +24,7 @@ function FeaturedCategories({ featuredCat }) {
             Featured Categories{" "}
           </Text>
         </Text>
-        <Text as={"p"} opacity={0.5}>
+        <Text as={"p"} color={"gray.800"}>
           Search your favourite store & get many deals
         </Text>
       </Center>
@@ -32,12 +32,12 @@ function FeaturedCategories({ featuredCat }) {
         <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={5}>
           {featuredCat.map((category) => (
             <Link key={category._id} href={`/categories/${category.slug}`}>
-              <Box position={"relative"}>
+              <Box position={"relative"} h={200} w={350}>
                 <Image
                   src={category.image}
                   width={350}
                   height={200}
-                  alt={category.imgAlt}
+                  alt={category.imgAlt || category.categoryName + " image"}
                   objectPosition="relative"
                   style={{
                     borderRadius: "15px",
@@ -53,7 +53,6 @@ function FeaturedCategories({ featuredCat }) {
                   align={"center"}
                 >
                   <Text
-                    as={"h4"}
                     alignContent="center"
                     color="white"
                     fontSize={"3xl"}
