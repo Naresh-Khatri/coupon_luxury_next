@@ -26,15 +26,13 @@ function SearchBox() {
   const initialRef = useRef();
   const { isOpen, onOpen, onClose, onToggle } = useDisclosure();
 
-  const [canFocus, setCanFocus] = useState(false);
+  const [fetchingList, setFetchingList] = useState(false);
   const [timeoutId, setTimeoutId] = useState(null);
 
   const debounce = (func, delay) => {
-    // Cancels the setTimeout method execution
+    setFetchingList(true);
+    setSearchResults([]);
     clearTimeout(timeoutId);
-
-    console.log("debounce", searchText);
-    // Executes the func after delay time.
     const newTimeoutId = setTimeout(func, delay);
     setTimeoutId(newTimeoutId);
   };
@@ -58,6 +56,7 @@ function SearchBox() {
     //since categories are more imp
     const allRes = res[1].value.data.concat(res[0].value.data);
     setSearchResults(allRes);
+    setFetchingList(false);
   };
   const clearSearch = () => {
     setSearchText("");
@@ -115,10 +114,14 @@ function SearchBox() {
         <Portal>
           <PopoverContent>
             <PopoverBody color={"black"}>
-              {searchResults.length == 0 && (
-                <Box p={2}>
-                  No results found for &quot;{searchText}&quot; :(
-                </Box>
+              {fetchingList ? (
+                <Text>Loading...</Text>
+              ) : (
+                searchResults.length == 0 && (
+                  <Box p={2}>
+                    No results found for &quot;{searchText}&quot; :(
+                  </Box>
+                )
               )}
 
               {searchResults.map((result) => (
