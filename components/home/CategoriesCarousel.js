@@ -1,10 +1,14 @@
 import { Flex, Text } from "@chakra-ui/react";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
-import "@splidejs/react-splide/css";
-import styles from "../../styles/splide.module.css";
 import Image from "next/future/image";
 import Link from "next/link";
+
+import "@splidejs/react-splide/css";
+import "@splidejs/splide/css/skyblue";
+
+import styles from "../../styles/splide.module.css";
 import transformPath from "../../utils/transformImagePath";
+
 
 function MainCarousel({ carouselCat }) {
   const options = {

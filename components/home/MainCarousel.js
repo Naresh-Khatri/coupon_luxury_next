@@ -1,10 +1,14 @@
 import { Box } from "@chakra-ui/react";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
-import "@splidejs/react-splide/css";
-import styles from "../../styles/splide.module.css";
-import transform from "../../utils/transformImagePath";
 import Image from "next/future/image";
 import Link from "next/link";
+
+import styles from "../../styles/splide.module.css";
+import transform from "../../utils/transformImagePath";
+
+import "@splidejs/react-splide/css";
+import "@splidejs/splide/css/skyblue";
+
 
 function MainCarousel({ slides }) {
   const options = {
