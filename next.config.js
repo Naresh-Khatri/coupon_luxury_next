@@ -11,7 +11,8 @@ const nextConfig = {
     domains: ["ik.imagekit.io"],
   },
   env: {
-    domain: 'http://localhost:4000',
+    // domain: 'http://localhost:4000',
+    domain: "https://apiv2.couponluxury.com",
   },
   async rewrites() {
     return [
