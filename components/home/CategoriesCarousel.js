@@ -52,7 +52,7 @@ function MainCarousel({ carouselCat }) {
                   height: "160px",
                 }}
               >
-                <Box minH="13vh" w="full">
+                <Box minH={{ base: "20vh", lg: "15vh" }} w="full">
                   <Image
                     className={styles.carousel__img}
                     width={100}
