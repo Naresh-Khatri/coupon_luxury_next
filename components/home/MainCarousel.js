@@ -9,7 +9,6 @@ import transform from "../../utils/transformImagePath";
 import "@splidejs/react-splide/css";
 import "@splidejs/splide/css/skyblue";
 
-
 function MainCarousel({ slides }) {
   const options = {
     type: "loop",
@@ -41,13 +40,13 @@ function MainCarousel({ slides }) {
         className="carousel-container"
       >
         {slides.map((slide, index) => (
-          <SplideSlide key={slide.imgURL}>
+          <SplideSlide key={slide.id}>
             <Link href={slide.link}>
               <a
                 target="_blank"
                 style={{ display: "flex", justifyContent: "center" }}
               >
-                <Box h={{ base: "auto", lg: "470px" }} w="full">
+                <Box minH={{ base: "30vh", lg: "470px" }} w="full">
                   <Image
                     style={{ aspectRatio: "5/4" }}
                     className={styles.carousel__img}

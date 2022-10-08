@@ -1,4 +1,4 @@
-import { Flex, Text } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import Image from "next/future/image";
 import Link from "next/link";
@@ -8,7 +8,6 @@ import "@splidejs/splide/css/skyblue";
 
 import styles from "../../styles/splide.module.css";
 import transformPath from "../../utils/transformImagePath";
-
 
 function MainCarousel({ carouselCat }) {
   const options = {
@@ -43,7 +42,7 @@ function MainCarousel({ carouselCat }) {
         className="carousel-container"
       >
         {carouselCat.map((slide, index) => (
-          <SplideSlide key={slide._id}>
+          <SplideSlide key={slide.id}>
             <Link href={`/categories/${slide.slug}`}>
               <a
                 target="_blank"
@@ -53,17 +52,19 @@ function MainCarousel({ carouselCat }) {
                   height: "160px",
                 }}
               >
-                <Image
-                  className={styles.carousel__img}
-                  width={100}
-                  height={50}
-                  src={transformPath(slide.image, 150)}
-                  alt={`Category image: ${slide.categoryName}`}
-                  priority={index <= 6 ? true : false}
-                />
-                <Text textAlign={"center"} fontSize={14} noOfLines={1}>
-                  {slide.categoryName}
-                </Text>
+                <Box minH="13vh" w="full">
+                  <Image
+                    className={styles.carousel__img}
+                    width={100}
+                    height={50}
+                    src={transformPath(slide.image, 150)}
+                    alt={`Category image: ${slide.categoryName}`}
+                    priority={index <= 6 ? true : false}
+                  />
+                  <Text textAlign={"center"} fontSize={14} noOfLines={1}>
+                    {slide.categoryName}
+                  </Text>
+                </Box>
               </a>
             </Link>
           </SplideSlide>
