@@ -23,7 +23,7 @@ function index({ blogsData }) {
         <Center>
           <SimpleGrid columns={{ base: 1, sm: 2, md: 3, lg: 4 }} spacing={5}>
             {blogsData.map((blog) => {
-              return <BlogPreview key={blog._id} blog={blog} />;
+              return <BlogPreview key={blog.id} blog={blog} />;
             })}
           </SimpleGrid>
         </Center>

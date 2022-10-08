@@ -106,7 +106,7 @@ function DealPage({ dealsInfo, recommendedDeals }) {
           <SimpleGrid columns={[2, 3, 5]} spacing={5} justifyContent="center">
             {recommendedDeals.map((deal) => (
               <DealCard
-                key={deal._id}
+                key={deal.id}
                 affURL={deal.affURL}
                 storeName={deal.store.storeName}
                 storeSlug={deal.store.slug}
@@ -141,7 +141,7 @@ export const getServerSideProps = async (ctx) => {
     );
     let recommendedDeals = await res.json();
     recommendedDeals = recommendedDeals.filter(
-      (deal) => deal._id !== dealsInfo._id
+      (deal) => deal.id !== dealsInfo.id
     );
 
     return {

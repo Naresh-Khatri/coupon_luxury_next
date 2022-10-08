@@ -68,7 +68,7 @@ function BlogPage({ blogData, allBlogs }) {
             </Text>
             <Box>
               {allBlogs.map((blog) => {
-                return <BlogPreviewSmall key={blog._id} blog={blog} />;
+                return <BlogPreviewSmall key={blog.id} blog={blog} />;
               })}
             </Box>
           </GridItem>

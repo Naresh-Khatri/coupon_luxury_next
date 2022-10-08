@@ -72,7 +72,7 @@ function index({ featuredCat }) {
             maxW={"1240px"}
           >
             {featuredCat.map((category) => (
-              <Link key={category._id} href={`/categories/${category.slug}`}>
+              <Link key={category.id} href={`/categories/${category.slug}`}>
                 <a>
                   <Box
                     position={"relative"}

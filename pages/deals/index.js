@@ -25,7 +25,7 @@ function DealsPage({ dealsList }) {
         >
           {dealsList.map((deal) => (
             <DealCard
-              key={deal._id}
+              key={deal.id}
               affURL={deal.affURL}
               storeName={deal.store.storeName}
               storeSlug={deal.store.slug}

@@ -145,7 +145,7 @@ function NavBar() {
                       </Link>
                     </MenuItem>
                     {featuredStores.map((store) => (
-                      <MenuItem key={store._id}>
+                      <MenuItem key={store.id}>
                         <Link href={`/stores/${store.slug}`}>
                           <a>
                             <Image
@@ -184,7 +184,7 @@ function NavBar() {
                       </Link>
                     </MenuItem>
                     {featuredCategories.map((category) => (
-                      <MenuItem key={category._id}>
+                      <MenuItem key={category.id}>
                         <Link href={`/categories/${category.slug}`}>
                           <a>{category.categoryName}</a>
                         </Link>

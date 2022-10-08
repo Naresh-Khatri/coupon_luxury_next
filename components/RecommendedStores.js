@@ -10,7 +10,7 @@ function RecommendedStores({ stores }) {
       </Text>
       <SimpleGrid columns={2} spacing={5} p={5}>
         {stores.map((store) => (
-          <Link key={store._id} href={`/stores/${store.slug}`}>
+          <Link key={store.id} href={`/stores/${store.slug}`}>
             <a>
               <Flex
                 justify={"center"}

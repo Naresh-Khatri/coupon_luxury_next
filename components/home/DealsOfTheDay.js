@@ -21,7 +21,7 @@ function DealsOfTheDay({ deals }) {
         <SimpleGrid columns={[2, 3, 5]} spacing={5} justifyContent="center">
           {deals.map((deal) => (
             <DealCard
-              key={deal._id}
+              key={deal.id}
               affURL={deal.affURL}
               storeName={deal.store.storeName}
               storeSlug={deal.store.slug}

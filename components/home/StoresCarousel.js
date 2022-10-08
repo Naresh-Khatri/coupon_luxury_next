@@ -60,7 +60,7 @@ function DealsOfTheDay({ featuredStores }) {
           className="carousel-container"
         >
           {featuredStores.map((store) => (
-            <SplideSlide key={store._id}>
+            <SplideSlide key={store.id}>
               <Box w={"100px"} h={"50px"} mt={5}>
                 <Image
                   style={{ borderRadius: "5px" }}
@@ -79,7 +79,7 @@ function DealsOfTheDay({ featuredStores }) {
           className="carousel-container"
         >
           {featuredStores.map((store) => (
-            <SplideSlide key={store._id}>
+            <SplideSlide key={store.id}>
               <Box w={"100px"} h={"50px"} mt={5}>
                 <Image
                   style={{ borderRadius: "5px" }}

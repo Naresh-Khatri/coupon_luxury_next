@@ -73,7 +73,7 @@ function Stores({ stores }) {
           >
             {stores.map((store) => (
               <StoreCard
-                key={store._id}
+                key={store.id}
                 slug={store.slug}
                 title={store.storeName}
                 img={store.image}

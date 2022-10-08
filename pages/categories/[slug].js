@@ -149,7 +149,7 @@ function StorePage({ categoryInfo, featuredStores }) {
             </GridItem>
             <GridItem px={4} colSpan={5}>
               {filteredOffers.map((offer) => (
-                <Box key={offer._id} mb={4}>
+                <Box key={offer.id} mb={4}>
                   <OfferCard
                     offerDetails={{
                       ...offer,
