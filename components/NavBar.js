@@ -77,9 +77,9 @@ function NavBar() {
 
   useEffect(() => {
     const promises = [
-      axios.get("https://api.couponluxury.com/stores?featered=true&limit=10"),
+      axios.get("https://apiv2.couponluxury.com/stores?featered=true&limit=10"),
       axios.get(
-        "https://api.couponluxury.com/categories?featered=true&limit=10"
+        "https://apiv2.couponluxury.com/categories?featered=true&limit=10"
       ),
     ];
     Promise.allSettled(promises).then((res) => {
