@@ -25,15 +25,6 @@ function index({ blogsData }) {
             {blogsData.map((blog) => {
               return <BlogPreview key={blog._id} blog={blog} />;
             })}
-            {blogsData.map((blog) => {
-              return <BlogPreview key={blog._id} blog={blog} />;
-            })}
-            {blogsData.map((blog) => {
-              return <BlogPreview key={blog._id} blog={blog} />;
-            })}
-            {blogsData.map((blog) => {
-              return <BlogPreview key={blog._id} blog={blog} />;
-            })}
           </SimpleGrid>
         </Center>
       </Container>
