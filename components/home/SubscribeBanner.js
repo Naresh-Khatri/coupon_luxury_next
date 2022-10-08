@@ -19,7 +19,7 @@ function SubscribeBanner() {
         });
         return;
       }
-      const result = await axios.post("http://localhost:4000/subscribers", {
+      const result = await axios.post("https://apiv2.couponluxury.com/subscribers", {
         email: email,
       });
       toast({
