@@ -48,7 +48,7 @@ function DealCard({
       </Link>
       <Text
         fontSize={{ base: 14, lg: 18 }}
-        fontWeight={"thin"}
+        fontWeight={"400"}
         textAlign="center"
         px={2}
         noOfLines={2}
