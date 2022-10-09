@@ -23,7 +23,7 @@ function MainCarousel({ slides }) {
       1100: {
         //  padding: "1rem"
       },
-      600: {
+      480: {
         perPage: 1,
         arrows: false,
         width: "100%",
@@ -46,13 +46,24 @@ function MainCarousel({ slides }) {
                 target="_blank"
                 style={{ display: "flex", justifyContent: "center" }}
               >
-                <Box minH={{ base: "30vh", lg: "470px" }} w="full">
+                {/* minH={{ base: "30vh", lg: "470px" }} */}
+                <Box
+                  w="full"
+                  style={{
+                    transition: "transform 0.2s ease-in",
+                  }}
+                  _hover={{
+                    transform: "scale(1.03)",
+                    transition: "transform 0.1s ease-in",
+                  }}
+                >
                   <Image
                     style={{ aspectRatio: "5/4" }}
                     className={styles.carousel__img}
-                    width={350}
-                    height={300}
-                    src={transform(slide.imgURL, 500)}
+                    width={420}
+                    height={360}
+                    // src={transform(slide.imgURL, 500)}
+                    src={slide.imgURL}
                     alt={slide.imgAlt}
                     priority={index <= 1 ? true : false}
                   />
