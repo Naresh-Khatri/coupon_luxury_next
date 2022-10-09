@@ -45,19 +45,28 @@ function MainCarousel({ carouselCat }) {
           <SplideSlide key={slide.id}>
             <Link href={`/categories/${slide.slug}`}>
               <a
-                target="_blank"
                 style={{
                   position: "relative",
                   width: "650px",
                   height: "160px",
                 }}
               >
-                <Box minH={{ base: "20vh", lg: "15vh" }} w="full">
+                {/* minH={{ base: "20vh", lg: "15vh" }}  */}
+                <Box
+                  w="full"
+                  style={{
+                    transition: "transform 0.2s ease-in",
+                  }}
+                  _hover={{
+                    transform: "scale(1.03)",
+                    transition: "transform 0.1s ease-in",
+                  }}
+                >
                   <Image
                     className={styles.carousel__img}
-                    width={100}
-                    height={50}
-                    src={transformPath(slide.image, 150)}
+                    width={150}
+                    height={75}
+                    src={slide.image}
                     alt={`Category image: ${slide.categoryName}`}
                     priority={index <= 6 ? true : false}
                   />
