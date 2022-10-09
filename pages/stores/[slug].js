@@ -28,6 +28,8 @@ import RecommendedStores from "../../components/RecommendedStores";
 
 import SetMeta from "../../utils/SetMeta";
 
+import styles from "../../styles/PageHtml.module.scss";
+
 function StorePage({ storeInfo, featuredStores }) {
   const [filteredOffers, setFilteredOffers] = useState([]);
   const [filterBy, setFilterBy] = useState("all");
@@ -37,21 +39,16 @@ function StorePage({ storeInfo, featuredStores }) {
   ).length;
 
   useEffect(() => {
-    handleFilterChange("all");
-  });
-
-  const handleFilterChange = (key) => {
-    setFilterBy(key);
-    if (key == "coupons")
+    if (filterBy == "coupons")
       setFilteredOffers(
         storeInfo.offers.filter((offer) => offer.offerType == "coupon")
       );
-    else if (key == "deals")
+    else if (filterBy == "deals")
       setFilteredOffers(
         storeInfo.offers.filter((offer) => offer.offerType == "deal")
       );
     else setFilteredOffers(storeInfo.offers);
-  };
+  }, [filterBy, storeInfo.offers]);
 
   return (
     <Box bg={"#e0e0e0"} pb={5}>
@@ -80,8 +77,13 @@ function StorePage({ storeInfo, featuredStores }) {
               <BreadcrumbItem>
                 <Link href="/">
                   <a>
-                    <Box fontSize="sm" _hover={{ color: "brand.1000" }}>
+                    <Box
+                      fontSize="sm"
+                      _hover={{ color: "brand.1000" }}
+                      display="flex"
+                    >
                       <FontAwesomeIcon
+                        height={"1rem"}
                         icon={faHouse}
                         style={{ paddingRight: "10px" }}
                       />
@@ -91,20 +93,28 @@ function StorePage({ storeInfo, featuredStores }) {
                 </Link>
               </BreadcrumbItem>
               <BreadcrumbItem>
-                <BreadcrumbLink href="/stores" fontSize="sm">
-                  <Box>
-                    <FontAwesomeIcon
-                      icon={faShop}
-                      style={{ paddingRight: "10px" }}
-                    />
-                    Stores
-                  </Box>
-                </BreadcrumbLink>
+                <Link href="/stores">
+                  <a>
+                    <Box
+                      fontSize="sm"
+                      _hover={{ color: "brand.1000" }}
+                      display="flex"
+                    >
+                      <FontAwesomeIcon
+                        height={"1rem"}
+                        icon={faShop}
+                        style={{ paddingRight: "10px" }}
+                      />
+                      Stores
+                    </Box>
+                  </a>
+                </Link>
               </BreadcrumbItem>
               <BreadcrumbItem isCurrentPage>
-                <BreadcrumbLink fontSize="sm">
-                  <Box>
+                <BreadcrumbLink fontSize="sm" href="#">
+                  <Box display={"flex"}>
                     <FontAwesomeIcon
+                      height={"1rem"}
                       icon={faBagShopping}
                       style={{ paddingRight: "10px" }}
                     />
@@ -130,10 +140,7 @@ function StorePage({ storeInfo, featuredStores }) {
 
               <Box bg={"white"} p={4} borderRadius={15} my={3}>
                 <Text fontSize={"3xl"}>Filter</Text>
-                <RadioGroup
-                  onChange={(e) => handleFilterChange(e)}
-                  value={filterBy}
-                >
+                <RadioGroup onChange={(e) => setFilterBy(e)} value={filterBy}>
                   <Stack>
                     <Radio value="all">All({storeInfo.offers.length})</Radio>
                     <Radio value="coupons">Coupons({couponCount})</Radio>
@@ -172,6 +179,7 @@ function StorePage({ storeInfo, featuredStores }) {
                     color="brand.900"
                     fontSize={"4xl"}
                     fontWeight={"extrabold"}
+                    textAlign={"center"}
                   >
                     No Coupon or Deal
                   </Text>
@@ -185,6 +193,7 @@ function StorePage({ storeInfo, featuredStores }) {
             minH={100}
             m={4}
             p={10}
+            className={styles.page_html}
             dangerouslySetInnerHTML={{ __html: storeInfo.pageHTML }}
           ></Box>
         </Box>

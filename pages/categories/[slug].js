@@ -36,22 +36,18 @@ function StorePage({ categoryInfo, featuredStores }) {
   const couponCount = categoryInfo.offers.filter(
     (offer) => offer.offerType == "coupon"
   ).length;
-  useEffect(() => {
-    handleFilterChange("all");
-  });
 
-  const handleFilterChange = (key) => {
-    setFilterBy(key);
-    if (key == "coupons")
+  useEffect(() => {
+    if (filterBy == "coupons")
       setFilteredOffers(
         categoryInfo.offers.filter((offer) => offer.offerType == "coupon")
       );
-    else if (key == "deals")
+    else if (filterBy == "deals")
       setFilteredOffers(
         categoryInfo.offers.filter((offer) => offer.offerType == "deal")
       );
     else setFilteredOffers(categoryInfo.offers);
-  };
+  }, [filterBy, categoryInfo.offers]);
 
   return (
     <Box bg={"#e0e0e0"} pb={5}>
@@ -80,8 +76,13 @@ function StorePage({ categoryInfo, featuredStores }) {
               <BreadcrumbItem>
                 <Link href="/">
                   <a>
-                    <Box fontSize="sm" _hover={{ color: "brand.1000" }}>
+                    <Box
+                      fontSize="sm"
+                      _hover={{ color: "brand.1000" }}
+                      display="flex"
+                    >
                       <FontAwesomeIcon
+                        height={"1rem"}
                         icon={faHouse}
                         style={{ paddingRight: "10px" }}
                       />
@@ -91,20 +92,28 @@ function StorePage({ categoryInfo, featuredStores }) {
                 </Link>
               </BreadcrumbItem>
               <BreadcrumbItem>
-                <BreadcrumbLink href="/categories" fontSize="sm">
-                  <Box>
-                    <FontAwesomeIcon
-                      icon={faCube}
-                      style={{ paddingRight: "10px" }}
-                    />
-                    Categories
-                  </Box>
-                </BreadcrumbLink>
+                <Link href="/categories" fontSize="sm">
+                  <a>
+                    <Box
+                      fontSize="sm"
+                      _hover={{ color: "brand.1000" }}
+                      display="flex"
+                    >
+                      <FontAwesomeIcon
+                        height={"1rem"}
+                        icon={faCube}
+                        style={{ paddingRight: "10px" }}
+                      />
+                      Categories
+                    </Box>
+                  </a>
+                </Link>
               </BreadcrumbItem>
               <BreadcrumbItem isCurrentPage>
                 <BreadcrumbLink fontSize="sm">
-                  <Box>
+                  <Box fontSize={"sm"} display={"flex"}>
                     <FontAwesomeIcon
+                      height={"1rem"}
                       icon={faBagShopping}
                       style={{ paddingRight: "10px" }}
                     />
@@ -130,10 +139,7 @@ function StorePage({ categoryInfo, featuredStores }) {
 
               <Box bg={"white"} p={4} borderRadius={15} my={3}>
                 <Text fontSize={"3xl"}>Filter</Text>
-                <RadioGroup
-                  onChange={(e) => handleFilterChange(e)}
-                  value={filterBy}
-                >
+                <RadioGroup onChange={(e) => setFilterBy(e)} value={filterBy}>
                   <Stack>
                     <Radio value="all">All({categoryInfo.offers.length})</Radio>
                     <Radio value="coupons">Coupons({couponCount})</Radio>
@@ -172,6 +178,7 @@ function StorePage({ categoryInfo, featuredStores }) {
                     color="brand.900"
                     fontSize={"4xl"}
                     fontWeight={"extrabold"}
+                    textAlign={"center"}
                   >
                     No Coupon or Deal
                   </Text>
