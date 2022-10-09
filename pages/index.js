@@ -1,5 +1,4 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
-import Head from "next/head";
 import MainCarousel from "../components/home/MainCarousel";
 import CategoriesCarousel from "../components/home/CategoriesCarousel";
 import DealsOfTheDay from "../components/home/DealsOfTheDay";
@@ -25,13 +24,20 @@ export default function Home({
         url="https://www.couponluxury.com/"
       />
 
-      <Flex as="main" className="hero-bg" justifyContent="center">
+      <Flex
+        as="main"
+        className="hero-bg"
+        justifyContent="center"
+        overflow={"hidden"}
+      >
         <Text as="h1" hidden>
           Couponluxury: Deals, coupon codes, Discounts & offers
         </Text>
         <Box pt={5} w={"100vw"} maxW={1300}>
-          <MainCarousel slides={slides} />
-          <CategoriesCarousel carouselCat={carouselCat} />
+          <Box>
+            <MainCarousel slides={slides} />
+            <CategoriesCarousel carouselCat={carouselCat} />
+          </Box>
           <DealsOfTheDay deals={deals} />
         </Box>
       </Flex>
@@ -43,16 +49,6 @@ export default function Home({
 }
 export const getStaticProps = async () => {
   try {
-    // let res = await fetch("http://localhost:4000/slides");
-    // const slides = await res.json();
-    // res = await fetch("http://localhost:4000/categories");
-    // const carouselCat = await res.json();
-    // const featuredCat = carouselCat;
-    // res = await fetch("http://localhost:4000/offers?feature=true&limit=20");
-    // const deals = await res.json();
-    // res = await fetch("http://localhost:4000/stores?limit=20");
-    // const featuredStores = await res.json();
-
     const res = await fetch(process.env.domain + "/main");
     const {
       slides,
