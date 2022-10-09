@@ -34,7 +34,12 @@ function Footer() {
             <Text fontSize="2xl" fontWeight="bold">
               CONTACT
             </Text>
-            <Text as="address" color={"gray.100"}>
+            <Text
+              as="address"
+              color={"gray.100"}
+              textDecoration="none"
+              fontStyle={"normal"}
+            >
               81a, National House, Alkapuri, Vadodara, Gujarat - 390005
             </Text>
             <a href="mailto:contact@couponluxury.com">
@@ -107,8 +112,11 @@ function Footer() {
               Follow us
             </Text>
             <HStack as={"nav"} spacing={3} mt={2}>
-              <Link href="https://facebook.com/CouponLuxury/" target="_blank"
-              aria-label="Visit our Facebook page">
+              <Link
+                href="https://facebook.com/CouponLuxury/"
+                target="_blank"
+                aria-label="Visit our Facebook page"
+              >
                 <IconButton
                   aria-label="facebook icon"
                   bg="tranparent"
@@ -121,8 +129,11 @@ function Footer() {
                   icon={<FontAwesomeIcon size="2x" icon={faFacebook} />}
                 />
               </Link>
-              <Link href="https://twitter.com/coupon_luxury" target="_blank"
-              aria-label="Visit our Twitter page">
+              <Link
+                href="https://twitter.com/coupon_luxury"
+                target="_blank"
+                aria-label="Visit our Twitter page"
+              >
                 <IconButton
                   aria-label="twitter icon"
                   bg="tranparent"
@@ -193,6 +204,7 @@ function Footer() {
             lineHeight="32px"
             fontWeight={500}
             letterSpacing={0.2}
+            mt={{ base: 5, md: 0 }}
           >
             © 2022 All rights reserved by Coupon Luxury.
           </Text>
