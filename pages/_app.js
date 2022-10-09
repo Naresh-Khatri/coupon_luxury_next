@@ -1,6 +1,7 @@
 import { ChakraProvider } from "@chakra-ui/react";
 import { extendTheme } from "@chakra-ui/react";
 import Layout from "../layouts/Layout";
+import LoadingOverlay from "../components/LoadingOverlay";
 import "../styles/globals.css";
 
 const colors = {
@@ -12,17 +13,58 @@ const colors = {
   },
 };
 
-const theme = extendTheme({ colors });
+const activeLabelStyles = {
+  transform: "scale(.85) translateY(-24px)",
+};
+const theme = extendTheme({
+  colors,
+  config: {
+    initialColorMode: 'light',
+    useSystemColorMode: true,
+  },
+  components: {
+    Form: {
+      variants: {
+        floating: {
+          container: {
+            _focusWithin: {
+              label: {
+                ...activeLabelStyles,
+              },
+            },
+            "input:not(:placeholder-shown) + label, .chakra-select__wrapper + label, textarea:not(:placeholder-shown) ~ label":
+              {
+                ...activeLabelStyles,
+              },
+            label: {
+              top: 0,
+              left: 0,
+              zIndex: 2,
+              position: "absolute",
+              backgroundColor: "white",
+              pointerEvents: "none",
+              mx: 3,
+              px: 1,
+              my: 2,
+              transformOrigin: "left top",
+            },
+          },
+        },
+      },
+    },
+  },
+});
 
 function MyApp({ Component, pageProps }) {
   return (
     <ChakraProvider theme={theme}>
       <Layout>
-        <Component {...pageProps} />
+        <LoadingOverlay>
+          <Component {...pageProps} />
+        </LoadingOverlay>
       </Layout>
     </ChakraProvider>
   );
 }
 
 export default MyApp;
-// $primary: #0072a0;
