@@ -54,15 +54,17 @@ function OfferCard({ offerDetails }) {
         <GridItem colSpan={{ base: 2, md: 1 }}>
           <Center h={"100%"}>
             {fromPage == "categories" ? (
-              <Link href={`/stores/${storeSlug}`}>
-                <Box>
-                  <Image
-                    src={offerDetails.store.image}
-                    alt={"logo"}
-                    width={200}
-                    height={100}
-                  />
-                </Box>
+              <Link href={`/stores/${offerDetails.store.slug}`}>
+                <a>
+                  <Box>
+                    <Image
+                      src={offerDetails.store.image}
+                      alt={"logo"}
+                      width={200}
+                      height={100}
+                    />
+                  </Box>
+                </a>
               </Link>
             ) : (
               <Text
@@ -73,7 +75,7 @@ function OfferCard({ offerDetails }) {
                 fontSize={"6xl"}
                 fontWeight="extrabold"
                 p={2}
-                w={{ base: "fit-content", md: "100%" }}
+                w={{ base: "fit-content", md: 200 }}
                 h={{ base: "fit-content", md: 200 }}
                 alignItems={"center"}
                 justifyContent={"center"}
@@ -166,18 +168,30 @@ function OfferCard({ offerDetails }) {
         mt={3}
         fontWeight={100}
         justifyContent={"space-between"}
+        alignItems={"center"}
+        _hover={{ bg: "transparent" }}
+        _focus={{ bg: "transparent" }}
+        bg={"white"}
       >
+        <Box display={"flex"} alignItems="center">
+          {isOpen ? (
+            <ChevronUpIcon fontSize={25} />
+          ) : (
+            <ChevronDownIcon fontSize={25} />
+          )}
+          <Text ml={10} fontSize={"14"} fontWeight="500">
+            Show Details
+          </Text>
+        </Box>
         <InfoOutlineIcon />
-        <Text>Show Details</Text>
-        {isOpen ? (
-          <ChevronUpIcon fontSize={25} />
-        ) : (
-          <ChevronDownIcon fontSize={25} />
-        )}
       </Button>
       <Collapse in={isOpen} animateOpacity>
         <Box p="40px" color="white" mt="4" rounded="md" shadow="md">
-          <Box dangerouslySetInnerHTML={{ __html: TnC }} color="black"></Box>
+          <Box
+            dangerouslySetInnerHTML={{ __html: TnC }}
+            color="black"
+            className={styles.page_html}
+          ></Box>
         </Box>
       </Collapse>
     </Box>
