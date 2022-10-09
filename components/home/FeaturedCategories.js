@@ -12,8 +12,13 @@ import Image from "next/image";
 function FeaturedCategories({ featuredCat }) {
   return (
     <Box bg={"#eeeeee"}>
-      <Center flexDir={"column"} p={10}>
-        <Text as={"h2"} fontSize="5xl" textAlign={"center"}>
+      <Center flexDir={"column"} py={10} px={6}>
+        <Text
+          as={"h2"}
+          fontSize={{ base: "3xl", md: "5xl" }}
+          textAlign={"center"}
+          mb={{ base: 0, md: 5 }}
+        >
           Coupon Luxuxy&rsquo;s
           <Text
             as={"span"}
@@ -24,7 +29,12 @@ function FeaturedCategories({ featuredCat }) {
             Featured Categories{" "}
           </Text>
         </Text>
-        <Text as={"p"} color={"gray.800"}>
+        <Text
+          as={"p"}
+          color={"gray.800"}
+          textAlign="center"
+          display={{ base: "none", md: "block" }}
+        >
           Search your favourite store & get many deals
         </Text>
       </Center>
@@ -32,7 +42,17 @@ function FeaturedCategories({ featuredCat }) {
         <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={5}>
           {featuredCat.map((category) => (
             <Link key={category.id} href={`/categories/${category.slug}`}>
-              <Box position={"relative"} h={200} w={350}>
+              <Box
+                position={"relative"}
+                h={200}
+                w={350}
+                _hover={{
+                  opacity: 0.9,
+                  transform: "scale(1.07)",
+                  transition: "all .1s easy-in-out",
+                }}
+                style={{ transition: "all .1s ease-in-out" }}
+              >
                 <Image
                   src={category.image}
                   width={350}
