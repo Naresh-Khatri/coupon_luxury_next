@@ -2,7 +2,7 @@ import { Box, Container, Grid, GridItem, Text } from "@chakra-ui/react";
 import Image from "next/image";
 import React from "react";
 import BlogPreviewSmall from "../../components/BlogPreviewSmall";
-import styles from "./style.module.scss";
+import styles from "../../styles/PageHtml.module.scss";
 
 import SetMeta from "../../utils/SetMeta";
 
