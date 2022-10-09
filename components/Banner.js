@@ -23,7 +23,7 @@ function Banner({ title, subTitle }) {
         <Text
           as="h2"
           fontSize={{ base: "1xl", md: "xl" }}
-          fontWeight={"thin"}
+          fontWeight={"medium"}
           textAlign="center"
           color={"gray.400"}
         >
