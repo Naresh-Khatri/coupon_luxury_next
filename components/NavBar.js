@@ -96,7 +96,7 @@ function NavBar() {
           px={4}
           h={{ base: 59, md: 75 }}
           maxW={1200}
-          w={"100vw"}
+          w={"100%"}
         >
           <Flex h="100%" alignItems={"center"} justifyContent={"space-between"}>
             <HStack spacing={8}>
@@ -106,8 +106,8 @@ function NavBar() {
                     title="Home"
                     src="https://ik.imagekit.io/couponluxury/tr:w-200:h-100/main_logo_noj4ZyPyq"
                     alt="CouponLuxury logo"
-                    width={107}
-                    height={50}
+                    width={150.5}
+                    height={70}
                     style={{
                       aspectRatio: 2.15,
                     }}
@@ -136,7 +136,12 @@ function NavBar() {
                     </Text>
                   </MenuButton>
 
-                  <MenuList color={"black"} minWidth="10%">
+                  <MenuList
+                    color={"black"}
+                    minWidth="10%"
+                    maxH={500}
+                    overflow="auto"
+                  >
                     <MenuItem>
                       <Link href={`/stores`}>
                         <a>
@@ -175,7 +180,12 @@ function NavBar() {
                       <ChevronDownIcon color={"white"} />
                     </Text>
                   </MenuButton>
-                  <MenuList color={"black"} minWidth="10%">
+                  <MenuList
+                    color={"black"}
+                    minWidth="10%"
+                    maxH={500}
+                    overflow="auto"
+                  >
                     <MenuItem>
                       <Link href={`/categories`}>
                         <a>
