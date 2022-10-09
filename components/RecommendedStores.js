@@ -27,6 +27,7 @@ function RecommendedStores({ stores }) {
                   alt={`${store.storeName} - logo`}
                   width={100}
                   height={50}
+                  style={{ borderRadius: "5px" }}
                 />
               </Flex>
             </a>
@@ -49,7 +50,7 @@ function RecommendedStores({ stores }) {
               mb={3}
               borderRadius={15}
             >
-              VIEW ALL DEAL
+              VIEW ALL STORES
             </Button>
           </a>
         </Link>
