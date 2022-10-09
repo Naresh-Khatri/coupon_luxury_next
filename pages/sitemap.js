@@ -4,7 +4,6 @@ import Banner from "../components/Banner";
 import SetMeta from "../utils/SetMeta";
 
 function SitemapPage({ sitemapData }) {
-  console.log(sitemapData);
   return (
     <>
       <SetMeta
@@ -27,7 +26,7 @@ function SitemapPage({ sitemapData }) {
             {sitemapData.map((category) => {
               return (
                 <Box
-                  key={category._id}
+                  key={category.id}
                   shadow={"xl"}
                   _hover={{
                     shadow: "2xl",
@@ -55,7 +54,7 @@ function SitemapPage({ sitemapData }) {
                   </Link>
                   {category.subCategories.map((subCat) => {
                     return (
-                      <Link key={subCat._id} href={"#"}>
+                      <Link key={subCat.id} href={"#"}>
                         <a>
                           <Text pb={1}>{subCat.subCategoryName}</Text>
                         </a>
@@ -74,7 +73,7 @@ function SitemapPage({ sitemapData }) {
 
 export const getStaticProps = async () => {
   try {
-    const res = await fetch("http://localhost:4000/misc/sitemap");
+    const res = await fetch(process.env.domain + "/misc/sitemap");
     const sitemapData = await res.json();
     return {
       props: {
