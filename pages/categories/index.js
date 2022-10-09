@@ -32,7 +32,7 @@ function index({ featuredCat }) {
         title={"All Categories"}
         subTitle={`${featuredCat.length} Categories available`}
       />
-      <Flex bg={"#e0e0e0"} justifyContent="center">
+      <Flex bg={"#e0e0e0"} pb={5} justifyContent="center">
         <Center flexDirection={"column"} maxW={1240} px={2}>
           <Box my={4} alignSelf={"flex-start"}>
             <Breadcrumb
@@ -43,8 +43,13 @@ function index({ featuredCat }) {
               <BreadcrumbItem>
                 <Link href="/" passHref>
                   <a>
-                    <Box fontSize="sm" _hover={{ color: "brand.1000" }}>
+                    <Box
+                      fontSize="sm"
+                      _hover={{ color: "brand.1000" }}
+                      display="flex"
+                    >
                       <FontAwesomeIcon
+                        height={"1rem"}
                         icon={faHouse}
                         style={{ paddingRight: "10px" }}
                       />
@@ -55,8 +60,9 @@ function index({ featuredCat }) {
               </BreadcrumbItem>
               <BreadcrumbItem isCurrentPage>
                 <BreadcrumbLink href="/" fontSize="sm">
-                  <Box>
+                  <Box display="flex">
                     <FontAwesomeIcon
+                      height={"1rem"}
                       icon={faCube}
                       style={{ paddingRight: "10px" }}
                     />

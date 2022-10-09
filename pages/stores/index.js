@@ -20,7 +20,7 @@ import SetMeta from "../../utils/SetMeta";
 
 function Stores({ stores }) {
   return (
-    <Box bg={"#eeeeee"}>
+    <Box bg={"#eeeeee"} pb={10}>
       <SetMeta
         title="CouponLuxury - Deals, Promo codes & exclusive coupons"
         description="Grab the greatest deals on all exclusive stores using luxury coupons, promo & discount codes. Shop the biggest brands like Nike, amazon, domino's using our offers"
@@ -29,7 +29,10 @@ function Stores({ stores }) {
       <Text as={"h1"} hidden>
         CouponLuxury - Deals, Promo codes & exclusive coupons
       </Text>
-      <Banner title="All Stores" />
+      <Banner
+        title="All Stores"
+        subTitle={`${stores.length} stores available!`}
+      />
 
       <Center display={"flex"} flexDirection="column">
         <Box maxW={1200} w="100vw" px={4} justifyContent={"center"}>
@@ -42,9 +45,14 @@ function Stores({ stores }) {
               <BreadcrumbItem>
                 <Link href="/">
                   <a>
-                    <Box fontSize="sm" _hover={{ color: "brand.1000" }}>
+                    <Box
+                      fontSize="sm"
+                      _hover={{ color: "brand.1000" }}
+                      display="flex"
+                    >
                       <FontAwesomeIcon
                         icon={faHouse}
+                        height={"1rem"}
                         style={{ paddingRight: "10px" }}
                       />
                       Home
@@ -53,21 +61,23 @@ function Stores({ stores }) {
                 </Link>
               </BreadcrumbItem>
               <BreadcrumbItem isCurrentPage>
-                <BreadcrumbLink href="/" fontSize="sm">
-                  <Box>
+                <Link href="/">
+                  <Box display="flex">
                     <FontAwesomeIcon
                       icon={faShop}
+                      height={"1rem"}
                       style={{ paddingRight: "10px" }}
                     />
                     Stores
                   </Box>
-                </BreadcrumbLink>
+                </Link>
               </BreadcrumbItem>
             </Breadcrumb>
           </Box>
 
           <Header leftText={"Stores"} rightText={"26 Stores available!"} />
           <SimpleGrid
+            // columns={{ base: 2, md: 3, lg: 5 }}
             minChildWidth={{ base: "110px", md: "130px", lg: "160px" }}
             spacing={3}
           >
