@@ -13,6 +13,9 @@ import {
   PopoverContent,
   PopoverTrigger,
   Portal,
+  Skeleton,
+  Spinner,
+  Stack,
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
@@ -93,18 +96,23 @@ function SearchBox() {
               value={searchText}
               onInput={(e) => {
                 setSearchText(e.target.value);
-                debounce(handleSearch, 1000);
+                debounce(handleSearch, 500);
               }}
               // onKeyDown={(e) => handleKeyDown(e)}
             />
             <InputRightElement h={"40px"}>
+              {/* <Spinner color="blackAlpha.600" size="sm" /> */}
               {searchText?.length > 0 ? (
-                <CloseIcon
-                  color="blackAlpha.600"
-                  onClick={() => {
-                    setSearchText("");
-                  }}
-                />
+                fetchingList ? (
+                  <Spinner color="blackAlpha.600" />
+                ) : (
+                  <CloseIcon
+                    color="blackAlpha.600"
+                    onClick={() => {
+                      setSearchText("");
+                    }}
+                  />
+                )
               ) : (
                 <SearchIcon color="blackAlpha.600" />
               )}
@@ -115,13 +123,13 @@ function SearchBox() {
           <PopoverContent>
             <PopoverBody color={"black"}>
               {fetchingList ? (
-                <Text>Loading...</Text>
+                <Stack>
+                  <Skeleton height="20px" />
+                  <Skeleton height="20px" />
+                  <Skeleton height="20px" />
+                </Stack>
               ) : (
-                searchResults.length == 0 && (
-                  <Box p={2}>
-                    No results found for &quot;{searchText}&quot; :(
-                  </Box>
-                )
+                searchResults.length == 0 && <Box p={2}>No results</Box>
               )}
 
               {searchResults.map((result) => (
