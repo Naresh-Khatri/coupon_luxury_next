@@ -15,10 +15,9 @@ import DealCard from "../../components/DealCard";
 
 import SetMeta from "../../utils/SetMeta";
 
-function DealPage({ dealsInfo, recommendedDeals }) {
-  const { store, affURL, description, title } = dealsInfo;
+function DealPage({ dealInfo, recommendedDeals }) {
+  const { store, affURL, description, title } = dealInfo;
   const toast = useToast();
-
   const [clickedOnDeal, setClickedOnDeal] = useState(false);
   const handleButtonClick = () => {
     toast({
@@ -33,9 +32,9 @@ function DealPage({ dealsInfo, recommendedDeals }) {
   return (
     <>
       <SetMeta
-        title={dealsInfo.title}
-        description={dealsInfo.description?.replace(/(<([^>]+)>)/gi, "")}
-        url={`https://www.couponluxury.com/deal/${dealsInfo.slug}`}
+        title={dealInfo.title}
+        description={dealInfo.description?.replace(/(<([^>]+)>)/gi, "")}
+        url={`https://www.couponluxury.com/deal/${dealInfo.slug}`}
       />
       <Banner subTitle="*No coupon code required to avail this discount" />
       <Flex
@@ -133,20 +132,22 @@ export const getServerSideProps = async (ctx) => {
     let res = await fetch(
       process.env.domain + `/offers/getWithSlug/${ctx.query.slug}`
     );
-    const dealsInfo = await res.json();
+    const dealInfo = await res.json();
 
+    // console.log(dealInfo);
     res = await fetch(
       process.env.domain +
-        `/offers?offerType=deal&category=${dealsInfo.category}&featured=true&limit=20`
+        `/offers?offerType=deal&categoryId=${dealInfo.categoryId}&featured=true&limit=20`
     );
     let recommendedDeals = await res.json();
+    // console.log(recommendedDeals)
     recommendedDeals = recommendedDeals.filter(
-      (deal) => deal.id !== dealsInfo.id
+      (deal) => deal.id !== dealInfo.id
     );
 
     return {
       props: {
-        dealsInfo,
+        dealInfo,
         recommendedDeals,
       },
     };
