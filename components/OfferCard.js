@@ -15,7 +15,7 @@ import {
 } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
-import styles from "../pages/blogs/style.module.scss";
+import styles from "../styles/PageHtml.module.scss";
 import CodeRevealingButton from "./CodeRevealingButton/CodeRevealingButton";
 
 function OfferCard({ offerDetails }) {
@@ -54,14 +54,16 @@ function OfferCard({ offerDetails }) {
         <GridItem colSpan={{ base: 2, md: 1 }}>
           <Center h={"100%"}>
             {fromPage == "categories" ? (
-              <Box>
-                <Image
-                  src={offerDetails.store.image}
-                  alt={"logo"}
-                  width={200}
-                  height={100}
-                />
-              </Box>
+              <Link href={`/stores/${storeSlug}`}>
+                <Box>
+                  <Image
+                    src={offerDetails.store.image}
+                    alt={"logo"}
+                    width={200}
+                    height={100}
+                  />
+                </Box>
+              </Link>
             ) : (
               <Text
                 display={{ base: "none", md: "flex" }}
@@ -165,8 +167,8 @@ function OfferCard({ offerDetails }) {
         fontWeight={100}
         justifyContent={"space-between"}
       >
-        <InfoOutlineIcon fontSize={20} />
-        Show Details
+        <InfoOutlineIcon />
+        <Text>Show Details</Text>
         {isOpen ? (
           <ChevronUpIcon fontSize={25} />
         ) : (
