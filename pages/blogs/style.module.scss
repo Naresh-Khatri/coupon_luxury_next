@@ -1,7 +1,9 @@
 .page_html {
   all: revert;
+  display: none;
   * {
     font-family: Helvetica, sans-serif;
+    font-weight: 800;
   }
   h1,
   h2,
@@ -13,6 +15,7 @@
   }
   p {
     margin-bottom: 10px;
+    
   }
   a {
     text-decoration: underline;
