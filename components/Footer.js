@@ -8,6 +8,7 @@ import {
   Link,
   HStack,
   IconButton,
+  Tooltip,
 } from "@chakra-ui/react";
 import {
   faFacebook,
@@ -117,83 +118,93 @@ function Footer() {
                 target="_blank"
                 aria-label="Visit our Facebook page"
               >
-                <IconButton
-                  aria-label="facebook icon"
-                  bg="tranparent"
-                  borderRadius={100}
-                  _hover={{
-                    transform: "scale(1.2)",
-                    bg: "white",
-                    color: "#4267B2",
-                  }}
-                  icon={<FontAwesomeIcon size="2x" icon={faFacebook} />}
-                />
+                <Tooltip hasArrow label="Facebook" bg="#4267B2">
+                  <IconButton
+                    aria-label="facebook icon"
+                    bg="tranparent"
+                    borderRadius={100}
+                    _hover={{
+                      transform: "scale(1.2)",
+                      bg: "white",
+                      color: "#4267B2",
+                    }}
+                    icon={<FontAwesomeIcon size="2x" icon={faFacebook} />}
+                  />
+                </Tooltip>
               </Link>
               <Link
                 href="https://twitter.com/coupon_luxury"
                 target="_blank"
                 aria-label="Visit our Twitter page"
               >
-                <IconButton
-                  aria-label="twitter icon"
-                  bg="tranparent"
-                  _hover={{
-                    transform: "scale(1.2)",
-                    bg: "white",
-                    color: "#1DA1F2",
-                  }}
-                  icon={<FontAwesomeIcon size="2x" icon={faTwitter} />}
-                />
+                <Tooltip hasArrow label="Twitter" bg="#1DA1F2">
+                  <IconButton
+                    aria-label="twitter icon"
+                    bg="tranparent"
+                    _hover={{
+                      transform: "scale(1.2)",
+                      bg: "white",
+                      color: "#1DA1F2",
+                    }}
+                    icon={<FontAwesomeIcon size="2x" icon={faTwitter} />}
+                  />
+                </Tooltip>
               </Link>
               <Link
                 href="https://www.instagram.com/couponluxury/"
                 target="_blank"
                 aria-label="Visit our Instagram page"
               >
-                <IconButton
-                  aria-label="instagram icon"
-                  bg="tranparent"
-                  borderRadius={100}
-                  _hover={{
-                    transform: "scale(1.2)",
-                    bg: "white",
-                    color: "#E1306C",
-                  }}
-                  icon={<FontAwesomeIcon size="2x" icon={faInstagram} />}
-                />
+                <Tooltip hasArrow label="Instagram" bg="#E1306C">
+                  <IconButton
+                    aria-label="instagram icon"
+                    bg="tranparent"
+                    borderRadius={100}
+                    _hover={{
+                      transform: "scale(1.2)",
+                      bg: "white",
+                      color: "#E1306C",
+                    }}
+                    icon={<FontAwesomeIcon size="2x" icon={faInstagram} />}
+                  />
+                </Tooltip>
               </Link>
               <Link
                 href="https://youtube.com/channel/UCiGBpYZFIzyw_R5W1KUocJQ"
                 target="_blank"
                 aria-label="Visit our Youtube page"
               >
-                <IconButton
-                  aria-label="youtube icon"
-                  bg="tranparent"
-                  _hover={{
-                    transform: "scale(1.2)",
-                    bg: "white",
-                    color: "#FF0000",
-                  }}
-                  icon={<FontAwesomeIcon size="2x" icon={faYoutube} />}
-                />
+                <Tooltip hasArrow label="YouTube" bg="#FF0000">
+                  <IconButton
+                    aria-label="youtube icon"
+                    bg="tranparent"
+                    _hover={{
+                      transform: "scale(1.2)",
+                      bg: "white",
+                      color: "#FF0000",
+                    }}
+                    icon={<FontAwesomeIcon size="2x" icon={faYoutube} />}
+                  />
+                </Tooltip>
               </Link>
               <Link
                 href="https://www.pinterest.com/couponluxury/"
                 target="_blank"
                 aria-label="Visit our Pinterest page"
               >
-                <IconButton
-                  aria-label="pinterest icon"
-                  bg="tranparent"
-                  borderRadius={100}
-                  _hover={{
-                    transform: "scale(1.2)",
-                    bg: "white",
-                    color: "#E60023",
-                  }}
-                  icon={<FontAwesomeIcon size="2x" icon={faPinterest} />}
-                />
+                <Tooltip hasArrow label="Pinterest" bg="#E60023">
+                  <IconButton
+                    aria-label="pinterest icon"
+                    bg="tranparent"
+                    borderRadius={100}
+                    _hover={{
+                      transform: "scale(1.2)",
+                      bg: "white",
+                      color: "#E60023",
+                    }}
+                    icon={<FontAwesomeIcon size="2x" icon={faPinterest} />}
+                  />
+                </Tooltip>
               </Link>
             </HStack>
           </Stack>
