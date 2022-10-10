@@ -25,7 +25,7 @@ function BlogPage({ blogData, allBlogs }) {
         keywords={blogData.keywords}
         url={"https://www.couponluxury.com/blogs/" + blogData.slug}
       />
-      <Container maxW={"1200px"}>
+      <Container maxW={"1200px"} mb={10}>
         <Grid
           mt={10}
           w="100%"
