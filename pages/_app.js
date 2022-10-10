@@ -1,7 +1,7 @@
 import { ChakraProvider } from "@chakra-ui/react";
 import { extendTheme } from "@chakra-ui/react";
 import Layout from "../layouts/Layout";
-import LoadingOverlay from "../components/LoadingOverlay";
+
 import "../styles/globals.css";
 
 const colors = {
@@ -59,9 +59,7 @@ function MyApp({ Component, pageProps }) {
   return (
     <ChakraProvider theme={theme}>
       <Layout>
-        <LoadingOverlay>
           <Component {...pageProps} />
-        </LoadingOverlay>
       </Layout>
     </ChakraProvider>
   );
