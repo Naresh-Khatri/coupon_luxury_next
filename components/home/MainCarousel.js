@@ -5,6 +5,7 @@ import Link from "next/link";
 
 import styles from "../../styles/splide.module.css";
 import transform from "../../utils/transformImagePath";
+import { imageKitLoader } from "../../utils/imageKitLoader";
 
 import "@splidejs/react-splide/css";
 import "@splidejs/splide/css/skyblue";
@@ -62,11 +63,15 @@ function MainCarousel({ slides }) {
                     className={styles.carousel__img}
                     width={420}
                     height={360}
-                    // src={slide.imgURL}
-                    src={transform(slide.imgURL, 600)}
+                    loader={imageKitLoader}
+                    src={slide.imgURL}
                     alt={slide.imgAlt}
+                    layout="fill"
+                    sizes="(min-width: 768px) 100vw,
+                    (min-width: 1200px) 50vw,
+                  33vw"
+                    quality={75}
                     priority={index <= 1 ? true : false}
-
                   />
                 </Box>
               </a>
