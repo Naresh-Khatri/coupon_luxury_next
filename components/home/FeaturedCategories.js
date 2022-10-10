@@ -42,7 +42,6 @@ function FeaturedCategories({ featuredCat }) {
         <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={5}>
           {featuredCat.map((category) => (
             <Link key={category.id} href={`/categories/${category.slug}`}>
-              <a>
                 <Box
                   position={"relative"}
                   h={200}
@@ -90,7 +89,6 @@ function FeaturedCategories({ featuredCat }) {
                     </Text>
                   </Flex>
                 </Box>
-              </a>
             </Link>
           ))}
         </SimpleGrid>
