@@ -28,8 +28,8 @@ function ContactPage() {
   return (
     <>
       <SetMeta
-        title="About - CouponLuxury"
-        url="https://www.couponluxury.com/about"
+        title="Contact - CouponLuxury"
+        url="https://www.couponluxury.com/contact"
       />
       <Box bg="#ebf8ff" h={"100vh"} minH={"100vh"} w="full">
         <Container
