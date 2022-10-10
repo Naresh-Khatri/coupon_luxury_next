@@ -71,7 +71,7 @@ function DealsOfTheDay({ deals }) {
             mb={5}
             borderRadius={10}
           >
-            VIEW ALL DEAL
+            VIEW ALL DEALS
           </Button>
         </Link>
       </Center>
