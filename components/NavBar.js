@@ -19,6 +19,7 @@ import {
   InputRightElement,
   Text,
   LinkOverlay,
+  Center,
 } from "@chakra-ui/react";
 import { Fade, ScaleFade, Slide, SlideFade } from "@chakra-ui/react";
 import {
@@ -142,23 +143,27 @@ function NavBar() {
                     maxH={500}
                     overflow="auto"
                   >
-                    <MenuItem>
+                    <MenuItem p={0}>
                       <Link href={`/stores`}>
-                        <a>
-                          <Text fontWeight={"extrabold"}>All Stores</Text>
+                        <a style={{ width: "full", height: "full" }}>
+                          <Center padding={"6px 12px"}>
+                            <Text fontWeight={"extrabold"}>All Stores</Text>
+                          </Center>
                         </a>
                       </Link>
                     </MenuItem>
                     {featuredStores.map((store) => (
-                      <MenuItem key={store.id}>
+                      <MenuItem key={store.id} p={0}>
                         <Link href={`/stores/${store.slug}`}>
                           <a>
-                            <Image
-                              src={store.image}
-                              alt={`${store.storeName} - Logo`}
-                              width={80}
-                              height={40}
-                            />
+                            <Box padding={"6px 12px"}>
+                              <Image
+                                src={store.image}
+                                alt={`${store.storeName} - Logo`}
+                                width={80}
+                                height={40}
+                              />
+                            </Box>
                           </a>
                         </Link>
                       </MenuItem>
@@ -186,17 +191,23 @@ function NavBar() {
                     maxH={500}
                     overflow="auto"
                   >
-                    <MenuItem>
+                    <MenuItem p={0}>
                       <Link href={`/categories`}>
-                        <a>
-                          <Text fontWeight={"extrabold"}>All Categories</Text>
+                        <a style={{ width: "full", height: "full" }}>
+                          <Center padding={"6px 12px"}>
+                            <Text fontWeight={"extrabold"}>All Categories</Text>
+                          </Center>
                         </a>
                       </Link>
                     </MenuItem>
                     {featuredCategories.map((category) => (
-                      <MenuItem key={category.id}>
+                      <MenuItem key={category.id} p={0}>
                         <Link href={`/categories/${category.slug}`}>
-                          <a>{category.categoryName}</a>
+                          <a>
+                            <Box padding={"6px 12px"} w={"140px"}>
+                              {category.categoryName}
+                            </Box>
+                          </a>
                         </Link>
                       </MenuItem>
                     ))}
