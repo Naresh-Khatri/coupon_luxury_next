@@ -12,7 +12,7 @@ import transformPath from "../../utils/transformImagePath";
 function MainCarousel({ carouselCat }) {
   const options = {
     type: "loop",
-    autoplay: true,
+    // autoplay: true,
     interval: 3000,
     speed: 3000,
     width: "95%",
@@ -66,7 +66,8 @@ function MainCarousel({ carouselCat }) {
                     className={styles.carousel__img}
                     width={150}
                     height={75}
-                    src={slide.image}
+                    // src={slide.image}
+                    src={transformPath(slide.image, 150)}
                     alt={`Category image: ${slide.categoryName}`}
                     priority={index <= 6 ? true : false}
                   />

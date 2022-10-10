@@ -62,10 +62,11 @@ function MainCarousel({ slides }) {
                     className={styles.carousel__img}
                     width={420}
                     height={360}
-                    // src={transform(slide.imgURL, 500)}
-                    src={slide.imgURL}
+                    // src={slide.imgURL}
+                    src={transform(slide.imgURL, 600)}
                     alt={slide.imgAlt}
                     priority={index <= 1 ? true : false}
+
                   />
                 </Box>
               </a>

@@ -2,6 +2,7 @@ import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import transformPath from "../utils/transformImagePath";
 // import Button from './utils/Button'
 
 function DealCard({
@@ -41,7 +42,7 @@ function DealCard({
               style={{ borderRadius: "15px" }}
               title={`Open ${storeName} store`}
               alt={`${title} - logo`}
-              src={storeImg}
+              src={transformPath(storeImg, 180)}
             />
           </Box>
         </a>
