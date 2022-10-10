@@ -8,8 +8,7 @@ function Banner({ title, subTitle }) {
       justify={"center "}
       className="banner-bg"
       color={"white"}
-      h={subTitle ? 136 : 110}
-      _hover={{}}
+      h={subTitle && !title ? 75 : subTitle ? 136 : 110}
     >
       <Text
         as="h1"
