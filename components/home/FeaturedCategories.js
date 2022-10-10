@@ -42,50 +42,55 @@ function FeaturedCategories({ featuredCat }) {
         <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={5}>
           {featuredCat.map((category) => (
             <Link key={category.id} href={`/categories/${category.slug}`}>
-              <Box
-                position={"relative"}
-                h={200}
-                w={350}
-                _hover={{
-                  opacity: 0.9,
-                  transform: "scale(1.07)",
-                  transition: "all .1s easy-in-out",
-                }}
-                style={{ transition: "all .1s ease-in-out" }}
-              >
-                <Image
-                  src={category.image}
-                  width={350}
-                  height={200}
-                  alt={category.imgAlt || category.categoryName + " image"}
-                  objectPosition="relative"
-                  style={{
-                    borderRadius: "15px",
-                    filter: "brightness(0.5)",
+              <a>
+                <Box
+                  position={"relative"}
+                  h={200}
+                  w={350}
+                  _hover={{
+                    opacity: 0.9,
+                    transform: "scale(1.07)",
+                    // transform: 'translateY(-5px)',
+                    transition: "all .1s easy-in-out",
                   }}
-                />
-                <Flex
-                  style={{ position: "absolute", top: 0, left: 0 }}
-                  w="350px"
-                  h={"200px"}
-                  direction="column"
-                  justify={"center"}
-                  align={"center"}
+                  style={{ transition: "all .1s ease-in-out" }}
                 >
-                  <Text
-                    alignContent="center"
-                    color="white"
-                    fontSize={"3xl"}
-                    fontWeight={"extrabold"}
-                    textAlign={"center"}
+                  <Box>
+                    <Image
+                      src={category.image}
+                      width={350}
+                      height={200}
+                      alt={category.imgAlt || category.categoryName + " image"}
+                      objectPosition="relative"
+                      style={{
+                        borderRadius: "15px",
+                        filter: "brightness(0.5)",
+                      }}
+                    />
+                  </Box>
+                  <Flex
+                    style={{ position: "absolute", top: 0, left: 0 }}
+                    w="350px"
+                    h={"200px"}
+                    direction="column"
+                    justify={"center"}
+                    align={"center"}
                   >
-                    {category.categoryName}
-                  </Text>
-                  <Text as={"p"} alignContent="center" color="white">
-                    {category.offers.length} Deals / Coupons
-                  </Text>
-                </Flex>
-              </Box>
+                    <Text
+                      alignContent="center"
+                      color="white"
+                      fontSize={"3xl"}
+                      fontWeight={"extrabold"}
+                      textAlign={"center"}
+                    >
+                      {category.categoryName}
+                    </Text>
+                    <Text as={"p"} alignContent="center" color="white">
+                      {category.offers.length} Deals / Coupons
+                    </Text>
+                  </Flex>
+                </Box>
+              </a>
             </Link>
           ))}
         </SimpleGrid>
