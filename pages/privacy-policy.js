@@ -7,10 +7,15 @@ import {
   UnorderedList,
 } from "@chakra-ui/react";
 import Link from "next/link";
+import SetMeta from "../utils/SetMeta";
 
 function PrivacyPolicyPage() {
   return (
     <>
+    <SetMeta
+        title="Privary policy - CouponLuxury"
+        url="https://www.couponluxury.com/privacy-policy"
+      />
       <Box bg="#ebf8ff" h={"100vh"} minH={"100vh"} w="full">
         <Container maxW={"1240"} w="full" px={10} py={100}>
           <Text
