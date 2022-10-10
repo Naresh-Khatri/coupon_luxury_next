@@ -1,11 +1,12 @@
 import { Box, Center, Flex, Text } from "@chakra-ui/react";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import Image from "next/future/image";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 function DealsOfTheDay({ featuredStores }) {
-  const [isHover, setIsHover] = useState(false);
-  const initOptions = {
+  const splide1 = useRef();
+  const splide2 = useRef();
+  const options = {
     type: "loop",
     autoplay: true,
     interval: 3000,
@@ -26,7 +27,20 @@ function DealsOfTheDay({ featuredStores }) {
     rewind: true,
     easing: "cubic-bezier(0.25, 1, 0.5, 1)",
   };
-  const [options, setOptions] = useState(initOptions);
+  const changeAutoplay = (play) => {
+    let Autoplay = splide1.current.splide.Components.Autoplay;
+    if (play) {
+      Autoplay.play();
+    } else {
+      Autoplay.pause();
+    }
+    Autoplay = splide2.current.splide.Components.Autoplay;
+    if (play) {
+      Autoplay.play();
+    } else {
+      Autoplay.pause();
+    }
+  };
 
   return (
     <Box w="full">
@@ -58,8 +72,19 @@ function DealsOfTheDay({ featuredStores }) {
           Search your favourite store & get many deals
         </Text>
       </Center>
-      <Flex h={160} mb={5} direction="column" justifyContent="space-between">
-        <Splide aria-label="Offers" options={options}>
+      <Flex
+        h={160}
+        mb={5}
+        direction="column"
+        justifyContent="space-between"
+        onMouseEnter={() => {
+          changeAutoplay(false);
+        }}
+        onMouseLeave={() => {
+          changeAutoplay(true);
+        }}
+      >
+        <Splide aria-label="Offers" options={options} ref={splide1}>
           {featuredStores.map((store) => (
             <SplideSlide key={store.id}>
               <Box
@@ -85,7 +110,11 @@ function DealsOfTheDay({ featuredStores }) {
             </SplideSlide>
           ))}
         </Splide>
-        <Splide aria-label="Offers" options={{ ...options, direction: "rtl" }}>
+        <Splide
+          aria-label="Offers"
+          options={{ ...options, direction: "rtl" }}
+          ref={splide2}
+        >
           {featuredStores.map((store) => (
             <SplideSlide key={store.id}>
               <Box
