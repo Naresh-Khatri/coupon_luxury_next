@@ -19,7 +19,7 @@ function index({ blogsData }) {
         CouponLuxury Blog: Money Saving Tips & Updates
       </Text>
       <Banner title={"All Blogs"} subTitle={`${blogsData.length} blogs`} />
-      <Container mt={10} maxW={"6xl"} w="90vw">
+      <Container mt={10} maxW={"6xl"} w="90vw" pb={10}>
         <Center>
           <SimpleGrid columns={{ base: 1, sm: 2, md: 3, lg: 4 }} spacing={5}>
             {blogsData.map((blog) => {
