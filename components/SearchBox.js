@@ -40,19 +40,20 @@ function SearchBox() {
     setTimeoutId(newTimeoutId);
   };
 
-  const handleSearch = async (e) => {
+  const handleSearch = async (text) => {
     // console.log(e.key)
     // if (e.key === "Down") {
     //   setCanFocus(true);
     //   console.log('focusing')
     // }
     // setSearchText(e.target.value);
+    // console.log('searching', e.target.value)
     const promises = [
       axios.post(process.env.domain + "/stores/getAutoCompleteData", {
-        searchText,
+        searchText: text,
       }),
       axios.post(process.env.domain + "/categories/getAutoCompleteData", {
-        searchText,
+        searchText: text,
       }),
     ];
     const res = await Promise.allSettled(promises);
@@ -96,7 +97,7 @@ function SearchBox() {
               value={searchText}
               onInput={(e) => {
                 setSearchText(e.target.value);
-                debounce(handleSearch, 500);
+                debounce(() => handleSearch(e.target.value), 500);
               }}
               // onKeyDown={(e) => handleKeyDown(e)}
             />
