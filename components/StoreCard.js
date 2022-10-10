@@ -1,5 +1,6 @@
-import { Box, Flex, Link, Text } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 import Image from "next/image";
+import Link from "next/link";
 
 function StoreCard({ title, slug, img }) {
   return (
