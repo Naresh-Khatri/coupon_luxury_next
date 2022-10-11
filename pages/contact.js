@@ -31,7 +31,13 @@ function ContactPage() {
         title="Contact - CouponLuxury"
         url="https://www.couponluxury.com/contact"
       />
-      <Box bg="#ebf8ff" h={"100vh"} minH={"100vh"} w="full">
+      <Box
+        bg="#ebf8ff"
+        minH={"100vh"}
+        w="100vw"
+        pb={10}
+        pt={{ base: 100, md: 150 }}
+      >
         <Container
           w={"full"}
           maxW={1240}

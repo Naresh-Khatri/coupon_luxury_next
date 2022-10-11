@@ -19,7 +19,7 @@ function AboutUs() {
         title="About - CouponLuxury"
         url="https://www.couponluxury.com/about"
       />
-      <Box bg="#ebf8ff" h={"100vh"} minH={"100vh"} w="100vw" pb={10}>
+      <Box bg="#ebf8ff" minH={"100vh"} w="100vw" pb={10} pt={{base:0, md:100}}>
         <Container w={"full"} maxW={1240} h="full">
           <Center height={"full"}>
             <SimpleGrid columns={{ base: 1, md: 2 }} spacing={10}>
