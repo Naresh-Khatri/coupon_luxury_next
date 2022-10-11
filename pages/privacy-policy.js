@@ -16,7 +16,7 @@ function PrivacyPolicyPage() {
         title="Privary policy - CouponLuxury"
         url="https://www.couponluxury.com/privacy-policy"
       />
-      <Box bg="#ebf8ff" h={"100vh"} minH={"100vh"} w="full">
+      <Box bg="#ebf8ff" minH={"100vh"} w="full">
         <Container maxW={"1240"} w="full" px={10} py={100}>
           <Text
             as="h1"
