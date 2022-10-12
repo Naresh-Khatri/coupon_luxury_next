@@ -23,11 +23,11 @@ function CodeRevealingButton({ code, affURL, storeName, image }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const truncateCode = "***" + code ? code.slice(-4) : "";
 
-  const { hasCopied, onCopy } = useClipboard();
+  const { hasCopied, onCopy } = useClipboard(code);
   const toast = useToast();
 
   const handleOnCopyClick = () => {
-    onCopy(code);
+    onCopy();
     toast({
       title: "Copied",
       description: `Opening ${storeName} in new tab...`,
