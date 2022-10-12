@@ -101,8 +101,12 @@ function DealPage({ dealInfo, recommendedDeals }) {
         >
           Related Deals
         </Text>
-        <Center>
-          <SimpleGrid columns={[2, 3, 5]} spacing={5} justifyContent="center">
+        <Center mx={2}>
+          <SimpleGrid
+            columns={[2, 3, 4, 5]}
+            spacing={{ base: 2, md: 5 }}
+            justifyContent="center"
+          >
             {recommendedDeals.map((deal) => (
               <DealCard
                 key={deal.id}
@@ -134,13 +138,11 @@ export const getServerSideProps = async (ctx) => {
     );
     const dealInfo = await res.json();
 
-    // console.log(dealInfo);
     res = await fetch(
       process.env.domain +
         `/offers?offerType=deal&categoryId=${dealInfo.categoryId}&featured=true&limit=20`
     );
     let recommendedDeals = await res.json();
-    // console.log(recommendedDeals)
     recommendedDeals = recommendedDeals.filter(
       (deal) => deal.id !== dealInfo.id
     );
