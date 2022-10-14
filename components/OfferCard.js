@@ -28,10 +28,8 @@ function OfferCard({ offerDetails }) {
     discountValue,
     description,
     TnC,
-    storeName,
     image,
     endDate,
-    storeSlug,
     offerType,
     fromPage,
   } = offerDetails;
@@ -128,6 +126,7 @@ function OfferCard({ offerDetails }) {
             noOfLines={2}
           ></Box>
           <Center p={4}>
+            {}
             {offerType == "coupon" ? (
               <CodeRevealingButton
                 code={couponCode}
@@ -135,7 +134,7 @@ function OfferCard({ offerDetails }) {
                 image={
                   fromPage == "categories" ? offerDetails.store.image : image
                 }
-                storeName={storeName}
+                storeName={offerDetails.store.storeName}
               />
             ) : (
               <Link href={`/deals/${slug}`}>
@@ -186,7 +185,7 @@ function OfferCard({ offerDetails }) {
         <InfoOutlineIcon />
       </Button>
       <Collapse in={isOpen} animateOpacity>
-        <Box p="40px" color="white" mt="4" rounded="md" shadow="md">
+        <Box px="40px" color="white" mt="4" rounded="md" shadow="md">
           <Box
             dangerouslySetInnerHTML={{ __html: TnC }}
             color="black"
