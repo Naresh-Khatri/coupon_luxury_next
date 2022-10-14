@@ -17,7 +17,9 @@ import {
 import { faClipboard } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
+import { useState } from "react";
 import styles from "./CodeRevealingButton.module.css";
+import Confetti from "../Confetti";
 
 function CodeRevealingButton({ code, affURL, storeName, image }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -25,9 +27,11 @@ function CodeRevealingButton({ code, affURL, storeName, image }) {
 
   const { hasCopied, onCopy } = useClipboard(code);
   const toast = useToast();
+  const [showConfetti, setShowConfetti] = useState(false);
 
   const handleOnCopyClick = () => {
     onCopy();
+    setShowConfetti(true);
     toast({
       title: "Copied",
       description: `Opening ${storeName} in new tab...`,
@@ -38,7 +42,8 @@ function CodeRevealingButton({ code, affURL, storeName, image }) {
     });
     setTimeout(() => {
       window.open(affURL, "_blank");
-    }, 1500);
+      setShowConfetti(false);
+    }, 2000);
   };
   return (
     <>
@@ -71,6 +76,7 @@ function CodeRevealingButton({ code, affURL, storeName, image }) {
                   onClick={handleOnCopyClick}
                 >
                   {hasCopied ? "COPIED" : code}
+                  {showConfetti && <Confetti />}
                 </Button>
               </Tooltip>
               <Text>Click to copy!</Text>
@@ -78,9 +84,9 @@ function CodeRevealingButton({ code, affURL, storeName, image }) {
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={onClose}>
+            {/* <Button colorScheme="blue" mr={3} onClick={onClose}>
               Close
-            </Button>
+            </Button> */}
           </ModalFooter>
         </ModalContent>
       </Modal>
