@@ -16,12 +16,11 @@ function DealsPage({ dealsList }) {
         title={"All Deals"}
         subTitle={`${dealsList.length} deals available!`}
       />
-      <Center py={10} px={2}>
+      <Center py={10} mx={2}>
         <SimpleGrid
-          columns={{ base: 2, sm: 3, md: 5 }}
-          spacing={5}
-          maxW={1200}
-          w={"100vw"}
+          columns={[2, 3, 4, 5]}
+          spacing={{ base: 2, md: 5 }}
+          justifyContent="center"
         >
           {dealsList.map((deal) => (
             <DealCard
