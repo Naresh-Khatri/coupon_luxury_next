@@ -1,7 +1,7 @@
 import { Box, Center, Flex, Text } from "@chakra-ui/react";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import Image from "next/future/image";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 function DealsOfTheDay({ featuredStores }) {
   const splide1 = useRef();
@@ -27,7 +27,9 @@ function DealsOfTheDay({ featuredStores }) {
     rewind: true,
     easing: "cubic-bezier(0.25, 1, 0.5, 1)",
   };
+
   const changeAutoplay = (play) => {
+    console.log("hovering....");
     let Autoplay = splide1.current.splide.Components.Autoplay;
     if (play) {
       Autoplay.play();
@@ -77,6 +79,8 @@ function DealsOfTheDay({ featuredStores }) {
         mb={5}
         direction="column"
         justifyContent="space-between"
+        onTouchMove={() => changeAutoplay(false)}
+        onTouchEnd={() => changeAutoplay(true)}
         onMouseEnter={() => {
           changeAutoplay(false);
         }}
