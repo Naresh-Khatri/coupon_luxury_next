@@ -13,11 +13,13 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useToast } from "@chakra-ui/react";
+import Confetti from "../Confetti";
 
 function SubscribeBanner() {
   const [email, setEmail] = useState("");
   const toast = useToast();
 
+  const [showConfetti, setShowConfetti] = useState(false);
   const subscribe = async () => {
     try {
       const emailRegex =
@@ -32,15 +34,18 @@ function SubscribeBanner() {
       }
       const result = await axios.post(
         "https://apiv2.couponluxury.com/subscribers",
-        {
-          email: email,
-        }
+        { email }
       );
       toast({
         title: "Subscribed successfully",
         status: "success",
         duration: 5000,
       });
+      setShowConfetti(true);
+      setTimeout(() => {
+        setShowConfetti(false);
+      }, 2000);
+
       setEmail("");
     } catch (err) {
       toast({
@@ -96,7 +101,7 @@ function SubscribeBanner() {
               </FormLabel>
             </FormControl>
           </Flex>
-
+          {showConfetti && <Confetti />}
           <Button
             bg="brand.900"
             color="white"
