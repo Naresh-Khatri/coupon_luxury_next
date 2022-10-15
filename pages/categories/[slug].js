@@ -24,7 +24,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import Banner from "../../components/Banner";
-import OfferCard from "../../components/OfferCard";
+// import OfferCard from "../../components/OfferCard";
+import OfferCardV2 from "../../components/OfferCardV2";
 import RecommendedStores from "../../components/RecommendedStores";
 
 import SetMeta from "../../utils/SetMeta";
@@ -156,10 +157,11 @@ function StorePage({ categoryInfo, featuredStores }) {
             <GridItem px={4} colSpan={5}>
               {filteredOffers.map((offer) => (
                 <Box key={offer.id} mb={4}>
-                  <OfferCard
+                  <OfferCardV2
                     offerDetails={{
                       ...offer,
                       categoryName: categoryInfo.categoryName,
+                      storeName: offer.store.storeName,
                       image: categoryInfo.image,
                       fromPage: "categories",
                     }}
@@ -200,7 +202,7 @@ export const getServerSideProps = async (ctx) => {
       process.env.domain + "/categories/getUsingSlug/" + ctx.params.slug
     );
     const categoryInfo = await res.json();
-    res = await fetch(process.env.domain + "/stores?featured=true&limit=16");
+    res = await fetch(process.env.domain + "/stores?featured=true");
     const featuredStores = await res.json();
     return {
       props: {

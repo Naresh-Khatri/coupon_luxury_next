@@ -24,6 +24,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import Banner from "../../components/Banner";
 import OfferCard from "../../components/OfferCard";
+import OfferCardV2 from "../../components/OfferCardV2";
 import RecommendedStores from "../../components/RecommendedStores";
 
 import SetMeta from "../../utils/SetMeta";
@@ -157,7 +158,15 @@ function StorePage({ storeInfo, featuredStores }) {
             <GridItem px={4} colSpan={5}>
               {filteredOffers.map((offer) => (
                 <Box key={offer.id} mb={4}>
-                  <OfferCard
+                  {/* <OfferCard
+                    offerDetails={{
+                      ...offer,
+                      storeName: storeInfo.storeName,
+                      image: storeInfo.image,
+                      fromPage: "stores",
+                    }}
+                  /> */}
+                  <OfferCardV2
                     offerDetails={{
                       ...offer,
                       storeName: storeInfo.storeName,
