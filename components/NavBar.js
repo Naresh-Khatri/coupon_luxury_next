@@ -91,7 +91,7 @@ function NavBar() {
   }, []);
   return (
     <>
-      <Flex as={"header"} bg="brand.900" justify={"center"}>
+      <Flex as={"header"} bg="brand.900" justify={"center"} fontWeight="bold">
         <Box
           color="white"
           px={4}
@@ -131,7 +131,7 @@ function NavBar() {
                         : undefined
                     }
                   >
-                    <Text fontSize={18}>
+                    <Text fontSize={18} fontWeight={"semibold"}>
                       Stores
                       <ChevronDownIcon color={"white"} />
                     </Text>
@@ -180,7 +180,7 @@ function NavBar() {
                         : undefined
                     }
                   >
-                    <Text fontSize={18}>
+                    <Text fontSize={18} fontWeight={"semibold"}>
                       Categories
                       <ChevronDownIcon color={"white"} />
                     </Text>
@@ -201,7 +201,7 @@ function NavBar() {
                       </Link>
                     </MenuItem>
                     {featuredCategories.map((category) => (
-                      <MenuItem key={category.id} p={0}>
+                      <MenuItem key={category.id} p={0} fontWeight={"semibold"}>
                         <Link href={`/categories/${category.slug}`}>
                           <a>
                             <Box padding={"6px 12px"} w={"140px"}>
