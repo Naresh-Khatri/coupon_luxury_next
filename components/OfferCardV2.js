@@ -102,6 +102,7 @@ function OfferCard({ offerDetails }) {
               fontSize={["1rem", "1.375rem"]}
               lineHeight="1.4"
               noOfLines={2}
+              fontWeight={"semibold"}
             >
               {title}
             </Text>
