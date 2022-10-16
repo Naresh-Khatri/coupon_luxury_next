@@ -32,6 +32,7 @@ function OfferCard({ offerDetails }) {
     endDate,
     offerType,
     fromPage,
+    storeName,
   } = offerDetails;
   const { isOpen, onOpen, onClose, onToggle } = useDisclosure();
   return (
@@ -131,10 +132,8 @@ function OfferCard({ offerDetails }) {
               <CodeRevealingButton
                 code={couponCode}
                 affURL={affURL}
-                image={
-                  fromPage == "categories" ? offerDetails.store.image : image
-                }
-                storeName={offerDetails.store.storeName}
+                image={image}
+                storeName={storeName}
               />
             ) : (
               <Link href={`/deals/${slug}`}>
@@ -143,10 +142,13 @@ function OfferCard({ offerDetails }) {
                     bg="brand.900"
                     color="white"
                     shadow="0px 10px 33px -3px rgba(42, 129, 251, 0.5);"
-                    _hover={{
-                      bg: "brand.800",
-                      shadow: "0px 10px 33px -3px rgba(42, 129, 251, 0.8)",
-                    }}
+                    _hover={[
+                      {},
+                      {
+                        bg: "brand.800",
+                        shadow: "0px 10px 33px -3px rgba(42, 129, 251, 0.8)",
+                      },
+                    ]}
                     size="lg"
                     px={"60px"}
                     mb={5}
