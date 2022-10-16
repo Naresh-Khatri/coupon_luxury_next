@@ -25,6 +25,7 @@ function LoadingOverlay({ children }) {
       </Box>
       {isLoading && (
         <Box
+        
           w={"100vw"}
           h="100vh"
           borderRadius="0px"
@@ -50,6 +51,7 @@ function LoadingOverlay({ children }) {
             textAlign="center"
             mt={50}
             fontSize={{ base: "xl", lg: "2xl" }}
+            fontWeight={"extrabold"}
           >
             Getting the best deals for you...
           </Text>
