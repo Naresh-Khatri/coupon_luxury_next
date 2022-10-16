@@ -36,7 +36,7 @@ function DealPage({ dealInfo, recommendedDeals }) {
       <SetMeta
         title={dealInfo.title}
         description={dealInfo.description?.replace(/(<([^>]+)>)/gi, "")}
-        url={`https://www.couponluxury.com/deal/${dealInfo.slug}`}
+        url={`https://www.couponluxury.com/deals/${dealInfo.slug}`}
       />
       <Banner subTitle="*No coupon code required to avail this discount" />
       <Flex
