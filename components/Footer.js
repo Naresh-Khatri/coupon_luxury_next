@@ -30,7 +30,7 @@ function Footer() {
     >
       <Container as={Stack} maxW={"6xl"}>
         <SimpleGrid columns={{ base: 1, sm: 2, md: 4 }} spacing={8}>
-          <Stack align={"flex-start"}>
+          <Stack align={"flex-start"} fontWeight="semibold">
             <Text fontSize="2xl" fontWeight="bold">
               CONTACT
             </Text>
@@ -47,7 +47,7 @@ function Footer() {
             </a>
           </Stack>
 
-          <Stack align={"flex-start"}>
+          <Stack align={"flex-start"} fontWeight="semibold">
             <Text fontSize="2xl" fontWeight="bold">
               QUICK LINKS
             </Text>
@@ -57,8 +57,8 @@ function Footer() {
             <Link href={"/contact"}>Contact us</Link>
           </Stack>
 
-          <Stack align={"flex-start"}>
-            <Text fontSize="2xl" fontWeight="bold">
+          <Stack align={"flex-start"} fontWeight="semibold">
+            <Text fontSize="2xl" fontWeight={"bold"}>
               Categories
             </Text>
             <Link href={"/categories/appliances"}>
@@ -198,7 +198,7 @@ function Footer() {
             </HStack>
           </Stack>
         </SimpleGrid>
-        <Box px={3}>
+        <Box px={3} fontWeight="semibold">
           <Text
             fontSize="20px"
             lineHeight="32px"
