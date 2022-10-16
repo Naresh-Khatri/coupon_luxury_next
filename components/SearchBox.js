@@ -85,8 +85,14 @@ function SearchBox() {
         // initialFocusRef={initialRef}
       >
         <PopoverTrigger>
-          <InputGroup size="sm" role={"search"} aria-label={"search"}>
+          <InputGroup
+            size="sm"
+            role={"search"}
+            aria-label={"search"}
+            fontWeight="bold"
+          >
             <Input
+              fontWeight="semibold"
               h={"40px"}
               borderRadius={10}
               placeholder="Search"
@@ -146,6 +152,7 @@ function SearchBox() {
                       <HStack
                         justifyContent={"space-between"}
                         onClick={clearSearch}
+                        fontWeight={"semibold"}
                       >
                         <Text>{result.storeName || result.categoryName}</Text>
                         <Text fontSize={10}>
