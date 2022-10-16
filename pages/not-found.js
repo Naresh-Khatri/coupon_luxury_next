@@ -13,7 +13,9 @@ function NotFoundPage() {
         description="The page you are looking for does not exist."
         url="https://www.couponluxury.com/not-found"
       />
-      <Text as={'h1'} hidden>404 CouponLuxury</Text>
+      <Text as={"h1"} hidden>
+        404 CouponLuxury
+      </Text>
       <Flex
         w={"100vw"}
         h={"100vh"}
@@ -21,10 +23,16 @@ function NotFoundPage() {
         justify="center"
         align={"center"}
       >
-        <Text fontSize={200} mt={-150} color="brand.900">
+        <Text fontSize={200} mt={-150} color="brand.900" fontWeight={"bold"}>
           404
         </Text>
-        <Text fontSize={20} mt={-10} mb={10} color="brand.900">
+        <Text
+          fontSize={20}
+          mt={-10}
+          mb={10}
+          color="brand.900"
+          fontWeight={"semibold"}
+        >
           Oh no! The page is not found.
         </Text>
         <Image src={"/assets/404.svg"} width={300} height={300} alt={"404"} />
