@@ -28,10 +28,13 @@ function DealCard({
       justifyContent={"space-between"}
       shadow={"2xl"}
       transition="all 0.2s ease-in-out"
-      _hover={{
-        transform: "scale(1.05)",
-        transition: "all 0.2s ease-in-out",
-      }}
+      _hover={[
+        {},
+        {
+          transform: "scale(1.05)",
+          transition: "all 0.2s ease-in-out",
+        },
+      ]}
     >
       <Link href={`/stores/${storeSlug}`}>
         <a>
@@ -62,6 +65,8 @@ function DealCard({
             bg="brand.900"
             color="white"
             shadow="0px 10px 33px -3px rgba(42, 129, 251, 0.5);"
+            _focus={([{ bg: "white" }], [{ bg: "brand.800" }])}
+            _pressed={([{ bg: "white" }], [{ bg: "brand.800" }])}
             _hover={{
               bg: "brand.800",
               shadow: "0px 10px 33px -3px rgba(42, 129, 251, 0.8)",
