@@ -39,6 +39,7 @@ function index({ featuredCat }) {
               spacing="8px"
               separator={<ChevronRightIcon color="gray.500" />}
               color="brand.900"
+              fontWeight={"semibold"}
             >
               <BreadcrumbItem>
                 <Link href="/" passHref>
