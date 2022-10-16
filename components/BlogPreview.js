@@ -10,10 +10,13 @@ function BlogPreview({ blog }) {
       borderRadius={15}
       maxW={275}
       shadow="xl"
-      _hover={{
-        transform: "scale(1.05)",
-        transition: "transform .1s ease-in-out",
-      }}
+      _hover={[
+        {},
+        {
+          transform: "scale(1.05)",
+          transition: "transform .1s ease-in-out",
+        },
+      ]}
       style={{
         transition: "transform .1s ease-in-out",
       }}
@@ -36,7 +39,9 @@ function BlogPreview({ blog }) {
             h="220"
           >
             <Box>
-              <Text noOfLines={2}>{title}</Text>
+              <Text noOfLines={2} fontWeight={"semibold"} mb={1}>
+                {title}
+              </Text>
               <Text color={"gray.500"} fontSize={14} noOfLines={3}>
                 {smallDescription}
               </Text>
@@ -45,10 +50,13 @@ function BlogPreview({ blog }) {
               bg="brand.900"
               color="white"
               shadow="0px 10px 33px -3px rgba(42, 129, 251, 0.5);"
-              _hover={{
-                bg: "brand.800",
-                shadow: "0px 10px 33px -3px rgba(42, 129, 251, 0.8)",
-              }}
+              _hover={[
+                {},
+                {
+                  bg: "brand.800",
+                  shadow: "0px 10px 33px -3px rgba(42, 129, 251, 0.8)",
+                },
+              ]}
               w={120}
               borderRadius={10}
               h={9}
