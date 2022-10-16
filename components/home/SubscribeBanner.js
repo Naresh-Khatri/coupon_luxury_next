@@ -49,7 +49,7 @@ function SubscribeBanner() {
       setEmail("");
     } catch (err) {
       toast({
-        title: "Something went wrong",
+        title: "You are already subscribed",
         status: "error",
         duration: 5000,
       });
