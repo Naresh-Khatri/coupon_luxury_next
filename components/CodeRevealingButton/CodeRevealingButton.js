@@ -79,7 +79,7 @@ function CodeRevealingButton({ code, affURL, storeName, image }) {
                   {showConfetti && <Confetti />}
                 </Button>
               </Tooltip>
-              <Text>Click to copy!</Text>
+              <Text>Click to apply offer!</Text>
             </Flex>
           </ModalBody>
 
