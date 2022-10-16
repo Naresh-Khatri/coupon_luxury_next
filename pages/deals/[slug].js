@@ -12,6 +12,7 @@ import Link from "next/link";
 import React, { useState } from "react";
 import Banner from "../../components/Banner";
 import DealCard from "../../components/DealCard";
+import Confetti from "../../components/Confetti";
 
 import SetMeta from "../../utils/SetMeta";
 
@@ -19,6 +20,7 @@ function DealPage({ dealInfo, recommendedDeals }) {
   const { store, affURL, description, title } = dealInfo;
   const toast = useToast();
   const [clickedOnDeal, setClickedOnDeal] = useState(false);
+
   const handleButtonClick = () => {
     toast({
       title: "Deal applied in new tab!",
@@ -56,9 +58,20 @@ function DealPage({ dealInfo, recommendedDeals }) {
               width={250}
               height={125}
             />
-            <Text color={"black"} fontSize={"3xl"} textAlign="center">
+            <Text
+              color={"black"}
+              fontSize={"3xl"}
+              textAlign="center"
+              fontWeight={"semibold"}
+            >
               {title}
             </Text>
+            {/* <Text
+              color={"black"}
+              fontSize={"xl"}
+              textAlign="center"
+              dangerouslySetInnerHTML={{ __html: dealInfo.description }}
+            ></Text> */}
           </Center>
           <Center flexDirection="column">
             <Link href={affURL}>

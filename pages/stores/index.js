@@ -20,7 +20,7 @@ import SetMeta from "../../utils/SetMeta";
 
 function Stores({ stores }) {
   return (
-    <Box bg={"#eeeeee"} pb={10}>
+    <Box bg={"#eeeeee"} pb={10} fontWeight={"semibold"}>
       <SetMeta
         title="CouponLuxury - Deals, Promo codes & exclusive coupons"
         description="Grab the greatest deals on all exclusive stores using luxury coupons, promo & discount codes. Shop the biggest brands like Nike, amazon, domino's using our offers"

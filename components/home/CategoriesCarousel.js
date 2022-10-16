@@ -71,7 +71,7 @@ function MainCarousel({ carouselCat }) {
                     alt={`Category image: ${slide.categoryName}`}
                     priority={index <= 6 ? true : false}
                   />
-                  <Text textAlign={"center"} fontSize={14} noOfLines={1}>
+                  <Text textAlign={"center"} fontSize={14} noOfLines={1} fontWeight='semibold'>
                     {slide.categoryName}
                   </Text>
                 </Box>

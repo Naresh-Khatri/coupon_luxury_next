@@ -73,6 +73,7 @@ function StorePage({ categoryInfo, featuredStores }) {
               spacing="8px"
               separator={<ChevronRightIcon color="gray.500" />}
               color="brand.900"
+              fontWeight={"semibold"}
             >
               <BreadcrumbItem>
                 <Link href="/">
@@ -138,7 +139,13 @@ function StorePage({ categoryInfo, featuredStores }) {
                 />
               </Box>
 
-              <Box bg={"white"} p={4} borderRadius={15} my={3}>
+              <Box
+                bg={"white"}
+                p={4}
+                borderRadius={15}
+                my={3}
+                fontWeight={"semibold"}
+              >
                 <Text fontSize={"3xl"}>Filter</Text>
                 <RadioGroup onChange={(e) => setFilterBy(e)} value={filterBy}>
                   <Stack>

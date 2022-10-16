@@ -69,6 +69,7 @@ function StorePage({ storeInfo, featuredStores }) {
           <Box p={4}>
             <Breadcrumb
               bg={"white"}
+              fontWeight={"semibold"}
               p={4}
               borderRadius={15}
               spacing="8px"
@@ -139,7 +140,13 @@ function StorePage({ storeInfo, featuredStores }) {
                 />
               </Box>
 
-              <Box bg={"white"} p={4} borderRadius={15} my={3}>
+              <Box
+                bg={"white"}
+                p={4}
+                borderRadius={15}
+                my={3}
+                fontWeight={"semibold"}
+              >
                 <Text fontSize={"3xl"}>Filter</Text>
                 <RadioGroup onChange={(e) => setFilterBy(e)} value={filterBy}>
                   <Stack>

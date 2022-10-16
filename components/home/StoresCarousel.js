@@ -50,6 +50,7 @@ function DealsOfTheDay({ featuredStores }) {
           fontSize={{ base: "3xl", md: "5xl" }}
           textAlign={"center"}
           mb={5}
+          fontWeight="semibold"
         >
           More Than
           <Text
@@ -67,6 +68,7 @@ function DealsOfTheDay({ featuredStores }) {
           color={"gray.800"}
           textAlign="center"
           display={{ base: "none", md: "block" }}
+          fontWeight="semibold"
         >
           Search your favourite store & get many deals
         </Text>

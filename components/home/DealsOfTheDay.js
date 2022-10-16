@@ -12,6 +12,7 @@ function DealsOfTheDay({ deals }) {
         fontSize={{ base: "4xl", md: "5xl" }}
         textAlign={"center"}
         mb={5}
+        fontWeight="semibold"
       >
         <Text
           as={"span"}
@@ -34,7 +35,7 @@ function DealsOfTheDay({ deals }) {
       </Text> */}
       <Center mx={2}>
         <SimpleGrid
-          columns={[2, 3,, 4, 5]}
+          columns={[2, 3, 4, 5]}
           spacing={{ base: 2, md: 5 }}
           justifyContent="center"
         >

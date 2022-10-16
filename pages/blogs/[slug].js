@@ -43,7 +43,7 @@ function BlogPage({ blogData, allBlogs }) {
               >
                 {title}
               </Text>
-              <Text as={"p"} pb={3}>
+              <Text as={"p"} pb={3} fontWeight={"semibold"}>
                 {formattedDate}
               </Text>
               <Image
@@ -63,7 +63,7 @@ function BlogPage({ blogData, allBlogs }) {
             </Box>
           </GridItem>
           <GridItem colSpan={1}>
-            <Text pl={5} fontSize={"4xl"}>
+            <Text pl={5} fontSize={"4xl"} fontWeight={"semibold"}>
               Latest Blogs
             </Text>
             <Box>
