@@ -31,10 +31,10 @@ function SetMeta({ title, description, keywords, image, url }) {
       )}
       {url && (
         <>
-          <meta name="url" content={url} />
-          <meta property="og:url" content={url} />
-          <meta name="twitter:url" content={url} />
-          <link rel="canonical" href={url} />
+          <meta name="url" content={url.toLowerCase()} />
+          <meta property="og:url" content={url.toLowerCase()} />
+          <meta name="twitter:url" content={url.toLowerCase()} />
+          <link rel="canonical" href={url.toLowerCase()} />
         </>
       )}
       {!url && <link rel="canonical" href="https://www.couponluxury.com" />}
