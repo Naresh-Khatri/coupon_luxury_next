@@ -148,7 +148,7 @@ function ContactPage() {
               <Flex display={{ base: "none", md: "block" }}>
                 <Image
                   src={"/assets/contact_us.svg"}
-                  alt="about couponluxury"
+                  alt="contact couponluxury"
                   width={500}
                   height={500}
                 />
