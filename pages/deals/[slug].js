@@ -30,6 +30,10 @@ function DealPage({ dealInfo, recommendedDeals }) {
       isClosable: true,
     });
     setClickedOnDeal(true);
+    setTimeout(() => {
+      window.open(affURL, "_blank");
+      setClickedOnDeal(false);
+    }, 1500);
   };
   return (
     <>
@@ -74,27 +78,25 @@ function DealPage({ dealInfo, recommendedDeals }) {
             ></Text> */}
           </Center>
           <Center flexDirection="column">
-            <Link href={affURL}>
-              <a target="_blank">
-                <Button
-                  bg="brand.900"
-                  onClick={handleButtonClick}
-                  color="white"
-                  shadow="0px 10px 33px -3px rgba(42, 129, 251, 0.5);"
-                  _hover={{
-                    bg: "brand.800",
-                    shadow: "0px 10px 33px -3px rgba(42, 129, 251, 0.8)",
-                  }}
-                  w={"156"}
-                  h={"63"}
-                  fontSize={20}
-                  px={5}
-                  mb={5}
-                >
-                  GET DEAL
-                </Button>
-              </a>
-            </Link>
+            {clickedOnDeal && <Confetti />}
+
+            <Button
+              bg="brand.900"
+              onClick={handleButtonClick}
+              color="white"
+              shadow="0px 10px 33px -3px rgba(42, 129, 251, 0.5);"
+              _hover={{
+                bg: "brand.800",
+                shadow: "0px 10px 33px -3px rgba(42, 129, 251, 0.8)",
+              }}
+              w={"156"}
+              h={"63"}
+              fontSize={20}
+              px={5}
+              mb={5}
+            >
+              GET DEAL
+            </Button>
             {clickedOnDeal && (
               <Text as={"p"} fontSize={"sm"}>
                 {" "}
