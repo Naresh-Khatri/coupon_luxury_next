@@ -22,8 +22,14 @@ function NotFoundPage() {
         direction="column"
         justify="center"
         align={"center"}
+        pt={100}
       >
-        <Text fontSize={200} mt={-150} color="brand.900" fontWeight={"bold"}>
+        <Text
+          fontSize={[150, 200]}
+          mt={-150}
+          color="brand.900"
+          fontWeight={"bold"}
+        >
           404
         </Text>
         <Text
@@ -35,7 +41,9 @@ function NotFoundPage() {
         >
           Oh no! The page is not found.
         </Text>
-        <Image src={"/assets/404.svg"} width={300} height={300} alt={"404"} />
+        <Box w={[200, 300]} h={[200, 300]}>
+          <Image src={"/assets/404.svg"} width={300} height={300} alt={"404"} />
+        </Box>
         <Link href={"/"}>
           <a>
             <Button
