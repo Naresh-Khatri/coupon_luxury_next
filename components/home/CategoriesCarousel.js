@@ -12,7 +12,7 @@ import transformPath from "../../utils/transformImagePath";
 function MainCarousel({ carouselCat }) {
   const options = {
     type: "loop",
-    // autoplay: true,
+    autoplay: true,
     interval: 3000,
     speed: 3000,
     width: "95%",
