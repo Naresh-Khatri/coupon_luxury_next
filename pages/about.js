@@ -8,17 +8,16 @@ import {
 } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
 
 import SetMeta from "../utils/SetMeta";
 
 function AboutUs() {
   return (
     <>
-      <SetMeta
+      {/* <SetMeta
         title="About - CouponLuxury"
         url="https://www.couponluxury.com/about"
-      />
+      /> */}
       <Box bg="#ebf8ff" minH={"100vh"} w="100vw" pb={10} pt={{base:0, md:100}}>
         <Container w={"full"} maxW={1240} h="full">
           <Center height={"full"}>
