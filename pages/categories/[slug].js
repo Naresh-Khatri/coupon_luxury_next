@@ -56,7 +56,7 @@ function StorePage({ categoryInfo, featuredStores }) {
         title={categoryInfo.metaTitle}
         description={categoryInfo.metaDescription}
         keywords={categoryInfo.keywords}
-        url={`https://www.couponluxury.com/${categoryInfo.slug}`}
+        url={`https://www.couponluxury.com/categories/${categoryInfo.slug}`}
       />
       <Banner
         title={`${
