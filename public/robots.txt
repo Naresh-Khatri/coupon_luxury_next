@@ -1,4 +1,5 @@
+User-agent: *Disallow: admin.couponluxury.com/
 User-agent: *
-Disallow: /admin/
+Allow: /
 
 Sitemap: https://www.couponluxury.com/sitemap.xml
