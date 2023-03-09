@@ -63,67 +63,67 @@ export default function Document() {
         <link
           rel="alternate"
           href="https://www.couponluxury.com/"
-          hreflang="en-029"
+          hrefLang="en-029"
         />
         <link
           rel="alternate"
           href="https://www.couponluxury.com/"
-          hreflang="en-AU"
+          hrefLang="en-AU"
         />
         <link
           rel="alternate"
           href="https://www.couponluxury.com/"
-          hreflang="en-BZ"
+          hrefLang="en-BZ"
         />
         <link
           rel="alternate"
           href="https://www.couponluxury.com/"
-          hreflang="en-CA"
+          hrefLang="en-CA"
         />
         <link
           rel="alternate"
           href="https://www.couponluxury.com/"
-          hreflang="en-IE"
+          hrefLang="en-IE"
         />
         <link
           rel="alternate"
           href="https://www.couponluxury.com/"
-          hreflang="en-IN"
+          hrefLang="en-IN"
         />
         <link
           rel="alternate"
           href="https://www.couponluxury.com/"
-          hreflang="en-JM"
+          hrefLang="en-JM"
         />
         <link
           rel="alternate"
           href="https://www.couponluxury.com/"
-          hreflang="en-MY"
+          hrefLang="en-MY"
         />
         <link
           rel="alternate"
           href="https://www.couponluxury.com/"
-          hreflang="en-NZ"
+          hrefLang="en-NZ"
         />
         <link
           rel="alternate"
           href="https://www.couponluxury.com/"
-          hreflang="en-PH"
+          hrefLang="en-PH"
         />
         <link
           rel="alternate"
           href="https://www.couponluxury.com/"
-          hreflang="en-UK"
+          hrefLang="en-UK"
         />
         <link
           rel="alternate"
           href="https://www.couponluxury.com/"
-          hreflang="en-US"
+          hrefLang="en-US"
         />
         <link
           rel="alternate"
           href="https://www.couponluxury.com/"
-          hreflang="en-ZW"
+          hrefLang="en-ZW"
         />
 
         <link
