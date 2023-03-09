@@ -63,27 +63,67 @@ export default function Document() {
         <link
           rel="alternate"
           href="https://www.couponluxury.com/"
-          hrefLang="en"
+          hreflang="en-029"
         />
         <link
           rel="alternate"
           href="https://www.couponluxury.com/"
-          hrefLang="pt-br"
+          hreflang="en-AU"
         />
         <link
           rel="alternate"
           href="https://www.couponluxury.com/"
-          hrefLang="de"
+          hreflang="en-BZ"
         />
         <link
           rel="alternate"
           href="https://www.couponluxury.com/"
-          hrefLang="es"
+          hreflang="en-CA"
         />
         <link
           rel="alternate"
           href="https://www.couponluxury.com/"
-          hrefLang="it"
+          hreflang="en-IE"
+        />
+        <link
+          rel="alternate"
+          href="https://www.couponluxury.com/"
+          hreflang="en-IN"
+        />
+        <link
+          rel="alternate"
+          href="https://www.couponluxury.com/"
+          hreflang="en-JM"
+        />
+        <link
+          rel="alternate"
+          href="https://www.couponluxury.com/"
+          hreflang="en-MY"
+        />
+        <link
+          rel="alternate"
+          href="https://www.couponluxury.com/"
+          hreflang="en-NZ"
+        />
+        <link
+          rel="alternate"
+          href="https://www.couponluxury.com/"
+          hreflang="en-PH"
+        />
+        <link
+          rel="alternate"
+          href="https://www.couponluxury.com/"
+          hreflang="en-UK"
+        />
+        <link
+          rel="alternate"
+          href="https://www.couponluxury.com/"
+          hreflang="en-US"
+        />
+        <link
+          rel="alternate"
+          href="https://www.couponluxury.com/"
+          hreflang="en-ZW"
         />
 
         <link
@@ -115,7 +155,11 @@ export default function Document() {
           rel="stylesheet"
         /> */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="true"
+        />
         <link
           href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap"
           rel="stylesheet"
