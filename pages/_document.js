@@ -4,128 +4,17 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head>
-        <meta
-          name="title"
-          content="Couponluxury: Deals, coupon codes, Discounts & offers"
-        />
-        <meta
-          name="description"
-          content="Avail the most luxurious deals and promo codes to get the best discount offers while shopping from brands. Exclusive coupon codes available on CouponLuxury"
-        />
-        <meta
-          name="keywords"
-          content="coupons, coupon codes, promo codes, discount codes, deals, online shopping, offers, vouchers, cashbacks"
-        />
-        <meta name="theme-color" content="#0072a0" />
+        {/* THESE ARE ONLY THE DEFAULT HEAD TAGS.  */}{" "}
+        <meta name="theme-color" content="#0072a0" />{" "}
         <meta
           name="author"
           content="Coupons Luxury, Affiliates, Offers, Deals"
         />
-
-        <meta
-          property="og:image"
-          content="https://ik.imagekit.io/couponluxury/zyro-image__3__2Dw77Pooe.png"
-        />
-        <meta
-          property="og:title"
-          content="Couponluxury: Deals, coupon codes, Discounts & offers"
-        />
         <meta property="og:type" content="article" />
-        <meta property="og:url" content="https://www.couponluxury.com/" />
         <meta property="og:site_name" content="CouponLuxury.com" />
-        <meta
-          property="og:description"
-          content="Avail the most luxurious deals and promo codes to get the best discount offers while shopping from brands. Exclusive coupon codes available on CouponLuxury"
-        />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:url" content="https://www.couponluxury.com/" />
         <meta name="twitter:site" content="@CouponLuxury" />
-        <meta
-          name="twitter:title"
-          content="Couponluxury: Deals, coupon codes, Discounts & offers"
-        />
-        <meta
-          name="twitter:description"
-          content="Avail the most luxurious deals and promo codes to get the best discount offers while shopping from brands. Exclusive coupon codes available on CouponLuxury"
-        />
-        <meta
-          name="twitter:image"
-          content="https://ik.imagekit.io/couponluxury/zyro-image__3__2Dw77Pooe.png"
-        />
-        <meta
-          name="twitter:image:alt"
-          content="CouponLuxury.com Coupon Codes and Discounts"
-        />
-        <meta
-          itemProp="image"
-          content="https://ik.imagekit.io/couponluxury/zyro-image__3__2Dw77Pooe.png"
-        />
-        <link
-          rel="alternate"
-          href="https://www.couponluxury.com/"
-          hrefLang="en-029"
-        />
-        <link
-          rel="alternate"
-          href="https://www.couponluxury.com/"
-          hrefLang="en-AU"
-        />
-        <link
-          rel="alternate"
-          href="https://www.couponluxury.com/"
-          hrefLang="en-BZ"
-        />
-        <link
-          rel="alternate"
-          href="https://www.couponluxury.com/"
-          hrefLang="en-CA"
-        />
-        <link
-          rel="alternate"
-          href="https://www.couponluxury.com/"
-          hrefLang="en-IE"
-        />
-        <link
-          rel="alternate"
-          href="https://www.couponluxury.com/"
-          hrefLang="en-IN"
-        />
-        <link
-          rel="alternate"
-          href="https://www.couponluxury.com/"
-          hrefLang="en-JM"
-        />
-        <link
-          rel="alternate"
-          href="https://www.couponluxury.com/"
-          hrefLang="en-MY"
-        />
-        <link
-          rel="alternate"
-          href="https://www.couponluxury.com/"
-          hrefLang="en-NZ"
-        />
-        <link
-          rel="alternate"
-          href="https://www.couponluxury.com/"
-          hrefLang="en-PH"
-        />
-        <link
-          rel="alternate"
-          href="https://www.couponluxury.com/"
-          hrefLang="en-UK"
-        />
-        <link
-          rel="alternate"
-          href="https://www.couponluxury.com/"
-          hrefLang="en-US"
-        />
-        <link
-          rel="alternate"
-          href="https://www.couponluxury.com/"
-          hrefLang="en-ZW"
-        />
-
+        <HrefLangs />
         <link
           rel="icon"
           type="image/png"
@@ -150,10 +39,6 @@ export default function Document() {
           sizes="16x16"
           href="https://ik.imagekit.io/couponluxury/tr:w-16/logo_13BHLbKp9"
         />
-        {/* <link
-          href="https://fonts.googleapis.com/css2?family=Rubik:wght@200;500;600;700&display=swap"
-          rel="stylesheet"
-        /> */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
           rel="preconnect"
@@ -173,3 +58,75 @@ export default function Document() {
     </Html>
   );
 }
+
+const HrefLangs = () => {
+  return (
+    <>
+      <link
+        rel="alternate"
+        href="https://www.couponluxury.com/"
+        hrefLang="en-029"
+      />
+      <link
+        rel="alternate"
+        href="https://www.couponluxury.com/"
+        hrefLang="en-AU"
+      />
+      <link
+        rel="alternate"
+        href="https://www.couponluxury.com/"
+        hrefLang="en-BZ"
+      />
+      <link
+        rel="alternate"
+        href="https://www.couponluxury.com/"
+        hrefLang="en-CA"
+      />
+      <link
+        rel="alternate"
+        href="https://www.couponluxury.com/"
+        hrefLang="en-IE"
+      />
+      <link
+        rel="alternate"
+        href="https://www.couponluxury.com/"
+        hrefLang="en-IN"
+      />
+      <link
+        rel="alternate"
+        href="https://www.couponluxury.com/"
+        hrefLang="en-JM"
+      />
+      <link
+        rel="alternate"
+        href="https://www.couponluxury.com/"
+        hrefLang="en-MY"
+      />
+      <link
+        rel="alternate"
+        href="https://www.couponluxury.com/"
+        hrefLang="en-NZ"
+      />
+      <link
+        rel="alternate"
+        href="https://www.couponluxury.com/"
+        hrefLang="en-PH"
+      />
+      <link
+        rel="alternate"
+        href="https://www.couponluxury.com/"
+        hrefLang="en-UK"
+      />
+      <link
+        rel="alternate"
+        href="https://www.couponluxury.com/"
+        hrefLang="en-US"
+      />
+      <link
+        rel="alternate"
+        href="https://www.couponluxury.com/"
+        hrefLang="en-ZW"
+      />
+    </>
+  );
+};
