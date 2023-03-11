@@ -8,7 +8,6 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import Image from "next/image";
-import Link from "next/link";
 import React, { useState } from "react";
 import Banner from "../../components/Banner";
 import DealCard from "../../components/DealCard";
@@ -47,7 +46,6 @@ function DealPage({ dealInfo, recommendedDeals }) {
         as={"section"}
         className="hero-bg"
         justifyContent={"center"}
-        h={300}
       >
         <SimpleGrid
           as="main"
@@ -64,18 +62,14 @@ function DealPage({ dealInfo, recommendedDeals }) {
             />
             <Text
               color={"black"}
-              fontSize={"3xl"}
+              my={4}
+              mx={{base: 4, md: 0}}
+              fontSize={{base:'xl', md:"3xl"}}
               textAlign="center"
               fontWeight={"semibold"}
             >
               {title}
             </Text>
-            {/* <Text
-              color={"black"}
-              fontSize={"xl"}
-              textAlign="center"
-              dangerouslySetInnerHTML={{ __html: dealInfo.description }}
-            ></Text> */}
           </Center>
           <Center flexDirection="column">
             {clickedOnDeal && <Confetti />}
