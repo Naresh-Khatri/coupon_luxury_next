@@ -65,11 +65,6 @@ const HrefLangs = () => {
       <link
         rel="alternate"
         href="https://www.couponluxury.com/"
-        hrefLang="en-029"
-      />
-      <link
-        rel="alternate"
-        href="https://www.couponluxury.com/"
         hrefLang="en-AU"
       />
       <link
@@ -111,11 +106,6 @@ const HrefLangs = () => {
         rel="alternate"
         href="https://www.couponluxury.com/"
         hrefLang="en-PH"
-      />
-      <link
-        rel="alternate"
-        href="https://www.couponluxury.com/"
-        hrefLang="en-UK"
       />
       <link
         rel="alternate"
