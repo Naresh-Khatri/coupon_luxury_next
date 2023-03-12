@@ -42,14 +42,10 @@ function DealPage({ dealInfo, recommendedDeals }) {
         url={`https://www.couponluxury.com/deals/${dealInfo.slug}`}
       />
       <Banner subTitle="*No coupon code required to avail this discount" />
-      <Flex
-        as={"section"}
-        className="hero-bg"
-        justifyContent={"center"}
-      >
+      <Flex as={"section"} className="hero-bg" justifyContent={"center"}>
         <SimpleGrid
           as="main"
-          w={{ base: "100vw", md: "60vw" }}
+          w={{ base: "100vw", md: "90vw", lg: "80vw" }}
           maxW={1200}
           columns={{ base: 1, md: 2 }}
         >
@@ -63,8 +59,8 @@ function DealPage({ dealInfo, recommendedDeals }) {
             <Text
               color={"black"}
               my={4}
-              mx={{base: 4, md: 0}}
-              fontSize={{base:'xl', md:"3xl"}}
+              mx={{ base: 4, md: 0 }}
+              fontSize={{ base: "xl", md: "3xl" }}
               textAlign="center"
               fontWeight={"semibold"}
             >
