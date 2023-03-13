@@ -16,6 +16,7 @@ import Confetti from "../../components/Confetti";
 import SetMeta from "../../utils/SetMeta";
 
 function DealPage({ dealInfo, recommendedDeals }) {
+  console.log(dealInfo)
   const { store, affURL, description, title } = dealInfo;
   const toast = useToast();
   const [clickedOnDeal, setClickedOnDeal] = useState(false);
@@ -38,7 +39,7 @@ function DealPage({ dealInfo, recommendedDeals }) {
     <>
       <SetMeta
         title={dealInfo.title}
-        description={dealInfo.description?.replace(/(<([^>]+)>)/gi, "")}
+        description={dealInfo.metaDescription}
         url={`https://www.couponluxury.com/deals/${dealInfo.slug}`}
       />
       <Banner subTitle="*No coupon code required to avail this discount" />
