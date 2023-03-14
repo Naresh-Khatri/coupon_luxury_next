@@ -9,7 +9,7 @@ import "@splidejs/splide/css/skyblue";
 import styles from "../../styles/splide.module.css";
 import transformPath from "../../utils/transformImagePath";
 
-function MainCarousel({ carouselCat }) {
+function CategoriesCarousel({ carouselCat }) {
   const options = {
     type: "loop",
     autoplay: true,
@@ -84,4 +84,4 @@ function MainCarousel({ carouselCat }) {
   );
 }
 
-export default MainCarousel;
+export default CategoriesCarousel;
