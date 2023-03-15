@@ -26,7 +26,11 @@ function index({ featuredCat }) {
         url={"https://www.couponluxury.com/categories"}
       />
       <Text as={"h1"} hidden>
-        All Deals and discount Offers in different categories
+        Indulge in Luxury: Unlock Savings on Top Brands Across All Categories
+      </Text>
+      <Text as={"h2"} hidden>
+        Find Your bold Style: Discover Exclusive Coupons and Deals for All
+        Categories
       </Text>
       <Banner
         title={"All Categories"}
