@@ -17,12 +17,7 @@ export default function Home({
 }) {
   return (
     <>
-      <SetMeta
-        title="Couponluxury: Deals, coupon codes, Discounts & offers"
-        description="Avail the most luxurious deals and promo codes to get the best discount offers while shopping from brands. Exclusive coupon codes available on CouponLuxury"
-        keywords="coupons, coupon codes, promo codes, discount codes, deals, online shopping, offers, vouchers, cashbacks"
-        url="https://www.couponluxury.com/"
-      />
+      <SetMeta />
 
       <Flex
         as="main"
@@ -33,11 +28,12 @@ export default function Home({
         <Text as="h1" hidden>
           Couponluxury: Deals, coupon codes, Discounts & offers
         </Text>
+        <Text as="h2" hidden>
+        Find Your Luxury Deals: Exclusive Discounts and Offers on High-End Brands
+        </Text>
         <Box pt={5} w={"100vw"} maxW={1300}>
-          <Box>
-            <MainCarousel slides={slides} />
-            <CategoriesCarousel carouselCat={carouselCat} />
-          </Box>
+          <MainCarousel slides={slides} />
+          <CategoriesCarousel carouselCat={carouselCat} />
           <DealsOfTheDay deals={deals} />
         </Box>
       </Flex>
