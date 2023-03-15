@@ -16,7 +16,12 @@ function index({ blogsData }) {
         url={"https://www.couponluxury.com/blogs"}
       />
       <Text as={"h1"} hidden>
-        CouponLuxury Blog: Money Saving Tips & Updates
+        Unlock the Secrets of Shopping: Expert Tips, Tricks, Trends, and Deals
+        on Our Blog
+      </Text>
+      <Text as={"h2"} hidden>
+        Stay Up to Date with the Latest new Trends: Insights and Inspiration on
+        Our Blog
       </Text>
       <Banner title={"All Blogs"} subTitle={`${blogsData.length} blogs`} />
       <Container mt={10} maxW={"6xl"} w="90vw" pb={10}>
