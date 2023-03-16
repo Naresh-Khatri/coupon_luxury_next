@@ -27,7 +27,12 @@ function Stores({ stores }) {
         url="https://www.couponluxury.com/stores"
       />
       <Text as={"h1"} hidden>
-        CouponLuxury - Deals, Promo codes & exclusive coupons
+        Shop in Style: Discover the Best Deals and Discounts for All Top big
+        Brands
+      </Text>
+      <Text as={"h2"} hidden>
+        Experience the Finest Shopping: Exclusive Coupons and Discounts for any
+        Brand
       </Text>
       <Banner
         title="All Stores"
@@ -61,21 +66,22 @@ function Stores({ stores }) {
                 </Link>
               </BreadcrumbItem>
               <BreadcrumbItem isCurrentPage>
-                <Link href="/">
-                  <Box display="flex">
-                    <FontAwesomeIcon
-                      icon={faShop}
-                      height={"1rem"}
-                      style={{ paddingRight: "10px" }}
-                    />
-                    Stores
-                  </Box>
-                </Link>
+                <Box display="flex">
+                  <FontAwesomeIcon
+                    icon={faShop}
+                    height={"1rem"}
+                    style={{ paddingRight: "10px" }}
+                  />
+                  Stores
+                </Box>
               </BreadcrumbItem>
             </Breadcrumb>
           </Box>
 
-          <Header leftText={"Stores"} rightText={"26 Stores available!"} />
+          <Header
+            leftText={"Stores"}
+            rightText={`${stores.length} Stores available!`}
+          />
           <SimpleGrid
             // columns={{ base: 2, md: 3, lg: 5 }}
             minChildWidth={{ base: "110px", md: "130px", lg: "160px" }}
