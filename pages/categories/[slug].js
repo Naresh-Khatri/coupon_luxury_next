@@ -52,6 +52,7 @@ function StorePage({ categoryInfo, featuredStores }) {
 
   return (
     <Box bg={"#e0e0e0"} pb={5}>
+      <Box hidden dangerouslySetInnerHTML={{ __html: categoryInfo.description }} />
       <SetMeta
         title={categoryInfo.metaTitle}
         description={categoryInfo.metaDescription}
