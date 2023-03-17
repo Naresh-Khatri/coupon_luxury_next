@@ -1,6 +1,6 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
 
-function Banner({ title, subTitle }) {
+function Banner({ title, subTitle, titleAsH1}) {
   return (
     <Flex
       direction="column"
@@ -11,7 +11,7 @@ function Banner({ title, subTitle }) {
       h={subTitle && !title ? 75 : subTitle ? 136 : 110}
     >
       <Text
-        as="h3"
+        as={titleAsH1 ? "h1" : "h3"}
         fontSize={{ base: "2xl", md: "4xl" }}
         fontWeight={"extrabold"}
         textAlign="center"
