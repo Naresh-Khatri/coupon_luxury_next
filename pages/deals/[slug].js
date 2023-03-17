@@ -16,7 +16,6 @@ import Confetti from "../../components/Confetti";
 import SetMeta from "../../utils/SetMeta";
 
 function DealPage({ dealInfo, recommendedDeals }) {
-  console.log(dealInfo)
   const { store, affURL, description, title } = dealInfo;
   const toast = useToast();
   const [clickedOnDeal, setClickedOnDeal] = useState(false);
@@ -37,6 +36,7 @@ function DealPage({ dealInfo, recommendedDeals }) {
   };
   return (
     <>
+    <Box hidden dangerouslySetInnerHTML={{__html: dealInfo.description}}></Box>
       <SetMeta
         title={dealInfo.title}
         description={dealInfo.metaDescription}
