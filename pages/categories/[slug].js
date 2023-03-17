@@ -52,7 +52,6 @@ function StorePage({ categoryInfo, featuredStores }) {
 
   return (
     <Box bg={"#e0e0e0"} pb={5}>
-      <Box hidden dangerouslySetInnerHTML={{ __html: categoryInfo.description }} />
       <SetMeta
         title={categoryInfo.metaTitle}
         description={categoryInfo.metaDescription}
@@ -63,6 +62,7 @@ function StorePage({ categoryInfo, featuredStores }) {
         title={`${
           categoryInfo.categoryName
         } Coupons & Deals For ${getMonthAndYear()}`}
+        titleAsH1={true}
       />
       <Center display={"flex"} flexDirection="column">
         <Box maxW={1200} w="100vw" justifyContent={"center"}>
