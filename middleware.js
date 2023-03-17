@@ -8,7 +8,7 @@ export function middleware(request) {
     return NextResponse.rewrite('https://apiv2.couponluxury.com/sitemap.xml')
   }
   if (request.url !== request.url.toLowerCase())
-    return NextResponse.redirect(request.url.toLowerCase());
+    return NextResponse.redirect(request.url.toLowerCase(), 301);
   else return NextResponse.next();
 }
 
