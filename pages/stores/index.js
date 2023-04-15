@@ -4,6 +4,7 @@ import {
   BreadcrumbItem,
   BreadcrumbLink,
   Center,
+  Container,
   Flex,
   SimpleGrid,
   Text,
@@ -39,8 +40,8 @@ function Stores({ stores }) {
         subTitle={`${stores.length} stores available!`}
       />
 
-      <Center display={"flex"} flexDirection="column">
-        <Box maxW={1200} w="100vw" px={4} justifyContent={"center"}>
+      <Container  mt={10} minH={'100vh'} maxW={"6xl"} w="90vw" pb={10}>
+        <Box maxW={1200} w="100vw" px={4}> 
           <Box my={4}>
             <Breadcrumb
               spacing="8px"
@@ -97,7 +98,7 @@ function Stores({ stores }) {
             ))}
           </SimpleGrid>
         </Box>
-      </Center>
+      </Container>
     </Box>
   );
 }
