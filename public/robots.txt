@@ -1,4 +1,6 @@
-User-agent: *Disallow: admin.couponluxury.com/
+User-agent: *
+Disallow: https://admin.couponluxury.com/
+
 User-agent: *
 Allow: /
 
