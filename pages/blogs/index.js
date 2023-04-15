@@ -24,7 +24,7 @@ function index({ blogsData }) {
         Our Blog
       </Text>
       <Banner title={"All Blogs"} subTitle={`${blogsData.length} blogs`} />
-      <Container mt={10} maxW={"6xl"} w="90vw" pb={10}>
+      <Container  mt={10} minH={'100vh'} maxW={"6xl"} w="90vw" pb={10}>
         <Center>
           <SimpleGrid columns={{ base: 1, sm: 2, md: 3, lg: 4 }} spacing={5}>
             {blogsData.map((blog) => {
