@@ -2,33 +2,19 @@
 import {
   Box,
   Flex,
-  Avatar,
   HStack,
   IconButton,
-  Button,
   Menu,
   MenuButton,
   MenuList,
   MenuItem,
-  MenuDivider,
   useDisclosure,
-  useColorModeValue,
   Stack,
-  Input,
-  InputGroup,
-  InputRightElement,
   Text,
-  LinkOverlay,
   Center,
 } from "@chakra-ui/react";
-import { Fade, ScaleFade, Slide, SlideFade } from "@chakra-ui/react";
-import {
-  HamburgerIcon,
-  CloseIcon,
-  AddIcon,
-  SearchIcon,
-  ChevronDownIcon,
-} from "@chakra-ui/icons";
+import { Fade, Slide } from "@chakra-ui/react";
+import { HamburgerIcon, CloseIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import Image from "next/future/image";
 import Link from "next/link";
 import { Link as CLink } from "@chakra-ui/react";
