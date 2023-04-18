@@ -4,7 +4,7 @@ import Footer from "../components/Footer";
 import NavBar from "../components/NavBar";
 import LoadingOverlay from "../components/LoadingOverlay";
 import { useRouter } from "next/router";
-const hideLayouts = ["/blogs/admin"];
+const layoutHiddenRoutes = ["/blogs/admin"];
 
 function Layout({ children }) {
   const router = useRouter();
@@ -12,7 +12,7 @@ function Layout({ children }) {
   return (
     <>
       <LoadingOverlay>
-        {hideLayouts.includes(router.pathname) ? (
+        {layoutHiddenRoutes.some((route) => router.pathname.includes(route)) ? (
           children
         ) : (
           <>
