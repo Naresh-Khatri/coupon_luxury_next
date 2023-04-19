@@ -58,6 +58,7 @@ function StorePage({ storeInfo, featuredStores }) {
         description={storeInfo.metaDescription}
         keywords={storeInfo.keywords}
         url={"https://www.couponluxury.com/stores/" + storeInfo.slug}
+        schema={storeInfo.metaSchema}
       />
       <Banner
         title={`${
