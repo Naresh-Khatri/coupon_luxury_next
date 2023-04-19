@@ -8,6 +8,11 @@ body {
   /* font-weight: 600; */
 }
 
+.ace_editor, .ace_editor *{
+font-family: "Monaco", "Menlo", "Ubuntu Mono", "Droid Sans Mono", "Consolas", monospace !important;
+font-weight: 400 !important;
+letter-spacing: 0 !important;
+}
 .ham-background {
   background-color: #133b73;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 1000'%3E%3Cg %3E%3Ccircle fill='%23133B73' cx='50' cy='0' r='50'/%3E%3Cg fill='%23143e79' %3E%3Ccircle cx='0' cy='50' r='50'/%3E%3Ccircle cx='100' cy='50' r='50'/%3E%3C/g%3E%3Ccircle fill='%23154280' cx='50' cy='100' r='50'/%3E%3Cg fill='%23154586' %3E%3Ccircle cx='0' cy='150' r='50'/%3E%3Ccircle cx='100' cy='150' r='50'/%3E%3C/g%3E%3Ccircle fill='%2316488d' cx='50' cy='200' r='50'/%3E%3Cg fill='%23174c93' %3E%3Ccircle cx='0' cy='250' r='50'/%3E%3Ccircle cx='100' cy='250' r='50'/%3E%3C/g%3E%3Ccircle fill='%23184f9a' cx='50' cy='300' r='50'/%3E%3Cg fill='%231953a0' %3E%3Ccircle cx='0' cy='350' r='50'/%3E%3Ccircle cx='100' cy='350' r='50'/%3E%3C/g%3E%3Ccircle fill='%231a56a7' cx='50' cy='400' r='50'/%3E%3Cg fill='%231b5aae' %3E%3Ccircle cx='0' cy='450' r='50'/%3E%3Ccircle cx='100' cy='450' r='50'/%3E%3C/g%3E%3Ccircle fill='%231c5db5' cx='50' cy='500' r='50'/%3E%3Cg fill='%231d61bc' %3E%3Ccircle cx='0' cy='550' r='50'/%3E%3Ccircle cx='100' cy='550' r='50'/%3E%3C/g%3E%3Ccircle fill='%231e64c2' cx='50' cy='600' r='50'/%3E%3Cg fill='%232068c9' %3E%3Ccircle cx='0' cy='650' r='50'/%3E%3Ccircle cx='100' cy='650' r='50'/%3E%3C/g%3E%3Ccircle fill='%23216bd0' cx='50' cy='700' r='50'/%3E%3Cg fill='%23226fd7' %3E%3Ccircle cx='0' cy='750' r='50'/%3E%3Ccircle cx='100' cy='750' r='50'/%3E%3C/g%3E%3Ccircle fill='%232472de' cx='50' cy='800' r='50'/%3E%3Cg fill='%232576e5' %3E%3Ccircle cx='0' cy='850' r='50'/%3E%3Ccircle cx='100' cy='850' r='50'/%3E%3C/g%3E%3Ccircle fill='%23277aed' cx='50' cy='900' r='50'/%3E%3Cg fill='%23287df4' %3E%3Ccircle cx='0' cy='950' r='50'/%3E%3Ccircle cx='100' cy='950' r='50'/%3E%3C/g%3E%3Ccircle fill='%232A81FB' cx='50' cy='1000' r='50'/%3E%3C/g%3E%3C/svg%3E");
