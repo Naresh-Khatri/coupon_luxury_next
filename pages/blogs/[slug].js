@@ -81,12 +81,12 @@ function BlogPage({ blogData, allBlogs }) {
 
 export const getServerSideProps = async (ctx) => {
   try {
-    let res = await fetch(
-      process.env.domain + `/blogs/getUsingSlug/${ctx.query.slug}`
-    );
+    const { slug } = ctx.query;
+    let res = await fetch(process.env.domain + `/blogs/getUsingSlug/${slug}`);
     const blogData = await res.json();
     res = await fetch(process.env.domain + "/blogs?limit=10");
-    const allBlogs = await res.json();
+    const allBlogs = (await res.json()).filter((blog) => blog.slug !== slug);
+
     return {
       props: {
         blogData: {
