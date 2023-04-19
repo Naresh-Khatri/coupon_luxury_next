@@ -1,7 +1,7 @@
 import Head from "next/head";
 import React from "react";
 
-function SetMeta({ title, description, keywords, image, url }) {
+function SetMeta({ title, description, keywords, image, url, schema }) {
   title = title
     ? title
     : "Couponluxury: Deals, coupon codes, Discounts & offers";
@@ -16,6 +16,8 @@ function SetMeta({ title, description, keywords, image, url }) {
     : "https://ik.imagekit.io/couponluxury/zyro-image__3__2Dw77Pooe.png";
   url = url ? url : "https://www.couponluxury.com/";
 
+  schema = schema || "";
+
   return (
     <Head>
       {/* TITLE */}
@@ -27,6 +29,9 @@ function SetMeta({ title, description, keywords, image, url }) {
       <meta name="description" content={description} />
       <meta property="og:description" content={description} />
       <meta name="twitter:description" content={description} />
+
+      {/* SCHEMA */}
+      <script type="application/ld+json">{schema}</script>
 
       {/* KEYWORDS */}
       <meta name="keywords" content={keywords} />
