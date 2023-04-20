@@ -36,11 +36,15 @@ function DealPage({ dealInfo, recommendedDeals }) {
   };
   return (
     <>
-    <Box hidden dangerouslySetInnerHTML={{__html: dealInfo.description}}></Box>
+      <Box
+        hidden
+        dangerouslySetInnerHTML={{ __html: dealInfo.description }}
+      ></Box>
       <SetMeta
         title={dealInfo.title}
         description={dealInfo.metaDescription}
         url={`https://www.couponluxury.com/deals/${dealInfo.slug}`}
+        schema={dealInfo.metaSchema}
       />
       <Banner subTitle="*No coupon code required to avail this discount" />
       <Flex as={"section"} className="hero-bg" justifyContent={"center"}>
