@@ -10,8 +10,8 @@ import {
   useColorModeValue,
   useToast,
 } from "@chakra-ui/react";
-import { useEffect, useRef, useState } from "react";
-import account from "../../../appwrite/config";
+import { useEffect, useState } from "react";
+import account from "../../appwrite/config";
 import { useRouter } from "next/router";
 
 function BlogsLogin() {
