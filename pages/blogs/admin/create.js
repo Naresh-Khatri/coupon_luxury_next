@@ -14,6 +14,8 @@ import CustomEditor from "../../../components/CustomEditor";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faNewspaper } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
+import { convertCanvasToBlob } from "../../../lib/lib";
+import axios from "axios";
 
 function Create() {
   const router = useRouter();
@@ -27,28 +29,7 @@ function Create() {
   const [imageAlt, setImageAlt] = useState("");
   const [metaTitle, setMetaTitle] = useState("");
   const [metaDescription, setMetaDescription] = useState("");
-  const [metaSchema, setMetaSchema] = useState(`{
-  "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  "headline": "Example Blog Post Title",
-  "datePublished": "2023-05-30",
-  "author": {
-    "@type": "Person",
-    "name": "John Doe"
-  },
-  "image": "https://example.com/image.jpg",
-  "description": "This is an example blog post.",
-  "publisher": {
-    "@type": "Organization",
-    "name": "Example Blog",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://example.com/logo.jpg",
-      "width": 600,
-      "height": 60
-    }
-  }
-}`);
+  const [metaSchema, setMetaSchema] = useState("");
   const [isPublising, setIsPublishing] = useState(false);
 
   const tinymceEditorRef = useRef(null);
@@ -70,14 +51,6 @@ function Create() {
         console.log(err);
         setUserInfo({});
         setUserIsLoading(false);
-        router.push("/blogs/admin/login");
-        toast({
-          title: "You are not logged in",
-          description: "You are redirected to the login page",
-          status: "error",
-          duration: 5000,
-          isClosable: true,
-        });
       });
   }, [router, toast]);
 
@@ -93,8 +66,8 @@ function Create() {
   const handlePublish = async () => {
     setIsPublishing(true);
     const titleIsValid = title.trim().length >= 20;
-    const slugIsValid = slug.trim().length >= 20;
-    const imageAltIsValid = imageAlt.trim().length >= 20;
+    const slugIsValid = slug.trim().length >= 5;
+    const imageAltIsValid = imageAlt.trim().length >= 10;
     const contentIsValid =
       tinymceEditorRef.current.getContent().trim().length >= 20;
     const coverImgIsValid = coverImg !== null;
@@ -188,12 +161,15 @@ function Create() {
       setIsPublishing(false);
       toast({
         title: "Error",
-        description: "Something went wrong",
+        description:
+          err?.response?.data?.message ||
+          err?.message ||
+          "Something went wrong",
         status: "error",
         duration: 5000,
         isClosable: true,
       });
-      throw err;
+      console.log(err);
     }
   };
 
