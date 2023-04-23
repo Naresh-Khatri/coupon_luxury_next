@@ -30,6 +30,26 @@ import account from "../appwrite/config";
 import { useEffect, useState } from "react";
 
 function AdminLayout({ children }) {
+  const router = useRouter();
+  const toast = useToast();
+  useEffect(() => {
+    const checkLogin = async () => {
+      try {
+        const res = await account.get();
+      } catch (err) {
+        toast({
+          title: "You are not logged in",
+          description: "You are redirected to the login page",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
+        router.push("/blogs/login");
+        console.log("user not logged in");
+      }
+    };
+    checkLogin();
+  }, []);
   return (
     <Flex h={"100vh"} w={"100vw"}>
       <SideBar />
@@ -63,7 +83,8 @@ const NavBar = () => {
       position={"absolute"}
       left={0}
       right={0}
-      zIndex={1}
+      zIndex={10}
+      bg={"whiteAlpha.500"}
       backdropFilter={"blur(10px)"}
       justifyContent={"space-between"}
     >
@@ -87,23 +108,17 @@ const NavBar = () => {
 
 const AccountMenu = () => {
   const [userInfo, setUserInfo] = useState(null);
-  const [loading, setLoading] = useState(true);
   const { onClose, isOpen, onOpen } = useDisclosure();
 
   const router = useRouter();
-  const toast = useToast();
 
   useEffect(() => {
     const getUserInfo = async () => {
       try {
         const res = await account.get("current");
-        console.log(res);
         setUserInfo(res);
-        setLoading(false);
-        router.push("/blogs/admin");
       } catch (err) {
         console.log(err);
-        setLoading(false);
       }
     };
     getUserInfo();
@@ -113,11 +128,11 @@ const AccountMenu = () => {
     try {
       await account.deleteSession("current");
       setUserInfo({});
-      router.push("/blogs/admin");
+      router.push("/blogs");
       onClose();
     } catch (err) {
       console.log(err);
-      router.push("/blogs/admin");
+      router.push("/blogs");
       onClose();
     }
   };
