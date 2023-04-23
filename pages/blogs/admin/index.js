@@ -18,7 +18,7 @@ export default function BlogAdminPage() {
     try {
       const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
       await sleep(1000);
-      const { data } = await axios("http://localhost:4000/blogs");
+      const { data } = await axios("https://apiv2.couponluxury.com/blogs");
       console.log(data);
       setBlogs(data);
       setBlogsLoading(false);

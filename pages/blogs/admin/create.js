@@ -137,8 +137,7 @@ function Create() {
     formData.append("metaSchema", metaSchema);
     try {
       const res = await axios.post(
-        // "https://apiv2.couponluxury.com/blogs",
-        "http://localhost:4000/blogs/v2/",
+        "https://apiv2.couponluxury.com/blogs/v2",
         formData,
         {
           headers: {
