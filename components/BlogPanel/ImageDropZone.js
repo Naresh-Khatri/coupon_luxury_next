@@ -30,7 +30,7 @@ const ImageDropZone = ({ onFileDrop }) => {
         ) : (
           <Stack>
             <FontAwesomeIcon icon={faDownLong} color="green" bounce size="5x" />
-            <Text color={"green.400"}>Drop it like it's hot!</Text>
+            <Text color={"green.400"}>Drop it like it&apos;s hot!</Text>
           </Stack>
         )}
       </Flex>
