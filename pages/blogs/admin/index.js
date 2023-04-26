@@ -16,8 +16,10 @@ export default function BlogAdminPage() {
   const getBlogs = async () => {
     setBlogsLoading(true);
     try {
-      const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-      await sleep(1000);
+      const user = await account.get();
+      if (!user.$id) {
+        return;
+      }
       const { data } = await axios("https://apiv2.couponluxury.com/blogs");
       console.log(data);
       setBlogs(data);
