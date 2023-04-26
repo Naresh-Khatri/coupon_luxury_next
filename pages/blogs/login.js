@@ -17,8 +17,8 @@ import { useRouter } from "next/router";
 function BlogsLogin() {
   const router = useRouter();
   const toast = useToast();
-  const [username, setUsername] = useState("couponluxury");
-  const [password, setPassword] = useState("Coupon_Luxury@@");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
   useEffect(() => {
     account
