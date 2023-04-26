@@ -39,7 +39,7 @@ function AdminLayout({ children }) {
       } catch (err) {
         toast({
           title: "You are not logged in",
-          description: "You are redirected to the login page",
+          description: "Redirected to the login page...",
           status: "error",
           duration: 5000,
           isClosable: true,
