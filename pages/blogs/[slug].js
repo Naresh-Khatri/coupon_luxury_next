@@ -85,7 +85,9 @@ export const getServerSideProps = async (ctx) => {
     let res = await fetch(process.env.domain + `/blogs/getUsingSlug/${slug}`);
     const blogData = await res.json();
     res = await fetch(process.env.domain + "/blogs?limit=10");
-    const allBlogs = (await res.json()).filter((blog) => blog.slug !== slug);
+    const allBlogs = (await res.json()).filter(
+      (blog) => blog.slug.toLocaleLowerCase() !== slug.toLocaleLowerCase()
+    );
 
     return {
       props: {
