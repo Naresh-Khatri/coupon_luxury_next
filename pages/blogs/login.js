@@ -85,7 +85,7 @@ function BlogsLogin() {
         >
           <Stack spacing={4}>
             <FormControl id="username">
-              <FormLabel>Email address</FormLabel>
+              <FormLabel> Username</FormLabel>
               <Input
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
