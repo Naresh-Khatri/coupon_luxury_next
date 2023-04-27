@@ -48,7 +48,7 @@ function BlogsLogin() {
       router.push("/blogs/admin");
       toast({
         title: "You are logged in",
-        description: "You will be redirected to the admin page",
+        description: "Redirected to the admin page",
         status: "success",
         duration: 5000,
         isClosable: true,
