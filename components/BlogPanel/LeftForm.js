@@ -9,7 +9,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import RuledInput from "../RuledInput";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import dynamic from "next/dynamic";
 const MetaSchemaEditor = dynamic(import("./MetaSchemaEditor"), {
@@ -42,6 +42,15 @@ const LeftForm = ({
     setSlugError("");
     setSlug(value);
   };
+  useEffect(() => {
+    if (title) {
+      const slug = title
+        .toLowerCase()
+        .replace(/[^a-z0-9-]+/gi, "-")
+        .replace(/^-|-$/g, "");
+      setSlug(slug);
+    }
+  }, [title, setSlug]);
   return (
     <Stack p={5} spacing={10}>
       <Stack spacing={3} bg={"#fff"} shadow={"md"} p={5} borderRadius={10}>
