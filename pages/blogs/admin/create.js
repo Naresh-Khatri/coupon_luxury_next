@@ -29,7 +29,7 @@ function Create() {
   const [imageAlt, setImageAlt] = useState("");
   const [metaTitle, setMetaTitle] = useState("");
   const [metaDescription, setMetaDescription] = useState("");
-  const [metaSchema, setMetaSchema] = useState("");
+  // const [metaSchema, setMetaSchema] = useState("");
   const [isPublising, setIsPublishing] = useState(false);
 
   const tinymceEditorRef = useRef(null);
@@ -76,7 +76,7 @@ function Create() {
     const metaDescriptionIsValid =
       metaDescription.trim().length >= 50 &&
       metaDescription.trim().length <= 160;
-    const metaSchemaIsValid = metaSchema.length > 30;
+    // const metaSchemaIsValid = metaSchema.length > 30;
     const formIsValid =
       titleIsValid &&
       slugIsValid &&
@@ -84,8 +84,8 @@ function Create() {
       contentIsValid &&
       coverImgIsValid &&
       metaTitleIsValid &&
-      metaDescriptionIsValid &&
-      metaSchemaIsValid;
+      metaDescriptionIsValid
+      // && metaSchemaIsValid;
     if (!formIsValid) {
       toast({
         title: `${
@@ -103,8 +103,8 @@ function Create() {
             ? "Meta Title"
             : !metaDescriptionIsValid
             ? "Meta Description"
-            : !metaSchemaIsValid
-            ? "Meta Schema"
+            // : !metaSchemaIsValid
+            // ? "Meta Schema"
             : ""
         } is not valid`,
         description: "Please check the form",
@@ -134,7 +134,7 @@ function Create() {
     formData.append("imgAlt", imageAlt);
     formData.append("metaTitle", metaTitle);
     formData.append("metaDescription", metaDescription);
-    formData.append("metaSchema", metaSchema);
+    // formData.append("metaSchema", metaSchema);
     try {
       const res = await axios.post(
         "https://apiv2.couponluxury.com/blogs/v2",
@@ -188,8 +188,8 @@ function Create() {
             setMetaTitle={setMetaTitle}
             metaDescription={metaDescription}
             setMetaDescription={setMetaDescription}
-            metaSchema={metaSchema}
-            setMetaSchema={setMetaSchema}
+            // metaSchema={metaSchema}
+            // setMetaSchema={setMetaSchema}
           />
         </Box>
         <Box p={5}>
