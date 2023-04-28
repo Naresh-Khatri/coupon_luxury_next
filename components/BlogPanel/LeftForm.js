@@ -1,6 +1,6 @@
 import {
   // checkbox,
-  formcontrol,
+  FormControl,
   FormErrorMessage,
   FormHelperText,
   FormLabel,
@@ -27,8 +27,8 @@ const LeftForm = ({
   setMetaTitle,
   metaDescription,
   setMetaDescription,
-  metaSchema,
-  setMetaSchema,
+  // metaSchema,
+  // setMetaSchema,
 }) => {
   const [slugError, setSlugError] = useState("");
   // const [hasMetaSchema, setHasMetaSchema] = useState(false);
