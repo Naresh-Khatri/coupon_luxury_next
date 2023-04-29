@@ -118,17 +118,17 @@ export default function BlogsTable({ blogs }) {
           table.getRowModel().rows.map((row) => (
             <Tr key={row.id}>
               <Td>{row.original.id}</Td>
-              <Td>
+              <Td p={0}>
                 <Image
                   src={row.original.coverImg}
                   alt="blog cover image"
                   height={90}
                   width={160}
-                  style={{ borderRadius: "20px" }}
+                  style={{ borderRadius: "15px", minWidth: "100px" }}
                 />
               </Td>
-              <Td>{row.original.title}</Td>
-              <Td>
+              <Td maxW={"xs"}>{row.original.title}</Td>
+              <Td maxW={"10px"}>
                 {row.original.featured ? (
                   <FontAwesomeIcon
                     icon={faCheckCircle}
@@ -143,7 +143,7 @@ export default function BlogsTable({ blogs }) {
                   />
                 )}
               </Td>
-              <Td>
+              <Td maxW={"10px"}>
                 {row.original.active ? (
                   <FontAwesomeIcon
                     icon={faCheckCircle}
