@@ -83,6 +83,7 @@ const LeftForm = ({
           hintText={"Should be in the range 5 to 40"}
           placeholder={"Enter Image Alt"}
           title={"Image Alt"}
+          earlyShowError={true}
         />
       </Stack>
       <Stack spacing={5} bg={"#fff"} shadow={"md"} p={5} borderRadius={10}>
@@ -94,6 +95,7 @@ const LeftForm = ({
           hintText={"Should be in the range 30 to 70"}
           placeholder={"Enter Meta Title"}
           title={"Meta Title"}
+          earlyShowError={true}
         />
         <RuledInput
           value={metaDescription}
@@ -102,6 +104,7 @@ const LeftForm = ({
           hintText={"Should be in the range 50 to 160"}
           placeholder={"Enter Meta Description"}
           title={"Meta Description"}
+          earlyShowError={true}
         />
         {/* <Checkbox
           checked={true}
