@@ -67,7 +67,8 @@ function Create() {
     setIsPublishing(true);
     const titleIsValid = title.trim().length >= 20;
     const slugIsValid = slug.trim().length >= 5;
-    const imageAltIsValid = imageAlt.trim().length >= 10;
+    const imageAltIsValid =
+      imageAlt.trim().length >= 5 && imageAlt.length <= 40;
     const contentIsValid =
       tinymceEditorRef.current.getContent().trim().length >= 20;
     const coverImgIsValid = coverImg !== null;
@@ -84,8 +85,8 @@ function Create() {
       contentIsValid &&
       coverImgIsValid &&
       metaTitleIsValid &&
-      metaDescriptionIsValid
-      // && metaSchemaIsValid;
+      metaDescriptionIsValid;
+    // && metaSchemaIsValid;
     if (!formIsValid) {
       toast({
         title: `${
@@ -103,9 +104,9 @@ function Create() {
             ? "Meta Title"
             : !metaDescriptionIsValid
             ? "Meta Description"
-            // : !metaSchemaIsValid
-            // ? "Meta Schema"
-            : ""
+            : // : !metaSchemaIsValid
+              // ? "Meta Schema"
+              ""
         } is not valid`,
         description: "Please check the form",
         status: "error",
