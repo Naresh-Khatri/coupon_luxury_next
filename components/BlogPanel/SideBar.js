@@ -13,7 +13,7 @@ function SideBar() {
   const router = useRouter();
   const activeRoute = router.pathname;
   return (
-    <Box as="aside" w={"300px"} h={"full"}>
+    <Box as="aside" w={"25%"} maxW={"xs"} h={"full"}>
       <Flex py={5} justifyContent={"center"} bg={"#0072a0"}>
         <Link href="https://www.couponluxury.com/">
           <a>
