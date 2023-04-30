@@ -65,8 +65,8 @@ function Create() {
 
   const handlePublish = async () => {
     setIsPublishing(true);
-    const titleIsValid = title.trim().length >= 20;
-    const slugIsValid = slug.trim().length >= 5;
+    const titleIsValid = title.trim().length >= 10;
+    const slugIsValid = slug.trim().length >= 10;
     const imageAltIsValid =
       imageAlt.trim().length >= 5 && imageAlt.length <= 40;
     const contentIsValid =
