@@ -11,10 +11,10 @@ import {
 import RuledInput from "../RuledInput";
 import { useEffect, useState } from "react";
 
-// import dynamic from "next/dynamic";
-// const MetaSchemaEditor = dynamic(import("./MetaSchemaEditor"), {
-//   ssr: false,
-// });
+import dynamic from "next/dynamic";
+const MetaSchemaEditor = dynamic(import("./MetaSchemaEditor"), {
+  ssr: false,
+});
 
 const LeftForm = ({
   title,
@@ -27,11 +27,11 @@ const LeftForm = ({
   setMetaTitle,
   metaDescription,
   setMetaDescription,
-  // metaSchema,
-  // setMetaSchema,
+  metaSchema,
+  setMetaSchema,
 }) => {
   const [slugError, setSlugError] = useState("");
-  // const [hasMetaSchema, setHasMetaSchema] = useState(false);
+  const [hasMetaSchema, setHasMetaSchema] = useState(false);
   const updateSlug = (value) => {
     // regex to match only alphanumeric and hyphen
     const regex = /[^a-z0-9-]+/gi;
@@ -107,7 +107,7 @@ const LeftForm = ({
           title={"Meta Description"}
           earlyShowError={true}
         />
-        {/* <Checkbox
+        <Checkbox
           checked={true}
           onChange={(e) => {
             setHasMetaSchema(e.target.checked);
@@ -120,7 +120,7 @@ const LeftForm = ({
             metaSchema={metaSchema}
             setMetaSchema={setMetaSchema}
           />
-        )} */}
+        )}
       </Stack>
     </Stack>
   );
