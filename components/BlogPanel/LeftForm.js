@@ -55,14 +55,15 @@ const LeftForm = ({
     <Stack p={5} spacing={10}>
       <Stack spacing={3} bg={"#fff"} shadow={"md"} p={5} borderRadius={10}>
         <Text>Basic Info</Text>
-        <FormControl isRequired>
-          <FormLabel>Blog Title</FormLabel>
-          <Input
-            placeholder="Enter Title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-        </FormControl>
+        <RuledInput
+          value={title}
+          setValue={setTitle}
+          rule={{ min: 10, max: 70 }}
+          hintText={"Should be in the range 5 to 40"}
+          placeholder={"Enter Image Alt"}
+          title={"Image Alt"}
+          earlyShowError={true}
+        />
         <FormControl isRequired isInvalid={slugError}>
           <FormLabel>Blog Slug</FormLabel>
           <Input
