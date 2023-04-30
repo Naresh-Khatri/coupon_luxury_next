@@ -55,9 +55,9 @@ function RuledInput({
       />
       {/* {inputIsInvalid ? ( */}
       <FormErrorMessage fontSize={"12.5"}>
-        {value.trim().length < 30 &&
+        {value.trim().length < rule.min &&
           `Length: ${value.trim().length}, Minimum allowed ${rule.min}`}
-        {value.trim().length > 70 &&
+        {value.trim().length > rule.max &&
           `Length: ${value.trim().length}, Maximum allowed ${rule.max}`}
       </FormErrorMessage>
       {/* ) : ( */}
