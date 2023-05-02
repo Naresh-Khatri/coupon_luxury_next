@@ -59,9 +59,9 @@ const LeftForm = ({
           value={title}
           setValue={setTitle}
           rule={{ min: 10, max: 70 }}
-          hintText={"Should be in the range 5 to 40"}
-          placeholder={"Enter Image Alt"}
-          title={"Image Alt"}
+          hintText={"Should be in the range 10 to 70"}
+          placeholder={"Enter title"}
+          title={"Blog Title"}
           earlyShowError={true}
         />
         <FormControl isRequired isInvalid={slugError}>
