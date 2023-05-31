@@ -1,5 +1,5 @@
 import {
-  // checkbox,
+  Checkbox,
   FormControl,
   FormErrorMessage,
   FormHelperText,
