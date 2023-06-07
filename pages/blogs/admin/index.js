@@ -65,7 +65,7 @@ const NavBar = () => {
           <a>
             <Image
               title="Home"
-              src="https://ik.imagekit.io/couponluxury/tr:w-200:h-100/main_logo_noj4ZyPyq"
+              src="https://ik.imagekit.io/couponluxury/og_image_1I5dOd_ix?updatedAt=1655124742982"
               alt="CouponLuxury logo"
               width={120}
               height={60}
