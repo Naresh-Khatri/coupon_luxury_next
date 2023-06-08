@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import BlogsTable from "../../../components/BlogPanel/BlogsTable";
+import SetMeta from "../../../utils/SetMeta";
 
 export default function BlogAdminPage() {
   const [blogs, setBlogs] = useState([]);
@@ -32,6 +33,7 @@ export default function BlogAdminPage() {
 
   return (
     <>
+      <SetMeta />
       <Flex h={"full"} w={"full"}>
         <Container maxW="container.xl" bg={"whiteAlpha.300"}>
           <BlogsTable blogs={blogs} />
