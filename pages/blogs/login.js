@@ -13,6 +13,7 @@ import {
 import { useEffect, useState } from "react";
 import account from "../../appwrite/config";
 import { useRouter } from "next/router";
+import SetMeta from "../../utils/SetMeta";
 
 function BlogsLogin() {
   const router = useRouter();
@@ -73,6 +74,7 @@ function BlogsLogin() {
       justify={"center"}
       bg={useColorModeValue("gray.50", "gray.800")}
     >
+      <SetMeta />
       <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
         <Stack align={"center"}>
           <Heading fontSize={"4xl"}>Sign in to your account</Heading>
