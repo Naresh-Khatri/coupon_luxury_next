@@ -63,6 +63,12 @@ function SetMeta({ title, description, keywords, image, url, schema }) {
 const extractScriptContents = (xmlString = "") => {
   const scriptStartTag = '<script type="application/ld+json">';
   const scriptEndTag = "</script>";
+  if (
+    !xmlString ||
+    xmlString.trim().length == 0 ||
+    !xmlString.includes(scriptStartTag)
+  )
+    return [];
 
   const scriptContents = [];
   let startIndex = xmlString.indexOf(scriptStartTag);
