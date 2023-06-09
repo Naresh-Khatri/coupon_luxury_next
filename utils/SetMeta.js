@@ -16,8 +16,7 @@ function SetMeta({ title, description, keywords, image, url, schema }) {
     : "https://ik.imagekit.io/couponluxury/zyro-image__3__2Dw77Pooe.png";
   url = url ? url : "https://www.couponluxury.com/";
 
-  schema = schema || "";
-
+  const scripts = extractScriptContents(schema);
   return (
     <Head>
       {/* TITLE */}
@@ -31,7 +30,13 @@ function SetMeta({ title, description, keywords, image, url, schema }) {
       <meta name="twitter:description" content={description} />
 
       {/* SCHEMA */}
-      <script type="application/ld+json">{schema}</script>
+      {scripts.map((script, index) => (
+        <script
+          key={index}
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: script }}
+        />
+      ))}
 
       {/* KEYWORDS */}
       <meta name="keywords" content={keywords} />
@@ -54,5 +59,34 @@ function SetMeta({ title, description, keywords, image, url, schema }) {
     </Head>
   );
 }
+
+const extractScriptContents = (xmlString = "") => {
+  const scriptStartTag = '<script type="application/ld+json">';
+  const scriptEndTag = "</script>";
+
+  const scriptContents = [];
+  let startIndex = xmlString.indexOf(scriptStartTag);
+
+  while (startIndex !== -1) {
+    const endIndex = xmlString.indexOf(
+      scriptEndTag,
+      startIndex + scriptStartTag.length
+    );
+
+    if (endIndex !== -1) {
+      const scriptContent = xmlString
+        .slice(startIndex + scriptStartTag.length, endIndex)
+        .trim();
+      scriptContents.push(scriptContent);
+    }
+
+    startIndex = xmlString.indexOf(
+      scriptStartTag,
+      endIndex + scriptEndTag.length
+    );
+  }
+
+  return scriptContents;
+};
 
 export default SetMeta;
