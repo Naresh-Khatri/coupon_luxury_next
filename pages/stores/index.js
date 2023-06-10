@@ -2,10 +2,7 @@ import {
   Box,
   Breadcrumb,
   BreadcrumbItem,
-  BreadcrumbLink,
-  Center,
   Container,
-  Flex,
   SimpleGrid,
   Text,
 } from "@chakra-ui/react";
@@ -14,7 +11,7 @@ import StoreCard from "../../components/StoreCard";
 import Header from "../../components/Header";
 import { ChevronRightIcon } from "@chakra-ui/icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEnvelope, faHouse, faShop } from "@fortawesome/free-solid-svg-icons";
+import { faHouse, faShop } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 
 import SetMeta from "../../utils/SetMeta";
@@ -40,8 +37,8 @@ function Stores({ stores }) {
         subTitle={`${stores.length} stores available!`}
       />
 
-      <Container  mt={10} minH={'100vh'} maxW={"6xl"} w="90vw" pb={10}>
-        <Box maxW={1200} w="100vw" px={4}> 
+      <Container mt={10} minH={"100vh"} maxW={"6xl"} w="90vw" pb={10}>
+        <Box maxW={1200} w="100%" px={4}>
           <Box my={4}>
             <Breadcrumb
               spacing="8px"
