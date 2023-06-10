@@ -37,8 +37,8 @@ function Stores({ stores }) {
         subTitle={`${stores.length} stores available!`}
       />
 
-      <Container mt={10} minH={"100vh"} maxW={"6xl"} w="90vw" pb={10}>
-        <Box maxW={1200} w="100%" px={4}>
+      <Container mt={10} minH={"100vh"} maxW={"6xl"} w="90vw" pb={10} px={0}>
+        <Box maxW={1200} w="100%">
           <Box my={4}>
             <Breadcrumb
               spacing="8px"
