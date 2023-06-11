@@ -14,7 +14,6 @@ export default function Document() {
         <meta property="og:site_name" content="CouponLuxury.com" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@CouponLuxury" />
-        <HrefLangs />
         <link
           rel="icon"
           type="image/png"
@@ -58,65 +57,3 @@ export default function Document() {
     </Html>
   );
 }
-
-const HrefLangs = () => {
-  return (
-    <>
-      <link
-        rel="alternate"
-        href="https://www.couponluxury.com/"
-        hrefLang="en-AU"
-      />
-      <link
-        rel="alternate"
-        href="https://www.couponluxury.com/"
-        hrefLang="en-BZ"
-      />
-      <link
-        rel="alternate"
-        href="https://www.couponluxury.com/"
-        hrefLang="en-CA"
-      />
-      <link
-        rel="alternate"
-        href="https://www.couponluxury.com/"
-        hrefLang="en-IE"
-      />
-      <link
-        rel="alternate"
-        href="https://www.couponluxury.com/"
-        hrefLang="en-IN"
-      />
-      <link
-        rel="alternate"
-        href="https://www.couponluxury.com/"
-        hrefLang="en-JM"
-      />
-      <link
-        rel="alternate"
-        href="https://www.couponluxury.com/"
-        hrefLang="en-MY"
-      />
-      <link
-        rel="alternate"
-        href="https://www.couponluxury.com/"
-        hrefLang="en-NZ"
-      />
-      <link
-        rel="alternate"
-        href="https://www.couponluxury.com/"
-        hrefLang="en-PH"
-      />
-      <link
-        rel="alternate"
-        href="https://www.couponluxury.com/"
-        hrefLang="en-US"
-      />
-      <link
-        rel="alternate"
-        href="https://www.couponluxury.com/"
-        hrefLang="en-ZW"
-      />
-    </>
-  );
-};
