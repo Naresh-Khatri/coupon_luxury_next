@@ -4,12 +4,14 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head>
-        {/* THESE ARE ONLY THE DEFAULT HEAD TAGS.  */}{" "}
-        <meta name="theme-color" content="#0072a0" />{" "}
+        {/* THESE ARE ONLY THE DEFAULT HEAD TAGS.  */}
+        <meta name="theme-color" content="#0072a0" />
         <meta
           name="author"
           content="Coupons Luxury, Affiliates, Offers, Deals"
         />
+
+        <meta name="robots" content="index, follow" />
         <meta property="og:type" content="article" />
         <meta property="og:site_name" content="CouponLuxury.com" />
         <meta name="twitter:card" content="summary_large_image" />
