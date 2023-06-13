@@ -1,6 +1,6 @@
 import { Box, Container, Grid, GridItem, Text } from "@chakra-ui/react";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import BlogPreviewSmall from "../../components/BlogPreviewSmall";
 import styles from "../../styles/PageHtml.module.scss";
 
@@ -17,6 +17,23 @@ function BlogPage({ blogData, allBlogs }) {
     type,
     formattedDate,
   } = blogData;
+
+  const [scrollProgress, setScrollProgress] = useState(0);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+  const handleScroll = () => {
+    const scrollY = window.scrollY || window.pageYOffset;
+    const documentHeight =
+      document.documentElement.scrollHeight -
+      document.documentElement.clientHeight;
+    const progress = (scrollY / documentHeight) * 100;
+    setScrollProgress(progress);
+  };
+
   return (
     <>
       <SetMeta
@@ -26,7 +43,8 @@ function BlogPage({ blogData, allBlogs }) {
         url={"https://www.couponluxury.com/blogs/" + blogData.slug}
         schema={blogData.metaSchema}
       />
-      <Container maxW={"1200px"} mb={10}>
+      <ProgressBar progress={scrollProgress} />
+      <Container maxW={"1200px"} mb={10} onScroll={handleScroll}>
         <Grid
           mt={10}
           w="100%"
@@ -78,6 +96,19 @@ function BlogPage({ blogData, allBlogs }) {
     </>
   );
 }
+const ProgressBar = ({ progress }) => {
+  return (
+    <Box
+      position={"fixed"}
+      zIndex={999}
+      bg={"#0072A0"}
+      width={`${progress}%`}
+      top={{ base: "59px", md: "75px" }}
+      transition={"width 0.2s ease-in-out"}
+      h={"5px"}
+    ></Box>
+  );
+};
 
 export const getServerSideProps = async (ctx) => {
   try {
