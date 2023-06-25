@@ -1,10 +1,21 @@
-import { Box, Button, Center, Grid, SimpleGrid, Text } from "@chakra-ui/react";
-import axios from "axios";
+import {
+  Box,
+  Button,
+  Center,
+  Grid,
+  SimpleGrid,
+  Text,
+  useBreakpoint,
+  useBreakpointValue,
+} from "@chakra-ui/react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 import DealCard from "../DealCard";
 
 function DealsOfTheDay({ deals }) {
+  const limitedDeals = useBreakpointValue({
+    base: deals?.slice(0, 12),
+    md: deals?.slice(0, 20),
+  });
   return (
     <Box as="section" mt={10}>
       <Text
@@ -39,7 +50,7 @@ function DealsOfTheDay({ deals }) {
           spacing={{ base: 2, md: 5 }}
           justifyContent="center"
         >
-          {deals.map((deal) => (
+          {limitedDeals.map((deal) => (
             <DealCard
               key={deal.id}
               affURL={deal.affURL}
