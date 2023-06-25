@@ -23,7 +23,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import Banner from "../../components/Banner";
-import OfferCard from "../../components/OfferCard";
 import OfferCardV2 from "../../components/OfferCardV2";
 import RecommendedStores from "../../components/RecommendedStores";
 
@@ -64,6 +63,7 @@ function StorePage({ storeInfo, featuredStores }) {
         title={`${
           storeInfo.storeName
         } Coupons & Deals For ${getMonthAndYear()}`}
+        titleAsH1={true}
       />
       <Center display={"flex"} flexDirection="column">
         <Box maxW={1200} w="100vw" justifyContent={"center"}>
