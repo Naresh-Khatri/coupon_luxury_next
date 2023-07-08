@@ -1,7 +1,4 @@
 User-agent: *
-Disallow: https://admin.couponluxury.com/
-
-User-agent: *
-Allow: /
-
-Sitemap: https://www.couponluxury.com/sitemap.xml
+Disallow: 
+Disallow: /cgi-bin/
+Sitemap: https://couponluxury.com/sitemap.xml
