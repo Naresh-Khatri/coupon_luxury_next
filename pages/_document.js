@@ -5,6 +5,7 @@ export default function Document() {
     <Html lang="en">
       <Head>
         {/* THESE ARE ONLY THE DEFAULT HEAD TAGS.  */}
+        <meta name="verify-admitad" content="38dc9f2a03" />
         <meta name="theme-color" content="#0072a0" />
         <meta
           name="author"
