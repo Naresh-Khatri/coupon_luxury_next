@@ -57,16 +57,14 @@ function StorePage({ storeInfo, featuredStores }) {
     });
     setShowConfetti(true);
     setTimeout(() => {
-      console.log("open");
       setShowConfetti(false);
-      router.push(url);
+      window.open(url, "_blank");
     }, 2000);
   };
   useEffect(() => {
     // set a temp timer for 5 seconds
     if (storeInfo.id === 3) {
       setTimer(setTimeout(handleRedirect, 3000));
-      console.log(storeInfo.id);
     }
 
     if (filterBy == "coupons")
