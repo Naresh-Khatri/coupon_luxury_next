@@ -26,12 +26,10 @@ import { useEffect, useState } from "react";
 import Banner from "../../components/Banner";
 import OfferCardV2 from "../../components/OfferCardV2";
 import RecommendedStores from "../../components/RecommendedStores";
-import Confetti from "../../components/Confetti";
 
 import SetMeta from "../../utils/SetMeta";
 
 import styles from "../../styles/PageHtml.module.scss";
-import { useRouter } from "next/router";
 
 function StorePage({ storeInfo, featuredStores }) {
   const [filteredOffers, setFilteredOffers] = useState([]);
@@ -41,32 +39,7 @@ function StorePage({ storeInfo, featuredStores }) {
     (offer) => offer.offerType == "coupon"
   ).length;
 
-  const router = useRouter();
-  const [timer, setTimer] = useState(null);
-  const [showConfetti, setShowConfetti] = useState(false);
-  const toast = useToast();
-  const handleRedirect = () => {
-    const url =
-      "https://ad.admitad.com/g/gt8k9pi8dw38dc9f2a0351e9080b62/?ulp=https%3A%2F%2Fwww.ever-pretty.com%2Fcollections%2Fcustom-size";
-    toast({
-      title: "Deal applied in new tab!",
-      status: "success",
-      position: "top",
-      duration: 5000,
-      isClosable: true,
-    });
-    setShowConfetti(true);
-    setTimeout(() => {
-      setShowConfetti(false);
-      window.open(url, "_blank");
-    }, 2000);
-  };
   useEffect(() => {
-    // set a temp timer for 5 seconds
-    if (storeInfo.id === 3) {
-      setTimer(setTimeout(handleRedirect, 3000));
-    }
-
     if (filterBy == "coupons")
       setFilteredOffers(
         storeInfo.offers.filter((offer) => offer.offerType == "coupon")
@@ -76,9 +49,6 @@ function StorePage({ storeInfo, featuredStores }) {
         storeInfo.offers.filter((offer) => offer.offerType == "deal")
       );
     else setFilteredOffers(storeInfo.offers);
-    return () => {
-      clearTimeout(timer);
-    };
   }, [filterBy, storeInfo.offers]);
 
   return (
@@ -97,7 +67,6 @@ function StorePage({ storeInfo, featuredStores }) {
         titleAsH1={true}
       />
       <Center display={"flex"} flexDirection="column">
-        {showConfetti && <Confetti />}
         <Box maxW={1200} w="100vw" justifyContent={"center"}>
           <Box p={4}>
             <Breadcrumb
