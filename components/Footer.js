@@ -9,6 +9,7 @@ import {
   HStack,
   IconButton,
 } from "@chakra-ui/react";
+import NextLink from "next/link";
 import {
   faFacebook,
   faInstagram,
@@ -51,17 +52,25 @@ function Footer() {
             <Text fontSize="2xl" fontWeight="bold">
               QUICK LINKS
             </Text>
-            <Link href={"/privacy-policy"}>Privacy policy</Link>
-            <Link href={"/sitemap"}>Sitemap</Link>
-            <Link href={"/about"}>About us</Link>
-            <Link href={"/contact"}>Contact us</Link>
+            <Link as={NextLink} href={"/privacy-policy"}>
+              Privacy policy
+            </Link>
+            <Link as={NextLink} href={"/sitemap"}>
+              Sitemap
+            </Link>
+            <Link as={NextLink} href={"/about"}>
+              About us
+            </Link>
+            <Link as={NextLink} href={"/contact"}>
+              Contact us
+            </Link>
           </Stack>
 
           <Stack align={"flex-start"} fontWeight="semibold">
             <Text fontSize="2xl" fontWeight={"bold"}>
               Categories
             </Text>
-            <Link href={"/categories/appliances"}>
+            <Link as={NextLink} href={"/categories/appliances"}>
               <Box
                 outline={"1px solid white"}
                 borderRadius={50}
@@ -72,7 +81,7 @@ function Footer() {
                 Appliances
               </Box>
             </Link>
-            <Link href={"/categories/books"}>
+            <Link as={NextLink} href={"/categories/books"}>
               <Box
                 outline={"1px solid white"}
                 borderRadius={50}
@@ -83,7 +92,7 @@ function Footer() {
                 books
               </Box>
             </Link>
-            <Link href={"/categories/travel"}>
+            <Link as={NextLink} href={"/categories/travel"}>
               <Box
                 outline={"1px solid white"}
                 borderRadius={50}
@@ -94,7 +103,7 @@ function Footer() {
                 Travel
               </Box>
             </Link>
-            <Link href={"/categories/beauty"}>
+            <Link as={NextLink} href={"/categories/beauty"}>
               <Box
                 outline={"1px solid white"}
                 borderRadius={50}

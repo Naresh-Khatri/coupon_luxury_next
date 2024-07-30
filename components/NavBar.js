@@ -38,20 +38,20 @@ const Links = [
 function NavLink({ children, slug }) {
   const router = useRouter();
   return (
-    <Link href={slug} passHref>
-      <CLink
-        fontSize={18}
-        p={2}
-        rounded={"md"}
-        _hover={{
-          textDecoration: "none",
-          bg: "brand.1000",
-        }}
-        bg={router.pathname == slug ? "brand.1000" : undefined}
-      >
-        <Text>{children}</Text>
-      </CLink>
-    </Link>
+    <CLink
+      as={Link}
+      href={slug}
+      fontSize={18}
+      p={2}
+      rounded={"md"}
+      _hover={{
+        textDecoration: "none",
+        bg: "brand.1000",
+      }}
+      bg={router.pathname == slug ? "brand.1000" : undefined}
+    >
+      <Text>{children}</Text>
+    </CLink>
   );
 }
 
