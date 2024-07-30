@@ -25,10 +25,9 @@ function BlogPreview({ blog }) {
         <Image
           src={thumbnailImg}
           alt={imgAlt}
-          sizes="100%"
           width={100}
           height={100}
-          style={{ borderRadius: "15px" }}
+          style={{ borderRadius: "15px", width: "100%" }}
         />
         <Flex
           p="24px"

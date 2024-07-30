@@ -133,8 +133,7 @@ function StorePage({ storeInfo, featuredStores }) {
                   priority={1}
                   width={200}
                   height={100}
-                  sizes={"100%"}
-                  style={{ borderRadius: "15px" }}
+                  style={{ borderRadius: "15px", width: "100%" }}
                 />
               </Box>
 

@@ -67,11 +67,10 @@ function BlogPage({ blogData, allBlogs }) {
               </Text>
               <Image
                 src={coverImg}
-                sizes={"100%"}
                 alt={imgAlt}
                 width={768}
                 height={432}
-                style={{ borderRadius: "15px" }}
+                style={{ borderRadius: "15px", width: "100%" }}
               />
               <Box
                 as="article"

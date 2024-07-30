@@ -30,8 +30,7 @@ function BlogPreviewSmall({ blog }) {
               alt={imgAlt}
               width={120}
               height={120}
-              sizes={"100%"}
-              style={{ borderRadius: "15px" }}
+              style={{ borderRadius: "15px", width: "100%" }}
             />
           </GridItem>
           <GridItem colSpan={2} p={2}>

@@ -29,8 +29,7 @@ function StoreCard({ title, slug, img }) {
               width={135}
               height={65}
               alt={`${title} - logo`}
-              sizes="100%"
-              style={{ borderRadius: "10px" }}
+              style={{ borderRadius: "10px", width: "100%" }}
             />
           </Box>
           <Flex justify={"center"} align="center" h={"full"}>
