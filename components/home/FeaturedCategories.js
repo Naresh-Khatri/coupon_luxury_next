@@ -62,7 +62,7 @@ function FeaturedCategories({ featuredCat }) {
                     width={350}
                     height={200}
                     alt={category.imgAlt || category.categoryName + " image"}
-                    objectPosition="relative"
+                    // objectPosition="relative"
                     style={{
                       borderRadius: "15px",
                       filter: "brightness(0.5)",

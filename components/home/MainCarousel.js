@@ -65,7 +65,6 @@ function MainCarousel({ slides }) {
                   loader={imageKitLoader}
                   src={slide.imgURL}
                   alt={slide.imgAlt}
-                  layout="fill"
                   sizes="(min-width: 768px) 100vw,
                     (min-width: 1200px) 50vw,
                   33vw"
