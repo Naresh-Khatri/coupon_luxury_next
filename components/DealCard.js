@@ -37,18 +37,16 @@ function DealCard({
       ]}
     >
       <Link href={`/stores/${storeSlug}`}>
-        <a>
-          <Box>
-            <Image
-              width={350}
-              height={175}
-              style={{ borderRadius: "15px" }}
-              title={`Open ${storeName} store`}
-              alt={`${title} - logo`}
-              src={transformPath(storeImg, 180)}
-            />
-          </Box>
-        </a>
+        <Box>
+          <Image
+            width={350}
+            height={175}
+            style={{ borderRadius: "15px" }}
+            title={`Open ${storeName} store`}
+            alt={`${title} - logo`}
+            src={transformPath(storeImg, 180)}
+          />
+        </Box>
       </Link>
       <Text
         fontSize={{ base: 14, lg: 18 }}
@@ -60,26 +58,24 @@ function DealCard({
         {title}
       </Text>
       <Link href={`/deals/${dealSlug}`}>
-        <a>
-          <Button
-            bg="brand.900"
-            color="white"
-            shadow="0px 10px 33px -3px rgba(42, 129, 251, 0.5);"
-            _focus={([{ bg: "white" }], [{ bg: "brand.800" }])}
-            _pressed={([{ bg: "white" }], [{ bg: "brand.800" }])}
-            _hover={{
-              bg: "brand.800",
-              shadow: "0px 10px 33px -3px rgba(42, 129, 251, 0.8)",
-            }}
-            w={{ base: "100", lg: "136" }}
-            h={{ base: "9", lg: "50" }}
-            fontSize={{ base: 14, lg: 20 }}
-            px={5}
-            mb={5}
-          >
-            VIEW DEAL
-          </Button>
-        </a>
+        <Button
+          bg="brand.900"
+          color="white"
+          shadow="0px 10px 33px -3px rgba(42, 129, 251, 0.5);"
+          _focus={([{ bg: "white" }], [{ bg: "brand.800" }])}
+          _pressed={([{ bg: "white" }], [{ bg: "brand.800" }])}
+          _hover={{
+            bg: "brand.800",
+            shadow: "0px 10px 33px -3px rgba(42, 129, 251, 0.8)",
+          }}
+          w={{ base: "100", lg: "136" }}
+          h={{ base: "9", lg: "50" }}
+          fontSize={{ base: 14, lg: 20 }}
+          px={5}
+          mb={5}
+        >
+          VIEW DEAL
+        </Button>
       </Link>
     </Flex>
   );

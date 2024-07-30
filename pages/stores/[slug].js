@@ -80,38 +80,34 @@ function StorePage({ storeInfo, featuredStores }) {
             >
               <BreadcrumbItem>
                 <Link href="/">
-                  <a>
-                    <Box
-                      fontSize="sm"
-                      _hover={{ color: "brand.1000" }}
-                      display="flex"
-                    >
-                      <FontAwesomeIcon
-                        height={"1rem"}
-                        icon={faHouse}
-                        style={{ paddingRight: "10px" }}
-                      />
-                      Home
-                    </Box>
-                  </a>
+                  <Box
+                    fontSize="sm"
+                    _hover={{ color: "brand.1000" }}
+                    display="flex"
+                  >
+                    <FontAwesomeIcon
+                      height={"1rem"}
+                      icon={faHouse}
+                      style={{ paddingRight: "10px" }}
+                    />
+                    Home
+                  </Box>
                 </Link>
               </BreadcrumbItem>
               <BreadcrumbItem>
                 <Link href="/stores">
-                  <a>
-                    <Box
-                      fontSize="sm"
-                      _hover={{ color: "brand.1000" }}
-                      display="flex"
-                    >
-                      <FontAwesomeIcon
-                        height={"1rem"}
-                        icon={faShop}
-                        style={{ paddingRight: "10px" }}
-                      />
-                      Stores
-                    </Box>
-                  </a>
+                  <Box
+                    fontSize="sm"
+                    _hover={{ color: "brand.1000" }}
+                    display="flex"
+                  >
+                    <FontAwesomeIcon
+                      height={"1rem"}
+                      icon={faShop}
+                      style={{ paddingRight: "10px" }}
+                    />
+                    Stores
+                  </Box>
                 </Link>
               </BreadcrumbItem>
               <BreadcrumbItem isCurrentPage>

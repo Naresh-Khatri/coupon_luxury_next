@@ -11,31 +11,28 @@ function RecommendedStores({ stores }) {
       <SimpleGrid columns={2} spacing={5} p={5}>
         {stores.map((store) => (
           <Link key={store.id} href={`/stores/${store.slug}`}>
-            <a>
-              <Flex
-                justify={"center"}
-                _hover={{
-                  transform: "scale(1.2)",
-                  transition: "transform 0.1s ease-in-out",
-                }}
-                style={{
-                  transition: "transform 0.1s ease-in-out",
-                }}
-              >
-                <Image
-                  src={store.image}
-                  alt={`${store.storeName} - logo`}
-                  width={100}
-                  height={50}
-                  style={{ borderRadius: "5px" }}
-                />
-              </Flex>
-            </a>
+            <Flex
+              justify={"center"}
+              _hover={{
+                transform: "scale(1.2)",
+                transition: "transform 0.1s ease-in-out",
+              }}
+              style={{
+                transition: "transform 0.1s ease-in-out",
+              }}
+            >
+              <Image
+                src={store.image}
+                alt={`${store.storeName} - logo`}
+                width={100}
+                height={50}
+                style={{ borderRadius: "5px" }}
+              />
+            </Flex>
           </Link>
         ))}
         {/* {stores.map((store) => (
           <Link key={store.id} href={`/stores/${store.slug}`}>
-            <a>
               <Flex
                 justify={"center"}
                 _hover={{
@@ -54,12 +51,10 @@ function RecommendedStores({ stores }) {
                   style={{ borderRadius: "5px" }}
                 />
               </Flex>
-            </a>
           </Link>
         ))}
         {stores.map((store) => (
           <Link key={store.id} href={`/stores/${store.slug}`}>
-            <a>
               <Flex
                 justify={"center"}
                 _hover={{
@@ -78,12 +73,10 @@ function RecommendedStores({ stores }) {
                   style={{ borderRadius: "5px" }}
                 />
               </Flex>
-            </a>
           </Link>
         ))}
         {stores.map((store) => (
           <Link key={store.id} href={`/stores/${store.slug}`}>
-            <a>
               <Flex
                 justify={"center"}
                 _hover={{
@@ -102,12 +95,10 @@ function RecommendedStores({ stores }) {
                   style={{ borderRadius: "5px" }}
                 />
               </Flex>
-            </a>
           </Link>
         ))}
         {stores.map((store) => (
           <Link key={store.id} href={`/stores/${store.slug}`}>
-            <a>
               <Flex
                 justify={"center"}
                 _hover={{
@@ -126,12 +117,10 @@ function RecommendedStores({ stores }) {
                   style={{ borderRadius: "5px" }}
                 />
               </Flex>
-            </a>
           </Link>
         ))}
         {stores.map((store) => (
           <Link key={store.id} href={`/stores/${store.slug}`}>
-            <a>
               <Flex
                 justify={"center"}
                 _hover={{
@@ -150,12 +139,10 @@ function RecommendedStores({ stores }) {
                   style={{ borderRadius: "5px" }}
                 />
               </Flex>
-            </a>
           </Link>
         ))}
         {stores.map((store) => (
           <Link key={store.id} href={`/stores/${store.slug}`}>
-            <a>
               <Flex
                 justify={"center"}
                 _hover={{
@@ -174,29 +161,26 @@ function RecommendedStores({ stores }) {
                   style={{ borderRadius: "5px" }}
                 />
               </Flex>
-            </a>
           </Link>
         ))} */}
       </SimpleGrid>
       <Center>
         <Link href={"/stores"}>
-          <a>
-            <Button
-              bg="brand.900"
-              color="white"
-              shadow="0px 10px 33px -3px rgba(42, 129, 251, 0.5);"
-              _hover={{
-                bg: "brand.800",
-                shadow: "0px 10px 33px -3px rgba(42, 129, 251, 0.8)",
-              }}
-              size="md"
-              fontSize={15}
-              mb={3}
-              borderRadius={15}
-            >
-              VIEW ALL STORES
-            </Button>
-          </a>
+          <Button
+            bg="brand.900"
+            color="white"
+            shadow="0px 10px 33px -3px rgba(42, 129, 251, 0.5);"
+            _hover={{
+              bg: "brand.800",
+              shadow: "0px 10px 33px -3px rgba(42, 129, 251, 0.8)",
+            }}
+            size="md"
+            fontSize={15}
+            mb={3}
+            borderRadius={15}
+          >
+            VIEW ALL STORES
+          </Button>
         </Link>
       </Center>
     </Box>

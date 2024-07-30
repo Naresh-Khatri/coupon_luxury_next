@@ -88,18 +88,16 @@ function NavBar() {
           <Flex h="100%" alignItems={"center"} justifyContent={"space-between"}>
             <HStack spacing={8}>
               <Link href="https://www.couponluxury.com/">
-                <a>
-                  <Image
-                    title="Home"
-                    src="https://ik.imagekit.io/couponluxury/tr:w-200:h-100/main_logo_noj4ZyPyq"
-                    alt="CouponLuxury logo"
-                    width={150.5}
-                    height={70}
-                    style={{
-                      aspectRatio: 2.15,
-                    }}
-                  />
-                </a>
+                <Image
+                  title="Home"
+                  src="https://ik.imagekit.io/couponluxury/tr:w-200:h-100/main_logo_noj4ZyPyq"
+                  alt="CouponLuxury logo"
+                  width={150.5}
+                  height={70}
+                  style={{
+                    aspectRatio: 2.15,
+                  }}
+                />
               </Link>
               <HStack
                 as={"nav"}
@@ -130,27 +128,26 @@ function NavBar() {
                     overflow="auto"
                   >
                     <MenuItem p={0}>
-                      <Link href={`/stores`}>
-                        <a style={{ width: "full", height: "full" }}>
-                          <Center padding={"6px 12px"}>
-                            <Text fontWeight={"extrabold"}>All Stores</Text>
-                          </Center>
-                        </a>
+                      <Link
+                        href={`/stores`}
+                        style={{ width: "full", height: "full" }}
+                      >
+                        <Center padding={"6px 12px"}>
+                          <Text fontWeight={"extrabold"}>All Stores</Text>
+                        </Center>
                       </Link>
                     </MenuItem>
                     {featuredStores.map((store) => (
                       <MenuItem key={store.id} p={0}>
                         <Link href={`/stores/${store.slug}`}>
-                          <a>
-                            <Box padding={"6px 12px"}>
-                              <Image
-                                src={store.image}
-                                alt={`${store.storeName} - Logo`}
-                                width={80}
-                                height={40}
-                              />
-                            </Box>
-                          </a>
+                          <Box padding={"6px 12px"}>
+                            <Image
+                              src={store.image}
+                              alt={`${store.storeName} - Logo`}
+                              width={80}
+                              height={40}
+                            />
+                          </Box>
                         </Link>
                       </MenuItem>
                     ))}
@@ -178,22 +175,21 @@ function NavBar() {
                     overflow="auto"
                   >
                     <MenuItem p={0}>
-                      <Link href={`/categories`}>
-                        <a style={{ width: "full", height: "full" }}>
-                          <Center padding={"6px 12px"}>
-                            <Text fontWeight={"extrabold"}>All Categories</Text>
-                          </Center>
-                        </a>
+                      <Link
+                        href={`/categories`}
+                        style={{ width: "full", height: "full" }}
+                      >
+                        <Center padding={"6px 12px"}>
+                          <Text fontWeight={"extrabold"}>All Categories</Text>
+                        </Center>
                       </Link>
                     </MenuItem>
                     {featuredCategories.map((category) => (
                       <MenuItem key={category.id} p={0} fontWeight={"semibold"}>
                         <Link href={`/categories/${category.slug}`}>
-                          <a>
-                            <Box padding={"6px 12px"} w={"140px"}>
-                              {category.categoryName}
-                            </Box>
-                          </a>
+                          <Box padding={"6px 12px"} w={"140px"}>
+                            {category.categoryName}
+                          </Box>
                         </Link>
                       </MenuItem>
                     ))}
@@ -245,11 +241,9 @@ function NavBar() {
                       {Links.map((link) => (
                         <Box key={link.name} onClick={onClose}>
                           <Link href={link.slug}>
-                            <a>
-                              <Text fontSize="40" fontWeight="extrabold">
-                                {link.name}
-                              </Text>
-                            </a>
+                            <Text fontSize="40" fontWeight="extrabold">
+                              {link.name}
+                            </Text>
                           </Link>
                         </Box>
                       ))}

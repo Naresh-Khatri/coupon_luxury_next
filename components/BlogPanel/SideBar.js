@@ -16,15 +16,13 @@ function SideBar() {
     <Box as="aside" w={"25%"} maxW={"xs"} h={"full"}>
       <Flex py={5} justifyContent={"center"} bg={"#0072a0"}>
         <Link href="https://www.couponluxury.com/">
-          <a>
-            <Image
-              title="Home"
-              src="https://ik.imagekit.io/couponluxury/tr:w-200:h-100/main_logo_noj4ZyPyq"
-              alt="CouponLuxury logo"
-              width={160}
-              height={80}
-            />
-          </a>
+          <Image
+            title="Home"
+            src="https://ik.imagekit.io/couponluxury/tr:w-200:h-100/main_logo_noj4ZyPyq"
+            alt="CouponLuxury logo"
+            width={160}
+            height={80}
+          />
         </Link>
       </Flex>
       <hr style={{ border: ".1px solid #aaa" }} />

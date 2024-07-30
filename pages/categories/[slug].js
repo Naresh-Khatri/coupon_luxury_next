@@ -78,38 +78,34 @@ function StorePage({ categoryInfo, featuredStores }) {
             >
               <BreadcrumbItem>
                 <Link href="/">
-                  <a>
-                    <Box
-                      fontSize="sm"
-                      _hover={{ color: "brand.1000" }}
-                      display="flex"
-                    >
-                      <FontAwesomeIcon
-                        height={"1rem"}
-                        icon={faHouse}
-                        style={{ paddingRight: "10px" }}
-                      />
-                      Home
-                    </Box>
-                  </a>
+                  <Box
+                    fontSize="sm"
+                    _hover={{ color: "brand.1000" }}
+                    display="flex"
+                  >
+                    <FontAwesomeIcon
+                      height={"1rem"}
+                      icon={faHouse}
+                      style={{ paddingRight: "10px" }}
+                    />
+                    Home
+                  </Box>
                 </Link>
               </BreadcrumbItem>
               <BreadcrumbItem>
                 <Link href="/categories" fontSize="sm">
-                  <a>
-                    <Box
-                      fontSize="sm"
-                      _hover={{ color: "brand.1000" }}
-                      display="flex"
-                    >
-                      <FontAwesomeIcon
-                        height={"1rem"}
-                        icon={faCube}
-                        style={{ paddingRight: "10px" }}
-                      />
-                      Categories
-                    </Box>
-                  </a>
+                  <Box
+                    fontSize="sm"
+                    _hover={{ color: "brand.1000" }}
+                    display="flex"
+                  >
+                    <FontAwesomeIcon
+                      height={"1rem"}
+                      icon={faCube}
+                      style={{ paddingRight: "10px" }}
+                    />
+                    Categories
+                  </Box>
                 </Link>
               </BreadcrumbItem>
               <BreadcrumbItem isCurrentPage>

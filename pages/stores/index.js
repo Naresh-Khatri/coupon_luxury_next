@@ -47,20 +47,18 @@ function Stores({ stores }) {
             >
               <BreadcrumbItem>
                 <Link href="/">
-                  <a>
-                    <Box
-                      fontSize="sm"
-                      _hover={{ color: "brand.1000" }}
-                      display="flex"
-                    >
-                      <FontAwesomeIcon
-                        icon={faHouse}
-                        height={"1rem"}
-                        style={{ paddingRight: "10px" }}
-                      />
-                      Home
-                    </Box>
-                  </a>
+                  <Box
+                    fontSize="sm"
+                    _hover={{ color: "brand.1000" }}
+                    display="flex"
+                  >
+                    <FontAwesomeIcon
+                      icon={faHouse}
+                      height={"1rem"}
+                      style={{ paddingRight: "10px" }}
+                    />
+                    Home
+                  </Box>
                 </Link>
               </BreadcrumbItem>
               <BreadcrumbItem isCurrentPage>

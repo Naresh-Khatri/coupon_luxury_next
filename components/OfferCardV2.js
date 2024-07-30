@@ -49,24 +49,22 @@ function OfferCard({ offerDetails }) {
           <Center minW={"70px"}>
             {fromPage == "categories" ? (
               <Link href={`/stores/${offerDetails.store.slug}`}>
-                <a>
-                  <Box display={["none", "flex"]}>
-                    <Image
-                      src={offerDetails.store.image}
-                      alt={"logo"}
-                      width={140}
-                      height={70}
-                    />
-                  </Box>
-                  <Box display={["flex", "none"]}>
-                    <Image
-                      src={offerDetails.store.image}
-                      alt={"logo"}
-                      width={100}
-                      height={50}
-                    />
-                  </Box>
-                </a>
+                <Box display={["none", "flex"]}>
+                  <Image
+                    src={offerDetails.store.image}
+                    alt={"logo"}
+                    width={140}
+                    height={70}
+                  />
+                </Box>
+                <Box display={["flex", "none"]}>
+                  <Image
+                    src={offerDetails.store.image}
+                    alt={"logo"}
+                    width={100}
+                    height={50}
+                  />
+                </Box>
               </Link>
             ) : (
               <Text
@@ -138,28 +136,26 @@ function OfferCard({ offerDetails }) {
               />
             ) : (
               <Link href={`/deals/${slug}`}>
-                <a>
-                  <Button
-                    bg="brand.900"
-                    color="white"
-                    shadow="0px 10px 33px -3px rgba(42, 129, 251, 0.5);"
-                    _hover={
-                      ([
-                        {
-                          bg: "brand.800",
-                          shadow: "0px 10px 33px -3px rgba(42, 129, 251, 0.8)",
-                        },
-                      ],
-                      [])
-                    }
-                    size="lg"
-                    px={"30px"}
-                    borderRadius={5}
-                    h={[9, 12]}
-                  >
-                    Get Deal
-                  </Button>
-                </a>
+                <Button
+                  bg="brand.900"
+                  color="white"
+                  shadow="0px 10px 33px -3px rgba(42, 129, 251, 0.5);"
+                  _hover={
+                    ([
+                      {
+                        bg: "brand.800",
+                        shadow: "0px 10px 33px -3px rgba(42, 129, 251, 0.8)",
+                      },
+                    ],
+                    [])
+                  }
+                  size="lg"
+                  px={"30px"}
+                  borderRadius={5}
+                  h={[9, 12]}
+                >
+                  Get Deal
+                </Button>
               </Link>
             )}
           </Flex>
@@ -204,14 +200,12 @@ function OfferCard({ offerDetails }) {
     //       <Center>
     //         {fromPage == "categories" ? (
     //           <Link href={`/stores/${offerDetails.store.slug}`}>
-    //             <a>
     //               <Image
     //                 src={offerDetails.store.image}
     //                 alt={"logo"}
     //                 width={100}
     //                 height={50}
     //               />
-    //             </a>
     //           </Link>
     //         ) : (
     //           <Text
@@ -287,7 +281,6 @@ function OfferCard({ offerDetails }) {
     //           />
     //         ) : (
     //           <Link href={`/deals/${slug}`}>
-    //             <a>
     //               <Button
     //                 bg="brand.900"
     //                 color="white"
@@ -305,7 +298,6 @@ function OfferCard({ offerDetails }) {
     //               >
     //                 Get Deal
     //               </Button>
-    //             </a>
     //           </Link>
     //         )}
     //         <Text textAlign={"end"}>

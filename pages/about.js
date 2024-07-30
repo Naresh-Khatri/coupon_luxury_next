@@ -18,7 +18,13 @@ function AboutUs() {
         title="About - CouponLuxury"
         url="https://www.couponluxury.com/about"
       />
-      <Box bg="#ebf8ff" minH={"100vh"} w="100vw" pb={10} pt={{base:0, md:100}}>
+      <Box
+        bg="#ebf8ff"
+        minH={"100vh"}
+        w="100vw"
+        pb={10}
+        pt={{ base: 0, md: 100 }}
+      >
         <Container w={"full"} maxW={1240} h="full">
           <Center height={"full"}>
             <SimpleGrid columns={{ base: 1, md: 2 }} spacing={10}>
@@ -68,7 +74,7 @@ function AboutUs() {
                 </Text>
                 <Box color={"brand.900"} textAlign="end">
                   <Link href="mailto:contact@couponluxury.com">
-                    <a>contact@couponluxury.com</a>
+                    contact@couponluxury.com
                   </Link>
                 </Box>
               </Box>

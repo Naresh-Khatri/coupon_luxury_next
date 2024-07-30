@@ -39,25 +39,21 @@ function SitemapPage({ sitemapData }) {
                   h="fit-content"
                 >
                   <Link href={`/categories/${category.slug}`}>
-                    <a>
-                      <Text
-                        fontSize={"4xl"}
-                        _hover={{
-                          color: "brand.900",
-                          transition: "all .1s ease-in-out",
-                        }}
-                        style={{ transition: "all .1s ease-in-out" }}
-                      >
-                        {category.categoryName}
-                      </Text>
-                    </a>
+                    <Text
+                      fontSize={"4xl"}
+                      _hover={{
+                        color: "brand.900",
+                        transition: "all .1s ease-in-out",
+                      }}
+                      style={{ transition: "all .1s ease-in-out" }}
+                    >
+                      {category.categoryName}
+                    </Text>
                   </Link>
                   {category.subCategories.map((subCat) => {
                     return (
                       <Link key={subCat.id} href={"#"}>
-                        <a>
-                          <Text pb={1}>{subCat.subCategoryName}</Text>
-                        </a>
+                        <Text pb={1}>{subCat.subCategoryName}</Text>
                       </Link>
                     );
                   })}

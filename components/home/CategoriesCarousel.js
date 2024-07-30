@@ -43,39 +43,42 @@ function CategoriesCarousel({ carouselCat }) {
       >
         {carouselCat.map((slide, index) => (
           <SplideSlide key={slide.id}>
-            <Link href={`/categories/${slide.slug}`}>
-              <a
+            <Link
+              href={`/categories/${slide.slug}`}
+              style={{
+                position: "relative",
+                width: "650px",
+                height: "160px",
+              }}
+            >
+              <Box
+                w="full"
                 style={{
-                  position: "relative",
-                  width: "650px",
-                  height: "160px",
+                  transition: "transform 0.2s ease-in",
+                }}
+                _hover={{
+                  transform: "scale(1.03)",
+                  transition: "transform 0.1s ease-in",
                 }}
               >
-                {/* minH={{ base: "20vh", lg: "15vh" }}  */}
-                <Box
-                  w="full"
-                  style={{
-                    transition: "transform 0.2s ease-in",
-                  }}
-                  _hover={{
-                    transform: "scale(1.03)",
-                    transition: "transform 0.1s ease-in",
-                  }}
+                <Image
+                  className={styles.carousel__img}
+                  width={150}
+                  height={75}
+                  // src={slide.image}
+                  src={transformPath(slide.image, 150)}
+                  alt={`Category image: ${slide.categoryName}`}
+                  priority={index <= 6 ? true : false}
+                />
+                <Text
+                  textAlign={"center"}
+                  fontSize={14}
+                  noOfLines={1}
+                  fontWeight="semibold"
                 >
-                  <Image
-                    className={styles.carousel__img}
-                    width={150}
-                    height={75}
-                    // src={slide.image}
-                    src={transformPath(slide.image, 150)}
-                    alt={`Category image: ${slide.categoryName}`}
-                    priority={index <= 6 ? true : false}
-                  />
-                  <Text textAlign={"center"} fontSize={14} noOfLines={1} fontWeight='semibold'>
-                    {slide.categoryName}
-                  </Text>
-                </Box>
-              </a>
+                  {slide.categoryName}
+                </Text>
+              </Box>
             </Link>
           </SplideSlide>
         ))}

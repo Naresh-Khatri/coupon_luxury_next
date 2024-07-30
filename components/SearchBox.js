@@ -148,18 +148,16 @@ function SearchBox() {
                         : `/categories/${result.slug}`
                     }
                   >
-                    <a>
-                      <HStack
-                        justifyContent={"space-between"}
-                        onClick={clearSearch}
-                        fontWeight={"semibold"}
-                      >
-                        <Text>{result.storeName || result.categoryName}</Text>
-                        <Text fontSize={10}>
-                          {result.storeName ? "Store" : "Category"}
-                        </Text>
-                      </HStack>
-                    </a>
+                    <HStack
+                      justifyContent={"space-between"}
+                      onClick={clearSearch}
+                      fontWeight={"semibold"}
+                    >
+                      <Text>{result.storeName || result.categoryName}</Text>
+                      <Text fontSize={10}>
+                        {result.storeName ? "Store" : "Category"}
+                      </Text>
+                    </HStack>
                   </Link>
                   <Divider style={{ height: "1px", background: "#888" }} />
                 </Box>

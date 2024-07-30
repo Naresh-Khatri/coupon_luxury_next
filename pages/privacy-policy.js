@@ -12,11 +12,17 @@ import SetMeta from "../utils/SetMeta";
 function PrivacyPolicyPage() {
   return (
     <>
-    <SetMeta
+      <SetMeta
         title="Privary policy - CouponLuxury"
         url="https://www.couponluxury.com/privacy-policy"
       />
-      <Box bg="#ebf8ff" minH={"100vh"} w="100vw" pb={10} pt={{base:0, md:100}}>
+      <Box
+        bg="#ebf8ff"
+        minH={"100vh"}
+        w="100vw"
+        pb={10}
+        pt={{ base: 0, md: 100 }}
+      >
         <Container maxW={"1240"} w="full" px={10} py={100}>
           <Text
             as="h1"
@@ -74,9 +80,7 @@ function PrivacyPolicyPage() {
             </ListItem>
           </UnorderedList>
           <Link mb={5} href="https://www.couponluxury.com">
-            <a>
-              <Text color={"brand.900"}>www.couponluxury.com</Text>
-            </a>
+            <Text color={"brand.900"}>www.couponluxury.com</Text>
           </Link>
         </Container>
       </Box>

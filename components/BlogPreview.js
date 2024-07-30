@@ -21,52 +21,50 @@ function BlogPreview({ blog }) {
         transition: "transform .1s ease-in-out",
       }}
     >
-      <Link href={`/blogs/${slug}`}>
-        <a style={{ width: "100%" }}>
-          <Image
-            src={thumbnailImg}
-            alt={imgAlt}
-            sizes="100%"
-            width={100}
-            height={100}
-            style={{ borderRadius: "15px" }}
-          />
-          <Flex
-            p="24px"
-            direction={"column"}
-            justify="space-between"
-            align={"start"}
-            h="220"
+      <Link href={`/blogs/${slug}`} style={{ width: "100%" }}>
+        <Image
+          src={thumbnailImg}
+          alt={imgAlt}
+          sizes="100%"
+          width={100}
+          height={100}
+          style={{ borderRadius: "15px" }}
+        />
+        <Flex
+          p="24px"
+          direction={"column"}
+          justify="space-between"
+          align={"start"}
+          h="220"
+        >
+          <Box>
+            <Text noOfLines={2} fontWeight={"semibold"} mb={1}>
+              {title}
+            </Text>
+            <Text color={"gray.500"} fontSize={14} noOfLines={3}>
+              {smallDescription}
+            </Text>
+          </Box>
+          <Button
+            bg="brand.900"
+            color="white"
+            shadow="0px 10px 33px -3px rgba(42, 129, 251, 0.5);"
+            _hover={[
+              {},
+              {
+                bg: "brand.800",
+                shadow: "0px 10px 33px -3px rgba(42, 129, 251, 0.8)",
+              },
+            ]}
+            w={120}
+            borderRadius={10}
+            h={9}
+            fontSize={14}
+            px={5}
           >
-            <Box>
-              <Text noOfLines={2} fontWeight={"semibold"} mb={1}>
-                {title}
-              </Text>
-              <Text color={"gray.500"} fontSize={14} noOfLines={3}>
-                {smallDescription}
-              </Text>
-            </Box>
-            <Button
-              bg="brand.900"
-              color="white"
-              shadow="0px 10px 33px -3px rgba(42, 129, 251, 0.5);"
-              _hover={[
-                {},
-                {
-                  bg: "brand.800",
-                  shadow: "0px 10px 33px -3px rgba(42, 129, 251, 0.8)",
-                },
-              ]}
-              w={120}
-              borderRadius={10}
-              h={9}
-              fontSize={14}
-              px={5}
-            >
-              READ MORE
-            </Button>
-          </Flex>
-        </a>
+            READ MORE
+          </Button>
+        </Flex>
       </Link>
     </Flex>
   );

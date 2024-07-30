@@ -54,16 +54,14 @@ function OfferCard({ offerDetails }) {
           <Center h={"100%"}>
             {fromPage == "categories" ? (
               <Link href={`/stores/${offerDetails.store.slug}`}>
-                <a>
-                  <Box>
-                    <Image
-                      src={offerDetails.store.image}
-                      alt={"logo"}
-                      width={200}
-                      height={100}
-                    />
-                  </Box>
-                </a>
+                <Box>
+                  <Image
+                    src={offerDetails.store.image}
+                    alt={"logo"}
+                    width={200}
+                    height={100}
+                  />
+                </Box>
               </Link>
             ) : (
               <Text
@@ -137,28 +135,26 @@ function OfferCard({ offerDetails }) {
               />
             ) : (
               <Link href={`/deals/${slug}`}>
-                <a>
-                  <Button
-                    bg="brand.900"
-                    color="white"
-                    shadow="0px 10px 33px -3px rgba(42, 129, 251, 0.5);"
-                    _hover={[
-                      {},
-                      {
-                        bg: "brand.800",
-                        shadow: "0px 10px 33px -3px rgba(42, 129, 251, 0.8)",
-                      },
-                    ]}
-                    size="lg"
-                    px={"60px"}
-                    mb={5}
-                    borderRadius={10}
-                    fontSize={{ base: 16, md: 20 }}
-                    h={{ base: 10, md: 12 }}
-                  >
-                    Get Deal
-                  </Button>
-                </a>
+                <Button
+                  bg="brand.900"
+                  color="white"
+                  shadow="0px 10px 33px -3px rgba(42, 129, 251, 0.5);"
+                  _hover={[
+                    {},
+                    {
+                      bg: "brand.800",
+                      shadow: "0px 10px 33px -3px rgba(42, 129, 251, 0.8)",
+                    },
+                  ]}
+                  size="lg"
+                  px={"60px"}
+                  mb={5}
+                  borderRadius={10}
+                  fontSize={{ base: 16, md: 20 }}
+                  h={{ base: 10, md: 12 }}
+                >
+                  Get Deal
+                </Button>
               </Link>
             )}
           </Center>

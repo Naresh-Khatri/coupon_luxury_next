@@ -61,75 +61,74 @@ function ContactPage() {
             <Box>
               <Box color={"brand.900"} fontWeight="extrabold">
                 <Link href="mailto:contact@couponluxury.com">
-                  <a>contact@couponluxury.com</a>
+                  contact@couponluxury.com
                 </Link>
               </Box>
             </Box>
             <HStack as={"nav"} spacing={7} mt={2}>
-              <Link href="https://facebook.com/CouponLuxury/">
-                <a target="_blank">
-                  <IconButton
-                    icon={
-                      <FontAwesomeIcon
-                        size="3x"
-                        icon={faFacebook}
-                        color="#4267B2"
-                      />
-                    }
-                  />
-                </a>
+              <Link href="https://facebook.com/CouponLuxury/" target="_blank">
+                <IconButton
+                  icon={
+                    <FontAwesomeIcon
+                      size="3x"
+                      icon={faFacebook}
+                      color="#4267B2"
+                    />
+                  }
+                />
               </Link>
-              <Link href="https://twitter.com/coupon_luxury">
-                <a target="_blank">
-                  <IconButton
-                    icon={
-                      <FontAwesomeIcon
-                        size="3x"
-                        icon={faTwitter}
-                        color="#1DA1F2"
-                      />
-                    }
-                  />
-                </a>
+              <Link href="https://twitter.com/coupon_luxury" target="_blank">
+                <IconButton
+                  icon={
+                    <FontAwesomeIcon
+                      size="3x"
+                      icon={faTwitter}
+                      color="#1DA1F2"
+                    />
+                  }
+                />
               </Link>
-              <Link href="https://www.instagram.com/couponluxury/">
-                <a target="_blank">
-                  <IconButton
-                    icon={
-                      <FontAwesomeIcon
-                        size="3x"
-                        icon={faInstagram}
-                        color="#E1306C"
-                      />
-                    }
-                  />
-                </a>
+              <Link
+                href="https://www.instagram.com/couponluxury/"
+                target="_blank"
+              >
+                <IconButton
+                  icon={
+                    <FontAwesomeIcon
+                      size="3x"
+                      icon={faInstagram}
+                      color="#E1306C"
+                    />
+                  }
+                />
               </Link>
-              <Link href="https://youtube.com/channel/UCiGBpYZFIzyw_R5W1KUocJQ">
-                <a target="_blank">
-                  <IconButton
-                    icon={
-                      <FontAwesomeIcon
-                        size="3x"
-                        icon={faYoutube}
-                        color="#FF0000"
-                      />
-                    }
-                  />
-                </a>
+              <Link
+                href="https://youtube.com/channel/UCiGBpYZFIzyw_R5W1KUocJQ"
+                target="_blank"
+              >
+                <IconButton
+                  icon={
+                    <FontAwesomeIcon
+                      size="3x"
+                      icon={faYoutube}
+                      color="#FF0000"
+                    />
+                  }
+                />
               </Link>
-              <Link href="https://www.pinterest.com/couponluxury/">
-                <a target="_blank">
-                  <IconButton
-                    icon={
-                      <FontAwesomeIcon
-                        size="3x"
-                        icon={faPinterest}
-                        color="#E60023"
-                      />
-                    }
-                  />
-                </a>
+              <Link
+                href="https://www.pinterest.com/couponluxury/"
+                target="_blank"
+              >
+                <IconButton
+                  icon={
+                    <FontAwesomeIcon
+                      size="3x"
+                      icon={faPinterest}
+                      color="#E60023"
+                    />
+                  }
+                />
               </Link>
             </HStack>
           </Box>

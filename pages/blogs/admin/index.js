@@ -64,15 +64,13 @@ const NavBar = () => {
         justifyContent={"space-between"}
       >
         <Link href="https://www.couponluxury.com/">
-          <a>
-            <Image
-              title="Home"
-              src="https://ik.imagekit.io/couponluxury/og_image_1I5dOd_ix?updatedAt=1655124742982"
-              alt="CouponLuxury logo"
-              width={120}
-              height={60}
-            />
-          </a>
+          <Image
+            title="Home"
+            src="https://ik.imagekit.io/couponluxury/og_image_1I5dOd_ix?updatedAt=1655124742982"
+            alt="CouponLuxury logo"
+            width={120}
+            height={60}
+          />
         </Link>
         <Button colorScheme="red" onClick={handleLogout}>
           Logout

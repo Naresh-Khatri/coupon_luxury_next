@@ -47,20 +47,18 @@ function index({ featuredCat }) {
             >
               <BreadcrumbItem>
                 <Link href="/" passHref>
-                  <a>
-                    <Box
-                      fontSize="sm"
-                      _hover={{ color: "brand.1000" }}
-                      display="flex"
-                    >
-                      <FontAwesomeIcon
-                        height={"1rem"}
-                        icon={faHouse}
-                        style={{ paddingRight: "10px" }}
-                      />
-                      Home
-                    </Box>
-                  </a>
+                  <Box
+                    fontSize="sm"
+                    _hover={{ color: "brand.1000" }}
+                    display="flex"
+                  >
+                    <FontAwesomeIcon
+                      height={"1rem"}
+                      icon={faHouse}
+                      style={{ paddingRight: "10px" }}
+                    />
+                    Home
+                  </Box>
                 </Link>
               </BreadcrumbItem>
               <BreadcrumbItem isCurrentPage>
@@ -84,50 +82,48 @@ function index({ featuredCat }) {
           >
             {featuredCat.map((category) => (
               <Link key={category.id} href={`/categories/${category.slug}`}>
-                <a>
-                  <Box
-                    position={"relative"}
-                    _hover={{
-                      opacity: 0.9,
-                      transform: "scale(1.07)",
-                      transition: "all .1s easy-in-out",
+                <Box
+                  position={"relative"}
+                  _hover={{
+                    opacity: 0.9,
+                    transform: "scale(1.07)",
+                    transition: "all .1s easy-in-out",
+                  }}
+                  style={{ transition: "all .1s ease-in-out" }}
+                >
+                  <Image
+                    src={category.image}
+                    width={350}
+                    height={200}
+                    alt={category.imgAlt}
+                    style={{
+                      borderRadius: "15px",
+                      filter: "brightness(0.5)",
                     }}
-                    style={{ transition: "all .1s ease-in-out" }}
+                  />
+                  <Flex
+                    style={{ position: "absolute", top: 0, left: 0 }}
+                    w="350px"
+                    h={"200px"}
+                    direction="column"
+                    justify={"center"}
+                    align={"center"}
                   >
-                    <Image
-                      src={category.image}
-                      width={350}
-                      height={200}
-                      alt={category.imgAlt}
-                      style={{
-                        borderRadius: "15px",
-                        filter: "brightness(0.5)",
-                      }}
-                    />
-                    <Flex
-                      style={{ position: "absolute", top: 0, left: 0 }}
-                      w="350px"
-                      h={"200px"}
-                      direction="column"
-                      justify={"center"}
-                      align={"center"}
+                    <Text
+                      as={"h4"}
+                      alignContent="center"
+                      color="white"
+                      fontSize={"3xl"}
+                      fontWeight={"extrabold"}
+                      textAlign={"center"}
                     >
-                      <Text
-                        as={"h4"}
-                        alignContent="center"
-                        color="white"
-                        fontSize={"3xl"}
-                        fontWeight={"extrabold"}
-                        textAlign={"center"}
-                      >
-                        {category.categoryName}
-                      </Text>
-                      <Text as={"p"} alignContent="center" color="white">
-                        {`${category.offers.length} Deals / Coupons`}
-                      </Text>
-                    </Flex>
-                  </Box>
-                </a>
+                      {category.categoryName}
+                    </Text>
+                    <Text as={"p"} alignContent="center" color="white">
+                      {`${category.offers.length} Deals / Coupons`}
+                    </Text>
+                  </Flex>
+                </Box>
               </Link>
             ))}
           </SimpleGrid>

@@ -45,25 +45,23 @@ function NotFoundPage() {
           <Image src={"/assets/404.svg"} width={300} height={300} alt={"404"} />
         </Box>
         <Link href={"/"}>
-          <a>
-            <Button
-              mt={5}
-              bg="brand.900"
-              color="white"
-              shadow="0px 10px 33px -3px rgba(42, 129, 251, 0.5);"
-              _hover={{
-                bg: "brand.800",
-                shadow: "0px 10px 33px -3px rgba(42, 129, 251, 0.8)",
-              }}
-              w={"136"}
-              h={"50"}
-              fontSize={20}
-              px={5}
-              mb={5}
-            >
-              GO HOME
-            </Button>
-          </a>
+          <Button
+            mt={5}
+            bg="brand.900"
+            color="white"
+            shadow="0px 10px 33px -3px rgba(42, 129, 251, 0.5);"
+            _hover={{
+              bg: "brand.800",
+              shadow: "0px 10px 33px -3px rgba(42, 129, 251, 0.8)",
+            }}
+            w={"136"}
+            h={"50"}
+            fontSize={20}
+            px={5}
+            mb={5}
+          >
+            GO HOME
+          </Button>
         </Link>
       </Flex>
     </>
