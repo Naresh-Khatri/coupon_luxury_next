@@ -15,7 +15,7 @@ import {
 } from "@chakra-ui/react";
 import { Fade, Slide } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon, ChevronDownIcon } from "@chakra-ui/icons";
-import Image from "next/future/image";
+import Image from "next/image";
 import Link from "next/link";
 import { Link as CLink } from "@chakra-ui/react";
 import { useRouter } from "next/router";

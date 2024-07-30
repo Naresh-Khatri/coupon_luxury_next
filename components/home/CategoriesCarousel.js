@@ -1,6 +1,6 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
-import Image from "next/future/image";
+import Image from "next/image";
 import Link from "next/link";
 
 import "@splidejs/react-splide/css";

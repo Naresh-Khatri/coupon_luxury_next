@@ -1,6 +1,6 @@
 import { Box, Center, Flex, Text } from "@chakra-ui/react";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
-import Image from "next/future/image";
+import Image from "next/image";
 import { useRef, useState } from "react";
 
 function DealsOfTheDay({ featuredStores }) {
