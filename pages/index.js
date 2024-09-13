@@ -29,7 +29,8 @@ export default function Home({
           Couponluxury: Deals, coupon codes, Discounts & offers
         </Text>
         <Text as="h2" hidden>
-        Find Your Luxury Deals: Exclusive Discounts and Offers on High-End Brands
+          Find Your Luxury Deals: Exclusive Discounts and Offers on High-End
+          Brands
         </Text>
         <Box pt={5} w={"100vw"} maxW={1300}>
           <MainCarousel slides={slides} />
@@ -46,6 +47,7 @@ export default function Home({
 export const getStaticProps = async () => {
   try {
     const res = await fetch(process.env.domain + "/main");
+    console.log("domain = ", process.env.domain);
     const {
       slides,
       featuredStores,
@@ -66,6 +68,6 @@ export const getStaticProps = async () => {
     };
   } catch (err) {
     console.log(err);
-    return { redirect: { destination: "/not-found", permanent: false } };
+    // return { redirect: { destination: "/not-found", permanent: false } };
   }
 };
