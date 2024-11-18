@@ -1,6 +1,7 @@
 import { ChakraProvider } from "@chakra-ui/react";
 import { extendTheme } from "@chakra-ui/react";
 import Layout from "../layouts/Layout";
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 import "../styles/globals.css";
 
@@ -19,7 +20,7 @@ const activeLabelStyles = {
 const theme = extendTheme({
   colors,
   config: {
-    initialColorMode: 'light',
+    initialColorMode: "light",
     useSystemColorMode: true,
   },
   components: {
@@ -59,8 +60,9 @@ function MyApp({ Component, pageProps }) {
   return (
     <ChakraProvider theme={theme}>
       <Layout>
-          <Component {...pageProps} />
+        <Component {...pageProps} />
       </Layout>
+      <GoogleAnalytics gaId="G-GW2KCXB7MJ" />
     </ChakraProvider>
   );
 }
