@@ -2,7 +2,13 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   images: {
-    domains: ["ik.imagekit.io"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "ik.imagekit.io",
+        port: "",
+      },
+    ],
   },
   env: {
     domain: "https://apiv2.couponluxury.com",
