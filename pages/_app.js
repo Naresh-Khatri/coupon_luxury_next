@@ -1,9 +1,9 @@
 import { ChakraProvider } from "@chakra-ui/react";
 import { extendTheme } from "@chakra-ui/react";
 import Layout from "../layouts/Layout";
-import { GoogleAnalytics } from "@next/third-parties/google";
-
+import { Inter } from "next/font/google";
 import "../styles/globals.css";
+const inter = Inter({ subsets: ["latin"] });
 
 const colors = {
   brand: {
@@ -60,7 +60,9 @@ function MyApp({ Component, pageProps }) {
   return (
     <ChakraProvider theme={theme}>
       <Layout>
-        <Component {...pageProps} />
+        <main className={inter.className}>
+          <Component {...pageProps} />
+        </main>
       </Layout>
       {/* <GoogleAnalytics gaId="G-GW2KCXB7MJ" /> */}
       {/* <GoogleAnalytics gaId="G-EE83FLWJM0" /> */}
