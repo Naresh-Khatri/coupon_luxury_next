@@ -4,14 +4,16 @@ body {
 }
 
 * {
-  font-family: "Rubik", sans-serif;
+  /* font-family: "Rubik", sans-serif; */
   /* font-weight: 600; */
 }
 
-.ace_editor, .ace_editor *{
-font-family: "Monaco", "Menlo", "Ubuntu Mono", "Droid Sans Mono", "Consolas", monospace !important;
-font-weight: 400 !important;
-letter-spacing: 0 !important;
+.ace_editor,
+.ace_editor * {
+  font-family: "Monaco", "Menlo", "Ubuntu Mono", "Droid Sans Mono", "Consolas",
+    monospace !important;
+  font-weight: 400 !important;
+  letter-spacing: 0 !important;
 }
 .ham-background {
   background-color: #133b73;
@@ -47,4 +49,3 @@ a {
 a:hover {
   text-decoration: none;
 }
-
