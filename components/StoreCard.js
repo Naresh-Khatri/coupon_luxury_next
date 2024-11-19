@@ -26,8 +26,8 @@ function StoreCard({ title, slug, img }) {
           <Box w={"full"}>
             <Image
               src={img}
-              width={135}
-              height={65}
+              width={200}
+              height={200}
               alt={`${title} - logo`}
               style={{ borderRadius: "10px", width: "100%" }}
             />

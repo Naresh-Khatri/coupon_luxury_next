@@ -68,8 +68,8 @@ function BlogPage({ blogData, allBlogs }) {
               <Image
                 src={coverImg}
                 alt={imgAlt}
-                width={768}
-                height={432}
+                width={800}
+                height={800}
                 style={{ borderRadius: "15px", width: "100%" }}
               />
               <Box
@@ -116,7 +116,7 @@ export const getServerSideProps = async (ctx) => {
     const blogData = await res.json();
     res = await fetch(process.env.domain + "/blogs?limit=10");
     const allBlogs = (await res.json()).filter(
-      (blog) => blog.slug.toLocaleLowerCase() !== slug.toLocaleLowerCase()
+      (blog) => blog.slug.toLocaleLowerCase() !== slug.toLocaleLowerCase(),
     );
 
     return {

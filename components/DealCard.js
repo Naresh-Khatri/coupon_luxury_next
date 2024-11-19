@@ -39,12 +39,12 @@ function DealCard({
       <Link href={`/stores/${storeSlug}`}>
         <Box>
           <Image
-            width={350}
-            height={175}
+            width={200}
+            height={200}
             style={{ borderRadius: "15px" }}
             title={`Open ${storeName} store`}
             alt={`${title} - logo`}
-            src={transformPath(storeImg, 180)}
+            src={transformPath(storeImg, 400)}
           />
         </Box>
       </Link>
