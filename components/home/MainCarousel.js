@@ -13,12 +13,12 @@ import "@splidejs/splide/css/skyblue";
 function MainCarousel({ slides }) {
   const options = {
     type: "loop",
-    interval: 3000,
+    interval: 4000,
     autoplay: true,
-    speed: 3000,
+    speed: 1000,
     perMove: 1,
     rewind: true,
-    easing: "cubic-bezier(0.25, 1, 0.5, 1)",
+    // easing: "cubic-bezier(0.25, 1, 0.5, 1)",
     perPage: 2,
     breakpoints: {
       1100: {
