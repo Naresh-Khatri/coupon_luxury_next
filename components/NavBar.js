@@ -241,7 +241,7 @@ function NavBar() {
                       {Links.map((link) => (
                         <Box key={link.name} onClick={onClose}>
                           <Link href={link.slug}>
-                            <Text fontSize="40" fontWeight="extrabold">
+                            <Text fontSize="32" fontWeight="">
                               {link.name}
                             </Text>
                           </Link>
