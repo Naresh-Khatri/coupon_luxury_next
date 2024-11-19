@@ -36,17 +36,17 @@ function StorePage({ storeInfo, featuredStores }) {
   const [filterBy, setFilterBy] = useState("all");
 
   const couponCount = storeInfo.offers.filter(
-    (offer) => offer.offerType == "coupon"
+    (offer) => offer.offerType == "coupon",
   ).length;
 
   useEffect(() => {
     if (filterBy == "coupons")
       setFilteredOffers(
-        storeInfo.offers.filter((offer) => offer.offerType == "coupon")
+        storeInfo.offers.filter((offer) => offer.offerType == "coupon"),
       );
     else if (filterBy == "deals")
       setFilteredOffers(
-        storeInfo.offers.filter((offer) => offer.offerType == "deal")
+        storeInfo.offers.filter((offer) => offer.offerType == "deal"),
       );
     else setFilteredOffers(storeInfo.offers);
   }, [filterBy, storeInfo.offers]);
@@ -143,6 +143,7 @@ function StorePage({ storeInfo, featuredStores }) {
                 borderRadius={15}
                 my={3}
                 fontWeight={"semibold"}
+                display={{ base: "none", md: "block" }}
               >
                 <Text fontSize={"3xl"}>Filter</Text>
                 <RadioGroup onChange={(e) => setFilterBy(e)} value={filterBy}>
@@ -159,7 +160,7 @@ function StorePage({ storeInfo, featuredStores }) {
                 <RecommendedStores stores={featuredStores} />
               </Box>
             </GridItem>
-            <GridItem px={4} colSpan={5}>
+            <GridItem px={4} colSpan={5} pt={{ base: 4, md: 0 }}>
               {filteredOffers.map((offer) => (
                 <Box key={offer.id} mb={4}>
                   {/* <OfferCard
@@ -201,6 +202,26 @@ function StorePage({ storeInfo, featuredStores }) {
             </GridItem>
           </Grid>
           <Box
+            bg={"white"}
+            p={4}
+            borderRadius={15}
+            my={3}
+            fontWeight={"semibold"}
+            display={{ base: "block", md: "hidden" }}
+            mx={4}
+          >
+            <Text fontSize={"3xl"}>Filter</Text>
+            <RadioGroup onChange={(e) => setFilterBy(e)} value={filterBy}>
+              <Stack>
+                <Radio value="all">All({storeInfo.offers.length})</Radio>
+                <Radio value="coupons">Coupons({couponCount})</Radio>
+                <Radio value="deals">
+                  Deals({storeInfo.offers.length - couponCount})
+                </Radio>
+              </Stack>
+            </RadioGroup>
+          </Box>
+          <Box
             bg="white"
             borderRadius={15}
             minH={100}
@@ -220,7 +241,7 @@ export default StorePage;
 export const getServerSideProps = async (ctx) => {
   try {
     let res = await fetch(
-      process.env.domain + "/stores/getUsingSlug/" + ctx.params.slug
+      process.env.domain + "/stores/getUsingSlug/" + ctx.params.slug,
     );
     const storeInfo = await res.json();
     res = await fetch(process.env.domain + "/stores?featured=true&limit=16");
