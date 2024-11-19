@@ -62,7 +62,8 @@ function MyApp({ Component, pageProps }) {
       <Layout>
         <Component {...pageProps} />
       </Layout>
-      <GoogleAnalytics gaId="G-GW2KCXB7MJ" />
+      {/* <GoogleAnalytics gaId="G-GW2KCXB7MJ" /> */}
+      {/* <GoogleAnalytics gaId="G-EE83FLWJM0" /> */}
     </ChakraProvider>
   );
 }
