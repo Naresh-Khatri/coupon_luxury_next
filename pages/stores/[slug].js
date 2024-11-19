@@ -207,7 +207,7 @@ function StorePage({ storeInfo, featuredStores }) {
             borderRadius={15}
             my={3}
             fontWeight={"semibold"}
-            display={{ base: "block", md: "hidden" }}
+            display={{ base: "block", md: "none" }}
             mx={4}
           >
             <Text fontSize={"3xl"}>Filter</Text>
