@@ -1,82 +1,129 @@
 .page_html {
   all: revert;
+  
   * {
-    font-family: Helvetica, sans-serif;
-    // font-weight: normal;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
   }
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    margin: 0;
+
+  // Base heading styles
+  h1, h2, h3, h4, h5, h6 {
+    margin: 2.5rem 0 1.25rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    color: #0f172a; // Slate 900
+    
+    @media screen and (max-width: 768px) {
+      letter-spacing: -0.01em;
+      margin: 2rem 0 1rem;
+    }
   }
+
   p {
-    margin-bottom: 10px;
+    margin-bottom: 1.5rem;
+    line-height: 1.8;
+    color: #334155; // Slate 700
+    font-size: 1.125rem;
+    
+    @media screen and (max-width: 768px) {
+      font-size: 1rem;
+      line-height: 1.7;
+      letter-spacing: -0.005em;
+    }
   }
+
   a {
-    text-decoration: underline;
-    color: #0072a0;
+    color: #2563eb; // Blue 600
+    text-decoration: none;
+    border-bottom: 2px solid rgba(37, 99, 235, 0.2);
+    transition: all 0.2s ease;
+    
+    &:hover {
+      border-color: currentColor;
+      background: rgba(37, 99, 235, 0.05);
+    }
   }
+
   img {
     max-width: 100%;
     height: auto;
-  }
-  pre {
-    white-space: pre-wrap;
-    margin-bottom: 5px;
-    margin-top: 5px;
-    padding: 5px 10px;
-    border-radius: 5px;
-  }
-  blockquote {
-    border-left: 4px solid #ccc;
-    margin-bottom: 5px;
-    margin-top: 5px;
-    padding-left: 16px;
+    border-radius: 1rem;
+    margin: 2rem 0;
   }
 
+  pre {
+    background: #f8fafc; // Slate 50
+    border-radius: 0.75rem;
+    padding: 1.25rem 1.5rem;
+    margin: 1.5rem 0;
+    overflow-x: auto;
+    border: 1px solid #e2e8f0; // Slate 200
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  blockquote {
+    border-left: 4px solid #2563eb; // Blue 600
+    margin: 2rem 0;
+    padding: 1.5rem 2rem;
+    background: rgba(37, 99, 235, 0.05);
+    border-radius: 0 0.75rem 0.75rem 0;
+    font-style: italic;
+    color: #1e293b; // Slate 800
+  }
+
+  // Modern responsive headings
   h1 {
-    font-size: 3.5rem !important;
-    line-height: 1;
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
+    background: linear-gradient(135deg, #0f172a, #334155);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    
     @media screen and (max-width: 768px) {
-      font-size: 2.5rem !important;
+      font-size: clamp(2rem, 4vw, 2.5rem);
+      letter-spacing: -0.015em;
     }
   }
+
   h2 {
-    font-size: 2.5rem !important;
+    font-size: clamp(2rem, 4vw, 2.5rem);
+    
     @media screen and (max-width: 768px) {
-      font-size: 2rem !important;
-      line-height: 1em;
+      font-size: clamp(1.75rem, 3vw, 2rem);
+      letter-spacing: -0.01em;
     }
   }
+
   h3 {
-    font-size: 2.15rem !important;
+    font-size: clamp(1.75rem, 3vw, 2.15rem);
+    
     @media screen and (max-width: 768px) {
-      font-size: 1.75rem !important;
-      line-height: 1em;
+      font-size: clamp(1.5rem, 2.5vw, 1.75rem);
     }
   }
+
   h4 {
-    font-size: 2rem !important;
+    font-size: clamp(1.5rem, 2.5vw, 2rem);
+    
     @media screen and (max-width: 768px) {
-      font-size: 1.5rem !important;
-      line-height: 1em;
+      font-size: clamp(1.25rem, 2vw, 1.5rem);
     }
   }
+
   h5 {
-    font-size: 1.5rem !important;
+    font-size: clamp(1.25rem, 2vw, 1.5rem);
+    
     @media screen and (max-width: 768px) {
-      font-size: 1.25rem !important;
-      line-height: 1em;
+      font-size: clamp(1.1rem, 1.5vw, 1.25rem);
     }
   }
+
   h6 {
-    font-size: 1.25rem !important;
+    font-size: clamp(1.1rem, 1.5vw, 1.25rem);
+    
     @media screen and (max-width: 768px) {
-      font-size: 1rem !important;
-      line-height: 1em;
+      font-size: clamp(1rem, 1.25vw, 1.1rem);
     }
   }
 }

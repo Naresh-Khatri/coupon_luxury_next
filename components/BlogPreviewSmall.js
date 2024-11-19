@@ -1,4 +1,4 @@
-import { Box, Grid, GridItem, Text } from "@chakra-ui/react";
+import { Box, Grid, GridItem, Text, Flex, Icon } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -9,40 +9,98 @@ function BlogPreviewSmall({ blog }) {
   return (
     <Link href={`/blogs/${slug}`}>
       <Box
-        shadow={"2xl"}
-        borderRadius={15}
+        position="relative"
+        borderRadius="xl"
+        overflow="hidden"
         m={4}
-        _hover={[
-          {},
-          {
-            bg: "brand.900",
-            color: "white",
+        bg="white"
+        border="1px solid"
+        borderColor="gray.100"
+        transition="all 0.3s ease"
+        _hover={{
+          transform: "translateY(-4px)",
+          shadow: "xl",
+          borderColor: "gray.200",
+          '& img': {
             transform: "scale(1.05)",
-            transition: "background 0.3s",
-          },
-        ]}
-        style={{ transition: "background 0.3s" }}
+          }
+        }}
       >
-        <Grid templateColumns={"repeat(3, 1fr)"}>
-          <GridItem colSpan={1} placeItems={"center"}>
-            <Image
-              src={thumbnailImg}
-              alt={imgAlt}
-              width={120}
-              height={120}
-              style={{ borderRadius: "15px", width: "100%" }}
-            />
+        <Grid 
+          templateColumns={"repeat(3, 1fr)"}
+          gap={4}
+          p={3}
+        >
+          <GridItem 
+            colSpan={1} 
+            overflow="hidden"
+            position="relative"
+          >
+            <Box
+              position="relative"
+              paddingBottom="100%"
+              overflow="hidden"
+            >
+              <Image
+                src={thumbnailImg}
+                alt={imgAlt}
+                fill
+                style={{ 
+                  borderRadius: "12px",
+                  objectFit: "cover",
+                  transition: "transform 0.3s ease"
+                }}
+              />
+            </Box>
           </GridItem>
-          <GridItem colSpan={2} p={2}>
-            <Text noOfLines={2} fontWeight={"semibold"}>
-              {title}
-            </Text>
-            <Text fontSize={12} as={"p"} fontWeight={"semibold"}>
-              {formatDate(createdAt)}
-            </Text>
-            <Text fontSize={12} color="gray.500" noOfLines={2}>
-              {smallDescription}
-            </Text>
+
+          <GridItem 
+            colSpan={2} 
+            p={2}
+            display="flex"
+            flexDirection="column"
+            justifyContent="space-between"
+          >
+            <Box>
+              <Text 
+                fontSize="lg"
+                fontWeight="bold"
+                noOfLines={2}
+                mb={2}
+                color="gray.800"
+                lineHeight="short"
+              >
+                {title}
+              </Text>
+              <Text 
+                fontSize="sm" 
+                color="gray.500" 
+                noOfLines={2}
+                mb={2}
+                lineHeight="tall"
+              >
+                {smallDescription}
+              </Text>
+            </Box>
+            
+            <Flex 
+              alignItems="center" 
+              gap={2}
+            >
+              <Icon 
+                // as={FiCalendar} 
+                color="brand.500" 
+                w={4} 
+                h={4}
+              />
+              <Text 
+                fontSize="sm"
+                color="gray.600"
+                fontWeight="medium"
+              >
+                {formatDate(createdAt)}
+              </Text>
+            </Flex>
           </GridItem>
         </Grid>
       </Box>
