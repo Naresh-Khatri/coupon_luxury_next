@@ -24,7 +24,7 @@ function index({ blogsData }) {
         Our Blog
       </Text>
       <Banner title={"All Blogs"} subTitle={`${blogsData.length} blogs`} />
-      <Container  mt={10} minH={'100vh'} maxW={"6xl"} w="90vw" pb={10}>
+      <Container mt={10} minH={"100vh"} maxW={"6xl"} w="90vw" pb={10}>
         <Center>
           <SimpleGrid columns={{ base: 1, sm: 2, md: 3, lg: 4 }} spacing={5}>
             {blogsData.map((blog) => {
@@ -48,7 +48,8 @@ export const getStaticProps = async () => {
       revalidate: 60,
     };
   } catch (err) {
-    return { redirect: { destination: "/not-found", permanent: false } };
+    console.log(err);
+    // return { redirect: { destination: "/not-found", permanent: false } };
   }
 };
 
