@@ -61,20 +61,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         {/*   rel="stylesheet" */}
         {/* /> */}
         <link rel="icon" href="/favicon.ico" />
-        <script
-          async
-          src="https://www.googletagmanager.com/gtag/js?id=G-GW2KCXB7MJ"
-        ></script>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'G-GW2KCXB7MJ');
-            `,
-          }}
-        />
+
         <script
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2253863056028852"
