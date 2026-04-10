@@ -1,20 +1,19 @@
-import { Box, Container, Grid, GridItem, Text } from "@chakra-ui/react";
+import { Box, Container, Grid, GridItem, Text, Flex, Divider } from "@chakra-ui/react";
+import { motion } from "framer-motion";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import BlogPreviewSmall from "../../components/BlogPreviewSmall";
 import styles from "../../styles/PageHtml.module.scss";
-
 import SetMeta from "../../utils/SetMeta";
+
+const MotionBox = motion(Box);
 
 function BlogPage({ blogData, allBlogs }) {
   const {
     title,
     coverImg,
     fullDescription,
-    featured,
     imgAlt,
-    slug,
-    type,
     formattedDate,
   } = blogData;
 
@@ -22,17 +21,16 @@ function BlogPage({ blogData, allBlogs }) {
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-    window.addEventListener("scroll", handleScroll);
+    const handleScroll = () => {
+      const scrollY = window.scrollY || window.pageYOffset;
+      const documentHeight =
+        document.documentElement.scrollHeight -
+        document.documentElement.clientHeight;
+      setScrollProgress((scrollY / documentHeight) * 100);
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-  const handleScroll = () => {
-    const scrollY = window.scrollY || window.pageYOffset;
-    const documentHeight =
-      document.documentElement.scrollHeight -
-      document.documentElement.clientHeight;
-    const progress = (scrollY / documentHeight) * 100;
-    setScrollProgress(progress);
-  };
 
   return (
     <>
@@ -43,71 +41,137 @@ function BlogPage({ blogData, allBlogs }) {
         url={"https://www.couponluxury.com/blogs/" + blogData.slug}
         schema={blogData.metaSchema}
       />
+
+      {/* Reading progress bar */}
       <ProgressBar progress={scrollProgress} />
-      <Container maxW={"1200px"} mb={10} onScroll={handleScroll}>
+
+      <Container maxW="1200px" px={{ base: 4, md: 6 }} mb={16}>
         <Grid
-          mt={10}
+          mt={{ base: 6, md: 10 }}
           w="100%"
-          templateColumns={{ base: "1fr", lg: "repeat(3, 1fr)" }}
+          templateColumns={{ base: "1fr", lg: "1fr 340px" }}
+          gap={{ base: 8, lg: 10 }}
         >
-          <GridItem colSpan={2}>
-            <Box p={5} shadow="2xl" borderRadius={15}>
-              <Text
-                as={"h1"}
-                fontSize={{ base: "4xl", md: "5xl" }}
-                fontWeight={"extrabold"}
-                lineHeight={1}
-                py={7}
-                color="brand.900"
-              >
-                {title}
-              </Text>
-              <Text as={"p"} pb={3} fontWeight={"semibold"}>
-                {formattedDate}
-              </Text>
-              <Image
-                src={coverImg}
-                alt={imgAlt}
-                width={800}
-                height={800}
-                style={{ borderRadius: "15px", width: "100%" }}
-              />
-              <Box
-                as="article"
-                mt={10}
-                dangerouslySetInnerHTML={{ __html: fullDescription }}
-                className={styles.page_html}
-              ></Box>
-            </Box>
+          {/* Main article */}
+          <GridItem>
+            <MotionBox
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+              bg="white"
+              borderRadius="20px"
+              overflow="hidden"
+              border="1px solid rgba(0,0,0,0.07)"
+              shadow="sm"
+            >
+              {/* Cover image */}
+              <Box position="relative" w="full" style={{ aspectRatio: "16/9" }}>
+                <Image
+                  src={coverImg}
+                  alt={imgAlt}
+                  fill
+                  style={{ objectFit: "cover" }}
+                  priority
+                />
+                {/* Gradient */}
+                <Box
+                  position="absolute"
+                  inset={0}
+                  bgGradient="linear(to-t, blackAlpha.500, transparent 60%)"
+                />
+              </Box>
+
+              {/* Article content */}
+              <Box p={{ base: 5, md: 8 }}>
+                {/* Date + read time */}
+                <Flex align="center" gap={3} mb={4}>
+                  <Box w="24px" h="2px" bg="#C49A3C" borderRadius="full" />
+                  <Text
+                    fontSize="xs"
+                    fontWeight="600"
+                    letterSpacing="1.5px"
+                    textTransform="uppercase"
+                    color="#C49A3C"
+                    fontFamily="var(--font-body)"
+                  >
+                    {formattedDate}
+                  </Text>
+                </Flex>
+
+                {/* Title */}
+                <Text
+                  as="h1"
+                  fontSize={{ base: "3xl", md: "4xl", lg: "5xl" }}
+                  fontWeight="700"
+                  lineHeight="1.1"
+                  mb={6}
+                  color="gray.900"
+                  fontFamily="var(--font-display)"
+                >
+                  {title}
+                </Text>
+
+                <Divider mb={6} borderColor="gray.100" />
+
+                {/* Article body */}
+                <Box
+                  as="article"
+                  dangerouslySetInnerHTML={{ __html: fullDescription }}
+                  className={styles.page_html}
+                />
+              </Box>
+            </MotionBox>
           </GridItem>
-          <GridItem colSpan={1}>
-            <Text pl={5} fontSize={"4xl"} fontWeight={"semibold"}>
-              Latest Blogs
-            </Text>
-            <Box>
-              {allBlogs.map((blog) => {
-                return <BlogPreviewSmall key={blog.id} blog={blog} />;
-              })}
-            </Box>
+
+          {/* Sidebar */}
+          <GridItem>
+            <MotionBox
+              position={{ lg: "sticky" }}
+              top={{ lg: "88px" }}
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5, delay: 0.15, ease: "easeOut" }}
+            >
+              {/* Sidebar heading */}
+              <Flex align="center" gap={3} mb={5} px={1}>
+                <Box w="3px" h="24px" bg="#C49A3C" borderRadius="full" />
+                <Text
+                  fontSize="lg"
+                  fontWeight="700"
+                  color="gray.900"
+                  fontFamily="var(--font-display)"
+                  letterSpacing="0.3px"
+                >
+                  More Articles
+                </Text>
+              </Flex>
+
+              <Box>
+                {allBlogs.slice(0, 8).map((blog) => (
+                  <BlogPreviewSmall key={blog.id} blog={blog} />
+                ))}
+              </Box>
+            </MotionBox>
           </GridItem>
         </Grid>
       </Container>
     </>
   );
 }
-const ProgressBar = ({ progress }) => {
-  return (
-    <Box
-      position={"fixed"}
-      zIndex={999}
-      bg={"#0072A0"}
-      width={`${progress}%`}
-      top={{ base: "59px", md: "75px" }}
-      transition={"width 0.2s ease-in-out"}
-      h={"5px"}
-    ></Box>
-  );
-};
+
+const ProgressBar = ({ progress }) => (
+  <Box
+    position="fixed"
+    zIndex={999}
+    top={{ base: "59px", md: "68px" }}
+    left={0}
+    h="3px"
+    w={`${progress}%`}
+    bgGradient="linear(to-r, #0092c0, #C49A3C)"
+    transition="width 0.15s linear"
+    borderRadius="0 2px 2px 0"
+  />
+);
 
 export const getServerSideProps = async (ctx) => {
   try {
@@ -118,13 +182,9 @@ export const getServerSideProps = async (ctx) => {
     const allBlogs = (await res.json()).filter(
       (blog) => blog.slug.toLocaleLowerCase() !== slug.toLocaleLowerCase(),
     );
-
     return {
       props: {
-        blogData: {
-          ...blogData,
-          formattedDate: formatDate(blogData.createdAt),
-        },
+        blogData: { ...blogData, formattedDate: formatDate(blogData.createdAt) },
         allBlogs,
       },
     };
@@ -135,23 +195,11 @@ export const getServerSideProps = async (ctx) => {
 
 const formatDate = (date) => {
   const months = [
-    "Januaray",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December",
   ];
   const d = new Date(date);
-  const day = d.getDate();
-  const month = months[d.getMonth()];
-  const year = d.getFullYear();
-  return `${month} ${day}, ${year}`;
+  return `${months[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
 };
+
 export default BlogPage;

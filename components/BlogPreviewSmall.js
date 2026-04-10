@@ -1,132 +1,85 @@
-import { Box, Grid, GridItem, Text, Flex, Icon } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
+import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+
+const MotionBox = motion(Box);
 
 function BlogPreviewSmall({ blog }) {
-  const { title, thumbnailImg, imgAlt, createdAt, smallDescription, slug } =
-    blog;
+  const { title, thumbnailImg, imgAlt, createdAt, smallDescription, slug } = blog;
+
   return (
     <Link href={`/blogs/${slug}`}>
-      <Box
-        position="relative"
-        borderRadius="xl"
+      <MotionBox
+        borderRadius="12px"
         overflow="hidden"
-        m={4}
         bg="white"
-        border="1px solid"
-        borderColor="gray.100"
-        transition="all 0.3s ease"
-        _hover={{
-          transform: "translateY(-4px)",
-          shadow: "xl",
-          borderColor: "gray.200",
-          '& img': {
-            transform: "scale(1.05)",
-          }
+        border="1px solid rgba(0,0,0,0.07)"
+        mb={3}
+        initial={{ opacity: 0, x: 16 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.35, ease: "easeOut" }}
+        whileHover={{
+          x: 3,
+          boxShadow: "0 8px 24px rgba(0,0,0,0.09)",
+          transition: { duration: 0.18 },
         }}
       >
-        <Grid 
-          templateColumns={"repeat(3, 1fr)"}
-          gap={4}
-          p={3}
-        >
-          <GridItem 
-            colSpan={1} 
-            overflow="hidden"
+        <Flex gap={3} p={3} align="center">
+          {/* Thumbnail */}
+          <Box
             position="relative"
+            flexShrink={0}
+            w="72px"
+            h="72px"
+            borderRadius="8px"
+            overflow="hidden"
           >
-            <Box
-              position="relative"
-              paddingBottom="100%"
-              overflow="hidden"
-            >
-              <Image
-                src={thumbnailImg}
-                alt={imgAlt}
-                fill
-                style={{ 
-                  borderRadius: "12px",
-                  objectFit: "cover",
-                  transition: "transform 0.3s ease"
-                }}
-              />
-            </Box>
-          </GridItem>
+            <Image
+              src={thumbnailImg}
+              alt={imgAlt}
+              fill
+              style={{ objectFit: "cover" }}
+            />
+          </Box>
 
-          <GridItem 
-            colSpan={2} 
-            p={2}
-            display="flex"
-            flexDirection="column"
-            justifyContent="space-between"
-          >
-            <Box>
-              <Text 
-                fontSize="lg"
-                fontWeight="bold"
-                noOfLines={2}
-                mb={2}
-                color="gray.800"
-                lineHeight="short"
-              >
-                {title}
-              </Text>
-              <Text 
-                fontSize="sm" 
-                color="gray.500" 
-                noOfLines={2}
-                mb={2}
-                lineHeight="tall"
-              >
-                {smallDescription}
-              </Text>
-            </Box>
-            
-            <Flex 
-              alignItems="center" 
-              gap={2}
+          {/* Text */}
+          <Box flex={1} minW={0}>
+            <Text
+              fontSize="sm"
+              fontWeight="700"
+              noOfLines={2}
+              color="gray.900"
+              lineHeight="1.3"
+              mb={1}
+              fontFamily="var(--font-display)"
             >
-              <Icon 
-                // as={FiCalendar} 
-                color="brand.500" 
-                w={4} 
-                h={4}
-              />
-              <Text 
-                fontSize="sm"
-                color="gray.600"
-                fontWeight="medium"
-              >
-                {formatDate(createdAt)}
-              </Text>
-            </Flex>
-          </GridItem>
-        </Grid>
-      </Box>
+              {title}
+            </Text>
+            <Text
+              fontSize="xs"
+              color="#C49A3C"
+              fontWeight="600"
+              letterSpacing="0.5px"
+              fontFamily="var(--font-body)"
+            >
+              {formatDate(createdAt)}
+            </Text>
+          </Box>
+        </Flex>
+      </MotionBox>
     </Link>
   );
 }
+
 const formatDate = (date) => {
   const months = [
-    "Januaray",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December",
   ];
   const d = new Date(date);
-  const day = d.getDate();
-  const month = months[d.getMonth()];
-  const year = d.getFullYear();
-  return `${month} ${day}, ${year}`;
+  return `${months[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
 };
 
 export default BlogPreviewSmall;
