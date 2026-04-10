@@ -1,9 +1,10 @@
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
-import React from "react";
+import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import transformPath from "../utils/transformImagePath";
-// import Button from './utils/Button'
+
+const MotionFlex = motion(Flex);
 
 function DealCard({
   affURL,
@@ -18,66 +19,73 @@ function DealCard({
   endDate,
 }) {
   return (
-    <Flex
+    <MotionFlex
       bg="white"
-      w={{ base: 170, lg: 200 }}
-      h={{ base: 200, lg: 250 }}
+      w={{ base: 160, lg: 196 }}
+      h={{ base: 200, lg: 248 }}
       borderRadius="2xl"
-      direction={"column"}
-      alignItems={"center"}
-      justifyContent={"space-between"}
-      shadow={"2xl"}
-      transition="all 0.2s ease-in-out"
-      _hover={[
-        {},
-        {
-          transform: "scale(1.05)",
-          transition: "all 0.2s ease-in-out",
-        },
-      ]}
+      direction="column"
+      alignItems="center"
+      justifyContent="space-between"
+      shadow="md"
+      overflow="hidden"
+      initial={{ opacity: 0, y: 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-40px" }}
+      transition={{ duration: 0.4, ease: "easeOut" }}
+      whileHover={{
+        y: -6,
+        boxShadow: "0 20px 40px rgba(0,0,0,0.12)",
+        transition: { duration: 0.22, ease: "easeOut" },
+      }}
+      whileTap={{ scale: 0.97, transition: { duration: 0.1 } }}
+      style={{ border: "1px solid rgba(0,0,0,0.06)" }}
     >
-      <Link href={`/stores/${storeSlug}`}>
-        <Box>
+      <Link href={`/stores/${storeSlug}`} style={{ width: "100%" }}>
+        <Box w="full" overflow="hidden">
           <Image
             width={200}
             height={200}
-            style={{ borderRadius: "15px" }}
+            style={{ borderRadius: "16px 16px 0 0", width: "100%", display: "block" }}
             title={`Open ${storeName} store`}
             alt={`${title} - logo`}
             src={transformPath(storeImg, 400)}
           />
         </Box>
       </Link>
+
       <Text
-        fontSize={{ base: 14, lg: 18 }}
-        fontWeight={"400"}
+        fontSize={{ base: 13, lg: 15 }}
+        fontWeight="500"
         textAlign="center"
         px={2}
+        color="gray.700"
         noOfLines={2}
+        lineHeight="1.4"
+        fontFamily="var(--font-body)"
       >
         {title}
       </Text>
-      <Link href={`/deals/${dealSlug}`}>
+
+      <Link href={`/deals/${dealSlug}`} style={{ width: "100%", padding: "0 12px 14px" }}>
         <Button
+          w="full"
+          size="sm"
           bg="brand.900"
           color="white"
-          shadow="0px 10px 33px -3px rgba(42, 129, 251, 0.5);"
-          _focus={([{ bg: "white" }], [{ bg: "brand.800" }])}
-          _pressed={([{ bg: "white" }], [{ bg: "brand.800" }])}
-          _hover={{
-            bg: "brand.800",
-            shadow: "0px 10px 33px -3px rgba(42, 129, 251, 0.8)",
-          }}
-          w={{ base: "100", lg: "136" }}
-          h={{ base: "9", lg: "50" }}
-          fontSize={{ base: 14, lg: 20 }}
-          px={5}
-          mb={5}
+          borderRadius="xl"
+          fontSize={{ base: 12, lg: 13 }}
+          fontWeight="600"
+          letterSpacing="0.5px"
+          h={{ base: "32px", lg: "36px" }}
+          _hover={{ bg: "brand.800" }}
+          _active={{ bg: "brand.700", transform: "scale(0.98)" }}
+          transition="all 0.15s ease"
         >
           VIEW DEAL
         </Button>
       </Link>
-    </Flex>
+    </MotionFlex>
   );
 }
 

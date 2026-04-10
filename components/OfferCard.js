@@ -13,10 +13,13 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
+import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import styles from "../styles/PageHtml.module.scss";
 import CodeRevealingButton from "./CodeRevealingButton/CodeRevealingButton";
+
+const MotionBox = motion(Box);
 
 function OfferCard({ offerDetails }) {
   const {
@@ -34,99 +37,143 @@ function OfferCard({ offerDetails }) {
     fromPage,
     storeName,
   } = offerDetails;
-  const { isOpen, onOpen, onClose, onToggle } = useDisclosure();
+  const { isOpen, onToggle } = useDisclosure();
+
+  const discountLabel =
+    discountType === "percentage"
+      ? discountValue + "%"
+      : "$" + discountValue;
+
   return (
-    <Box
-      bg={"white"}
-      borderRadius={15}
-      p={4}
+    <MotionBox
+      bg="white"
+      borderRadius={16}
+      p={5}
       h="fit-content"
       onClick={onToggle}
+      cursor="pointer"
+      border="1px solid rgba(0,0,0,0.07)"
+      initial={{ opacity: 0, y: 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-30px" }}
+      transition={{ duration: 0.4, ease: "easeOut" }}
+      whileHover={{
+        boxShadow: "0 8px 32px rgba(0,0,0,0.10)",
+        transition: { duration: 0.2 },
+      }}
     >
-      <Text textAlign={"end"}>
-        valid Till:{" "}
-        <Text as={"span"} color="green.500">
-          {endDate}{" "}
+      {/* Validity badge */}
+      <Text
+        textAlign="end"
+        fontSize="xs"
+        fontWeight="500"
+        color="gray.500"
+        mb={2}
+        fontFamily="var(--font-body)"
+      >
+        Valid till:{" "}
+        <Text as="span" color="green.500" fontWeight="600">
+          {endDate}
         </Text>
       </Text>
+
       <Grid templateColumns={{ base: "", md: "repeat(3, 1fr)" }}>
         <GridItem colSpan={{ base: 2, md: 1 }}>
-          <Center h={"100%"}>
-            {fromPage == "categories" ? (
+          <Center h="100%">
+            {fromPage === "categories" ? (
               <Link href={`/stores/${offerDetails.store.slug}`}>
-                <Box>
+                <Box borderRadius={12} overflow="hidden">
                   <Image
                     src={offerDetails.store.image}
-                    alt={"logo"}
+                    alt="logo"
                     width={200}
                     height={100}
                   />
                 </Box>
               </Link>
             ) : (
-              <Text
-                display={{ base: "none", md: "flex" }}
-                color={"white"}
-                borderRadius={15}
-                className="banner-bg"
-                fontSize={"6xl"}
-                fontWeight="extrabold"
-                p={2}
-                w={{ base: "fit-content", md: 200 }}
-                h={{ base: "fit-content", md: 200 }}
-                alignItems={"center"}
-                justifyContent={"center"}
+              <motion.div
+                style={{
+                  display: "none",
+                }}
+                className="discount-badge-desktop"
               >
-                {discountType == "percentage"
-                  ? discountValue + "%"
-                  : "$" + discountValue}
-              </Text>
+                <Box
+                  display={{ base: "none", md: "flex" }}
+                  color="white"
+                  borderRadius={12}
+                  bg="linear-gradient(135deg, #0072a0 0%, #0092c0 100%)"
+                  fontSize="5xl"
+                  fontWeight="800"
+                  p={3}
+                  w={{ base: "fit-content", md: 180 }}
+                  h={{ base: "fit-content", md: 180 }}
+                  alignItems="center"
+                  justifyContent="center"
+                  fontFamily="var(--font-display)"
+                  shadow="0 8px 24px rgba(0,114,160,0.3)"
+                >
+                  {discountLabel}
+                </Box>
+              </motion.div>
             )}
           </Center>
         </GridItem>
-        <GridItem colSpan={2} pl={5}>
-          {fromPage == "stores" ? (
+
+        <GridItem colSpan={2} pl={{ base: 0, md: 5 }}>
+          {fromPage === "stores" ? (
             <Grid templateColumns={{ base: "repeat(5, 1fr)", md: "" }}>
               <GridItem colSpan={{ base: 1, md: 0 }}>
-                <Text
+                <Box
                   display={{ base: "flex", md: "none" }}
-                  color={"white"}
-                  borderRadius={15}
-                  bg="brand.900"
-                  fontSize={"4xl"}
-                  fontWeight="extrabold"
+                  color="white"
+                  borderRadius={10}
+                  bg="linear-gradient(135deg, #0072a0 0%, #0092c0 100%)"
+                  fontSize="3xl"
+                  fontWeight="800"
                   p={2}
                   mr={3}
-                  w={{ base: "fit-content", md: "100%" }}
-                  h={{ base: "fit-content", md: "100%" }}
-                  alignItems={"center"}
-                  justifyContent={"center"}
+                  w="fit-content"
+                  alignItems="center"
+                  justifyContent="center"
+                  fontFamily="var(--font-display)"
                 >
-                  {discountType == "percentage"
-                    ? discountValue + "%"
-                    : "$" + discountValue}
-                </Text>
+                  {discountLabel}
+                </Box>
               </GridItem>
               <GridItem colSpan={{ base: 4, md: 5 }}>
-                <Text fontSize={"2xl"} fontWeight="extrabold" noOfLines={2}>
+                <Text
+                  fontSize="2xl"
+                  fontWeight="700"
+                  noOfLines={2}
+                  fontFamily="var(--font-display)"
+                  lineHeight="1.2"
+                >
                   {title}
                 </Text>
               </GridItem>
             </Grid>
           ) : (
-            <Text fontSize={"2xl"} fontWeight="extrabold" noOfLines={2}>
+            <Text
+              fontSize="2xl"
+              fontWeight="700"
+              noOfLines={2}
+              fontFamily="var(--font-display)"
+              lineHeight="1.2"
+            >
               {title}
             </Text>
           )}
+
           <Box
             mt={3}
             dangerouslySetInnerHTML={{ __html: description }}
             className={styles.page_html}
             noOfLines={2}
-          ></Box>
+          />
+
           <Center p={4}>
-            {}
-            {offerType == "coupon" ? (
+            {offerType === "coupon" ? (
               <CodeRevealingButton
                 code={couponCode}
                 affURL={affURL}
@@ -135,63 +182,74 @@ function OfferCard({ offerDetails }) {
               />
             ) : (
               <Link href={`/deals/${slug}`}>
-                <Button
-                  bg="brand.900"
-                  color="white"
-                  shadow="0px 10px 33px -3px rgba(42, 129, 251, 0.5);"
-                  _hover={[
-                    {},
-                    {
-                      bg: "brand.800",
-                      shadow: "0px 10px 33px -3px rgba(42, 129, 251, 0.8)",
-                    },
-                  ]}
-                  size="lg"
-                  px={"60px"}
-                  mb={5}
-                  borderRadius={10}
-                  fontSize={{ base: 16, md: 20 }}
-                  h={{ base: 10, md: 12 }}
-                >
-                  Get Deal
-                </Button>
+                <motion.div whileHover={{ y: -2 }} whileTap={{ scale: 0.97 }}>
+                  <Button
+                    bg="brand.900"
+                    color="white"
+                    shadow="0 8px 24px rgba(0,114,160,0.35)"
+                    _hover={{ bg: "brand.800", shadow: "0 12px 32px rgba(0,114,160,0.45)" }}
+                    _active={{ bg: "brand.700" }}
+                    size="lg"
+                    px="60px"
+                    mb={5}
+                    borderRadius={12}
+                    fontSize={{ base: 15, md: 18 }}
+                    h={{ base: 10, md: 12 }}
+                    fontWeight="600"
+                    letterSpacing="0.5px"
+                    transition="all 0.2s ease"
+                  >
+                    Get Deal
+                  </Button>
+                </motion.div>
               </Link>
             )}
           </Center>
         </GridItem>
       </Grid>
+
+      {/* Show details toggle */}
       <Button
-        w={"full"}
-        mt={3}
-        fontWeight={100}
-        justifyContent={"space-between"}
-        alignItems={"center"}
-        _hover={{ bg: "transparent" }}
-        _focus={{ bg: "transparent" }}
-        bg={"white"}
+        w="full"
+        mt={2}
+        fontWeight={400}
+        justifyContent="space-between"
+        alignItems="center"
+        _hover={{ bg: "gray.50" }}
+        _focus={{ bg: "gray.50" }}
+        bg="white"
+        borderRadius={10}
+        border="1px solid rgba(0,0,0,0.07)"
+        size="sm"
+        h={9}
+        px={4}
+        fontFamily="var(--font-body)"
+        fontSize={13}
+        color="gray.600"
       >
-        <Box display={"flex"} alignItems="center">
-          {isOpen ? (
-            <ChevronUpIcon fontSize={25} />
-          ) : (
-            <ChevronDownIcon fontSize={25} />
-          )}
-          <Text ml={10} fontSize={"14"} fontWeight="500">
-            Show Details
-          </Text>
+        <Box display="flex" alignItems="center" gap={2}>
+          <motion.div
+            animate={{ rotate: isOpen ? 180 : 0 }}
+            transition={{ duration: 0.25 }}
+          >
+            <ChevronDownIcon fontSize={18} />
+          </motion.div>
+          Show Details
         </Box>
-        <InfoOutlineIcon />
+        <InfoOutlineIcon fontSize={14} />
       </Button>
+
       <Collapse in={isOpen} animateOpacity>
-        <Box px="40px" color="white" mt="4" rounded="md" shadow="md">
+        <Box px={5} mt={3} pb={2}>
           <Box
             dangerouslySetInnerHTML={{ __html: TnC }}
-            color="black"
+            color="gray.700"
             className={styles.page_html}
-          ></Box>
+            fontSize="sm"
+          />
         </Box>
       </Collapse>
-    </Box>
+    </MotionBox>
   );
 }
 
