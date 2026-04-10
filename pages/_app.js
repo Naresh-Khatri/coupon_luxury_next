@@ -1,9 +1,19 @@
 import { ChakraProvider } from "@chakra-ui/react";
 import { extendTheme } from "@chakra-ui/react";
 import Layout from "../layouts/Layout";
-import { Inter } from "next/font/google";
+import { Cormorant_Garamond, DM_Sans } from "next/font/google";
 import "../styles/globals.css";
-const inter = Inter({ subsets: ["latin"] });
+
+const cormorant = Cormorant_Garamond({
+  subsets: ["latin"],
+  weight: ["400", "600", "700"],
+  variable: "--font-display",
+});
+
+const dmSans = DM_Sans({
+  subsets: ["latin"],
+  variable: "--font-body",
+});
 
 const colors = {
   brand: {
@@ -11,17 +21,25 @@ const colors = {
     900: "#0072a0",
     800: "#005290",
     700: "#003270",
+    gold: "#C49A3C",
+    goldLight: "#E8C56A",
+    cream: "#FDFAF6",
   },
 };
 
 const activeLabelStyles = {
   transform: "scale(.85) translateY(-24px)",
 };
+
 const theme = extendTheme({
   colors,
+  fonts: {
+    heading: `var(--font-display), Georgia, serif`,
+    body: `var(--font-body), system-ui, sans-serif`,
+  },
   config: {
     initialColorMode: "light",
-    useSystemColorMode: true,
+    useSystemColorMode: false,
   },
   components: {
     Form: {
@@ -29,14 +47,10 @@ const theme = extendTheme({
         floating: {
           container: {
             _focusWithin: {
-              label: {
-                ...activeLabelStyles,
-              },
+              label: { ...activeLabelStyles },
             },
             "input:not(:placeholder-shown) + label, .chakra-select__wrapper + label, textarea:not(:placeholder-shown) ~ label":
-              {
-                ...activeLabelStyles,
-              },
+              { ...activeLabelStyles },
             label: {
               top: 0,
               left: 0,
@@ -60,12 +74,10 @@ function MyApp({ Component, pageProps }) {
   return (
     <ChakraProvider theme={theme}>
       <Layout>
-        <main className={inter.className}>
+        <main className={`${cormorant.variable} ${dmSans.variable} ${dmSans.className}`}>
           <Component {...pageProps} />
         </main>
       </Layout>
-      {/* <GoogleAnalytics gaId="G-GW2KCXB7MJ" /> */}
-      {/* <GoogleAnalytics gaId="G-EE83FLWJM0" /> */}
     </ChakraProvider>
   );
 }
