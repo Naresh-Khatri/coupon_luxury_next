@@ -46,31 +46,46 @@ function DealsOfTheDay({ featuredStores }) {
     <Box w="full">
       <Center p={{ base: 5, md: 10 }} flexDir="column">
         <Text
-          as={"h2"}
-          fontSize={{ base: "3xl", md: "5xl" }}
-          textAlign={"center"}
-          mb={5}
-          fontWeight="semibold"
+          as="p"
+          fontSize={{ base: "xs", md: "sm" }}
+          fontWeight="600"
+          letterSpacing="3px"
+          color="#C49A3C"
+          textTransform="uppercase"
+          mb={2}
+          fontFamily="var(--font-body)"
         >
-          More Than
-          <Text
-            as={"span"}
-            bgGradient="linear(to-l, #7928CA, #FF0080)"
-            bgClip={"text"}
-          >
-            {" "}
-            1000+ Stores{" "}
-          </Text>
-          In One Place!
+          One destination
         </Text>
         <Text
-          as={"p"}
-          color={"gray.800"}
+          as="h2"
+          fontSize={{ base: "3xl", md: "5xl" }}
+          textAlign="center"
+          mb={3}
+          fontWeight="700"
+          fontFamily="var(--font-display)"
+          lineHeight="1.15"
+        >
+          More Than{" "}
+          <Text
+            as="span"
+            bgGradient="linear(to-r, #0092c0, #C49A3C)"
+            bgClip="text"
+          >
+            1000+ Stores
+          </Text>{" "}
+          In One Place
+        </Text>
+        <Text
+          as="p"
+          color="gray.500"
           textAlign="center"
           display={{ base: "none", md: "block" }}
-          fontWeight="semibold"
+          fontWeight="400"
+          fontSize="md"
+          fontFamily="var(--font-body)"
         >
-          Search your favourite store & get many deals
+          Search your favourite store &amp; get exclusive deals
         </Text>
       </Center>
       <Flex
