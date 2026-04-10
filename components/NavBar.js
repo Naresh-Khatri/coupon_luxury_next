@@ -66,7 +66,7 @@ function NavBar() {
     const promises = [
       axios.get("https://apiv2.couponluxury.com/stores?featered=true&limit=10"),
       axios.get(
-        "https://apiv2.couponluxury.com/categories?featered=true&limit=10"
+        "https://apiv2.couponluxury.com/categories?featered=true&limit=10",
       ),
     ];
     Promise.allSettled(promises).then((res) => {
@@ -77,7 +77,7 @@ function NavBar() {
   }, []);
   return (
     <>
-      <Flex as={"header"} bg="brand.900" justify={"center"} fontWeight="bold">
+      <Flex as={"header"} bg="#1C1C2E" justify={"center"} fontWeight="bold">
         <Box
           color="white"
           px={4}
@@ -90,13 +90,15 @@ function NavBar() {
               <Link href="https://www.couponluxury.com/">
                 <Image
                   title="Home"
-                  src="https://ik.imagekit.io/couponluxury/tr:w-200:h-100/main_logo_noj4ZyPyq"
+                  src="/cl-logo.svg"
                   alt="CouponLuxury logo"
-                  width={150.5}
-                  height={70}
-                  style={{
-                    aspectRatio: 2.15,
-                  }}
+                  width={190}
+                  height={44}
+                  style={
+                    {
+                      // aspectRatio: 2.15,
+                    }
+                  }
                 />
               </Link>
               <HStack
