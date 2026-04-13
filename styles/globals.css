@@ -1,58 +1,115 @@
+@import "tailwindcss";
+
+@theme {
+  --color-gold: #c49a3c;
+  --color-gold-light: #e8c56a;
+  --color-navy: #0d1b2a;
+  --color-navy-mid: #1c2e42;
+  --color-teal: #0092c0;
+  --color-teal-dark: #0072a0;
+  --color-cream: #fdfaf6;
+
+  --color-brand-700: #003270;
+  --color-brand-800: #005290;
+  --color-brand-900: #0072a0;
+  --color-brand-1000: #0092c0;
+
+  --font-display: var(--font-display), Georgia, serif;
+  --font-sans: var(--font-body), system-ui, sans-serif;
+
+  --radius: 0.5rem;
+
+  --color-background: var(--color-cream);
+  --color-foreground: #0d1b2a;
+  --color-muted: #f3efe8;
+  --color-muted-foreground: #6b6b6b;
+  --color-border: #e8e2d7;
+  --color-input: #e8e2d7;
+  --color-ring: var(--color-teal);
+  --color-primary: var(--color-navy);
+  --color-primary-foreground: #ffffff;
+  --color-secondary: var(--color-gold);
+  --color-secondary-foreground: #0d1b2a;
+  --color-accent: var(--color-teal);
+  --color-accent-foreground: #ffffff;
+  --color-destructive: #dc2626;
+  --color-destructive-foreground: #ffffff;
+  --color-card: #ffffff;
+  --color-card-foreground: #0d1b2a;
+  --color-popover: #ffffff;
+  --color-popover-foreground: #0d1b2a;
+}
+
 :root {
-  --gold: #C49A3C;
-  --gold-light: #E8C56A;
-  --navy: #0D1B2A;
-  --navy-mid: #1C2E42;
+  --gold: #c49a3c;
+  --gold-light: #e8c56a;
+  --navy: #0d1b2a;
+  --navy-mid: #1c2e42;
   --teal: #0092c0;
-  --cream: #FDFAF6;
+  --cream: #fdfaf6;
 }
 
-html,
-body {
-  letter-spacing: 0.3px;
-  background-color: var(--cream);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+@layer base {
+  html,
+  body {
+    letter-spacing: 0.3px;
+    background-color: var(--cream);
+    color: var(--navy);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-family: var(--font-body), system-ui, sans-serif;
+  }
 
-/* Refined custom scrollbar */
-::-webkit-scrollbar {
-  width: 6px;
-}
-::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
-::-webkit-scrollbar-thumb {
-  background: #0092c0;
-  border-radius: 3px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #0072a0;
-}
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display), Georgia, serif;
+  }
 
-/* Display font for headings */
-h1, h2, h3, h4 {
-  font-family: var(--font-display), Georgia, serif;
-}
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
 
-.ace_editor,
-.ace_editor * {
-  font-family: "Monaco", "Menlo", "Ubuntu Mono", "Droid Sans Mono", "Consolas",
-    monospace !important;
-  font-weight: 400 !important;
-  letter-spacing: 0 !important;
+  a:hover {
+    text-decoration: none;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #0092c0;
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #0072a0;
+  }
+
+  .ace_editor,
+  .ace_editor * {
+    font-family: "Monaco", "Menlo", "Ubuntu Mono", "Droid Sans Mono",
+      "Consolas", monospace !important;
+    font-weight: 400 !important;
+    letter-spacing: 0 !important;
+  }
 }
 
 /* Mobile menu — deep navy with subtle grid */
 .ham-background {
   background-color: var(--navy);
-  background-image:
-    linear-gradient(rgba(0, 146, 192, 0.06) 1px, transparent 1px),
+  background-image: linear-gradient(
+      rgba(0, 146, 192, 0.06) 1px,
+      transparent 1px
+    ),
     linear-gradient(90deg, rgba(0, 146, 192, 0.06) 1px, transparent 1px);
   background-size: 40px 40px;
 }
 
-/* Hero background — warm cream with fine dot grid */
 .hero-bg {
   background-color: var(--cream);
   background-image: radial-gradient(circle, #d4b896 1px, transparent 1px);
@@ -60,56 +117,149 @@ h1, h2, h3, h4 {
   background-attachment: fixed;
 }
 
-/* Page banner — deep navy gradient */
 .banner-bg {
   width: 100%;
-  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 50%, #1a3a5c 100%);
+  background: linear-gradient(
+    135deg,
+    var(--navy) 0%,
+    var(--navy-mid) 50%,
+    #1a3a5c 100%
+  );
   position: relative;
 }
 .banner-bg::after {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
-  background-image: radial-gradient(ellipse at 30% 50%, rgba(0,146,192,0.15) 0%, transparent 60%),
-    radial-gradient(ellipse at 70% 50%, rgba(196,154,60,0.08) 0%, transparent 60%);
+  background-image: radial-gradient(
+      ellipse at 30% 50%,
+      rgba(0, 146, 192, 0.15) 0%,
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse at 70% 50%,
+      rgba(196, 154, 60, 0.08) 0%,
+      transparent 60%
+    );
   pointer-events: none;
 }
 
-/* Subscribe banner — rich dark gradient */
 .subscribe-banner-bg {
-  background: linear-gradient(135deg, #0D1B2A 0%, #0a2540 50%, #0D1B2A 100%);
+  background: linear-gradient(
+    135deg,
+    #0d1b2a 0%,
+    #0a2540 50%,
+    #0d1b2a 100%
+  );
   position: relative;
   overflow: hidden;
 }
 .subscribe-banner-bg::before {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
-  background-image:
-    radial-gradient(ellipse at 20% 50%, rgba(0,146,192,0.2) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 50%, rgba(196,154,60,0.12) 0%, transparent 50%);
+  background-image: radial-gradient(
+      ellipse at 20% 50%,
+      rgba(0, 146, 192, 0.2) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      ellipse at 80% 50%,
+      rgba(196, 154, 60, 0.12) 0%,
+      transparent 50%
+    );
   pointer-events: none;
 }
 .subscribe-banner-bg::after {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
-  background-image:
-    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-image: linear-gradient(
+      rgba(255, 255, 255, 0.03) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.03) 1px,
+      transparent 1px
+    );
   background-size: 60px 60px;
   pointer-events: none;
 }
 
-a {
-  color: #fff;
-  text-decoration: none;
+/* Page HTML content (blog, privacy) */
+.page-html h1 {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700;
+  margin: 1.5rem 0 1rem;
+  line-height: 1.15;
+  font-family: var(--font-display), Georgia, serif;
 }
-a:hover {
-  text-decoration: none;
+.page-html h2 {
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  font-weight: 700;
+  margin: 1.5rem 0 1rem;
+  line-height: 1.2;
+  font-family: var(--font-display), Georgia, serif;
+}
+.page-html h3 {
+  font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+  font-weight: 600;
+  margin: 1.25rem 0 0.75rem;
+  font-family: var(--font-display), Georgia, serif;
+}
+.page-html h4 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 1rem 0 0.5rem;
+}
+.page-html p {
+  margin: 0.75rem 0;
+  line-height: 1.75;
+}
+.page-html a {
+  color: var(--teal);
+  text-decoration: underline;
+}
+.page-html ul,
+.page-html ol {
+  padding-left: 1.5rem;
+  margin: 0.75rem 0;
+}
+.page-html ul {
+  list-style: disc;
+}
+.page-html ol {
+  list-style: decimal;
+}
+.page-html blockquote {
+  border-left: 3px solid var(--gold);
+  padding-left: 1rem;
+  color: #4a4a4a;
+  margin: 1rem 0;
+  font-style: italic;
+}
+.page-html pre {
+  background: #0d1b2a;
+  color: #f8f8f2;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+}
+.page-html img {
+  max-width: 100%;
+  border-radius: 0.5rem;
+  margin: 1rem 0;
 }
 
-/* Gold accent utility */
+/* Splide carousel img */
+.carousel__img {
+  width: 100%;
+  height: auto;
+  border-radius: 0.75rem;
+  object-fit: cover;
+}
+
 .text-gold {
   color: var(--gold);
 }
