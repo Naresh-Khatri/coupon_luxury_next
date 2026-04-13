@@ -8,62 +8,79 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `pnpm build` — production build (typechecks TS + lints)
 - `pnpm start` — serve the production build
 - `pnpm lint` — `next lint`
+- `pnpm db:generate` / `pnpm db:migrate` / `pnpm db:push` — Drizzle migrations against Neon
+- `pnpm db:studio` — Drizzle Studio
+- `pnpm db:seed` — seed an admin user (reads `ADMIN_EMAIL` / `ADMIN_PASSWORD` / `ADMIN_NAME`)
 
 No test runner is configured. Package manager is pnpm; do not use yarn/npm.
 
 ## Architecture
 
-Next.js 14 **App Router** app written in TypeScript (`.tsx`). UI is **Tailwind v4 + shadcn/ui** (components live under `components/ui/`, added via `pnpm dlx shadcn@latest add <name>`). Animations via Framer Motion, icons via `lucide-react`, toasts via `sonner`, carousels via `@splidejs/react-splide`. No Chakra UI, no Emotion, no FontAwesome — these have been fully removed.
+Single Next.js 14 **App Router** app in TypeScript. UI: Tailwind v4 + shadcn/ui, Framer Motion, lucide-react, sonner, Splide. Backend is integrated — **no separate API service**. Data layer: Drizzle ORM against Neon Postgres via `@neondatabase/serverless` (HTTP driver). Auth: **better-auth** (drizzle adapter, `admin` plugin, email/password). APIs for client interactions and all admin CRUD go through **tRPC**.
 
 ### Route groups
 
-- `app/(site)/` — all public pages share a route-group layout (NavBar + Footer). Includes `/`, `/stores`, `/stores/[slug]`, `/deals`, `/deals/[slug]`, `/categories`, `/categories/[slug]`, `/blogs`, `/blogs/[slug]`, `/about`, `/contact`, `/privacy-policy`, `/sitemap`.
-- `app/blogs/admin/` — Appwrite-gated admin console (outside the `(site)` group). Uses a client-side `AdminShell` for session check, SideBar, and AccountMenu.
-- `app/blogs/login/` — Appwrite login.
+- `app/(site)/` — public pages (NavBar + Footer layout). `/`, `/stores`, `/stores/[slug]`, `/deals`, `/deals/[slug]`, `/categories`, `/categories/[slug]`, `/blogs`, `/blogs/[slug]`, `/about`, `/contact`, `/privacy-policy`, `/sitemap`.
+- `app/admin/(dashboard)/` — better-auth-gated admin UI (sidebar + account). Dashboard at `/admin`; CRUD at `/admin/stores`, `/admin/offers`, `/admin/blogs`, `/admin/categories`, `/admin/subcategories`, `/admin/slides`, `/admin/subscribers`, `/admin/video`.
+- `app/admin/login/` — better-auth signin form (outside the gated group).
+- `app/api/auth/[...all]/` — better-auth catch-all handler via `toNextJsHandler`.
+- `app/api/trpc/[trpc]/` — tRPC fetch handler.
+- `app/sitemap.ts` — Next-native sitemap built from Drizzle.
 - `app/not-found.tsx` — global 404.
-- `app/layout.tsx` — root layout: fonts (`Cormorant_Garamond` → `--font-display`, `DM_Sans` → `--font-body`), GTM + AdSense scripts, global `<Toaster />`, favicons, and default Metadata.
 
 ### Data flow
 
-Read-only frontend for `https://apiv2.couponluxury.com` (baseline from `process.env.domain`, set in `next.config.js`; also re-exported as `domain` from `lib/lib.ts`). All data fetches are RSC `fetch(..., { next: { revalidate: 60 } })`. Pages declare `export const revalidate = 60`. 404s are handled by `notFound()` when an upstream fetch fails.
+**Public RSC pages → direct Drizzle** (no HTTP hop). All queries live in `server/db/queries/*.ts`, wrapped in `unstable_cache` with tags (see `server/db/cache.ts` — `CACHE_TAGS`). Admin mutations call `revalidate(...tags)` after writes so the public site refreshes instantly (no `revalidate: 60` TTL on pages).
 
-Client-only interactivity (filters on store/category detail pages, reading progress bar on blog pages, deal CTA with confetti) is split into co-located `"use client"` components (`StoreFilter.tsx`, `CategoryFilter.tsx`, `ReadingProgress.tsx`, `DealCTA.tsx`).
+**Client interactions → tRPC**. Providers in `lib/trpc/Provider.tsx` (mounted in root layout). Client hook: `import { trpc } from "@/lib/trpc/client"`. Router namespaces:
+- `appRouter.public.*` — subscribe mutation, store/offer autocomplete.
+- `appRouter.admin.*` — full CRUD for all resources, dashboard stats, ImageKit auth signature.
+
+Procedures:
+- `publicProcedure` — no auth.
+- `protectedProcedure` — requires session.
+- `adminProcedure` — requires session + `role === "admin"`.
+
+### Auth (better-auth)
+
+- `lib/auth.ts` — server instance. Drizzle adapter + `admin()` plugin + `nextCookies()`.
+- `lib/auth-client.ts` — client instance with `adminClient()`.
+- `app/admin/(dashboard)/layout.tsx` — server-side session + role check → redirect `/admin/login`.
+- Seed via `pnpm db:seed`; see `scripts/seed-admin.ts`.
+- `Session` type: `import { auth } from "@/lib/auth"; type S = typeof auth.$Infer.Session`.
+
+### ImageKit
+
+- Server key only in `lib/imagekit.ts`. `deleteImageByUrl` used on update/delete to clean old assets.
+- Client-side presigned upload via `trpc.admin.imagekitAuth.fetch()` → POST to `https://upload.imagekit.io/api/v1/files/upload`. See `app/admin/(dashboard)/_components/ImageKitUpload.tsx`.
+- `utils/imageKitLoader.ts` is the custom `next/image` loader.
+- `utils/transformImagePath.ts` injects `tr:w-<n>/` transform.
+- `ik.imagekit.io` is whitelisted in `next.config.js`.
+
+### Drizzle schema
+
+`db/schema.ts` — domain tables (`stores`, `offers`, `categories`, `subCategories`, `blogs`, `slides`, `subscribers`, `backgroundVideo`) mirror the legacy Prisma schema 1:1, plus better-auth tables (`user`, `session`, `account`, `verification`). Relations defined via `drizzle-orm`'s `relations()` so `db.query.*.findMany({ with: {...} })` works.
+
+`db/index.ts` exports `db` (neon-http drizzle) and re-exports the schema as `s`.
 
 ### Styling / design tokens
 
-`styles/globals.css` is the single source of truth. Uses Tailwind v4's `@theme` block to expose brand tokens as utility classes:
-- `--color-gold`, `--color-gold-light`, `--color-navy`, `--color-navy-mid`, `--color-teal`, `--color-teal-dark`, `--color-cream` → usable as `bg-gold`, `text-navy`, etc.
-- `--color-brand-700/800/900/1000` → legacy brand ramp (`bg-brand-900` is the primary CTA color).
-- shadcn semantic tokens (`--color-primary`, `--color-background`, etc.) are also set here — no separate `tailwind.config.js`.
-
-Decorative backgrounds (`ham-background`, `hero-bg`, `banner-bg`, `subscribe-banner-bg`) and the `.page-html` rich-text styles are plain CSS in `globals.css` because they use pseudo-elements / nested selectors that are easier outside Tailwind.
-
-### Metadata / SEO
-
-No more `SetMeta` util. Each route exports `metadata` (or `generateMetadata` for dynamic routes). Root layout sets defaults (`title.template`, OG, Twitter, icons, `metadataBase`). Dynamic routes fetch data once and pass the same result to both `generateMetadata` and the page body — Next dedupes the `fetch` via cache.
+`styles/globals.css` is the single source of truth. Tailwind v4 `@theme` block exposes brand tokens (`--color-gold`, `--color-navy`, `--color-teal`, `--color-brand-700/800/900/1000`, etc.). Decorative backgrounds (`hero-bg`, `banner-bg`, `subscribe-banner-bg`) and `.page-html` rich-text styles are plain CSS.
 
 ### Middleware
 
-`middleware.js` (unchanged from before the migration) does two things: rewrite `/sitemap.xml` to the upstream API and 301-redirect any URL containing uppercase chars to its lowercase form. Keep internal links lowercase.
+`middleware.js` — only the lowercase-redirect rule. The legacy sitemap rewrite is gone (served by `app/sitemap.ts`). API, static, and `_next` paths are excluded.
 
-### Images
+### Environment
 
-`utils/imageKitLoader.ts` is the custom `next/image` loader; only `ik.imagekit.io` is whitelisted in `next.config.js`. `utils/transformImagePath.ts` injects ImageKit's `tr:w-<n>/` transform into API-returned paths. Add new external image hosts to `next.config.js` `images.remotePatterns`.
-
-### Blog admin specifics
-
-- Auth: Appwrite (`appwrite/config.ts` → `account`). Login via `account.createEmailSession`, session check via `account.get()`, JWT for API writes via `account.createJWT()`.
-- TinyMCE and react-advanced-cropper are dynamically imported with `ssr: false` from `app/blogs/admin/create/page.tsx`.
-- The admin API endpoint is `https://apiv2.couponluxury.com/blogs/v2` (POST FormData + Bearer JWT).
-
-### Toast / dialogs / dropdowns
-
-- Toasts: `import { toast } from "sonner"`. `<Toaster />` is mounted once in the root layout.
-- Modals, menus, tooltips, popovers come from `components/ui/*` (Radix via shadcn). When adding new primitives, use `pnpm dlx shadcn@latest add <name>` — don't hand-write them.
+Required: `DATABASE_URL`, `BETTER_AUTH_SECRET`, `BETTER_AUTH_URL`, `IMAGEKIT_PUBLIC_KEY`, `IMAGEKIT_PRIVATE_KEY`, `IMAGEKIT_URL_ENDPOINT`, `NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY`, `NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT`. Optional for seed: `ADMIN_EMAIL`, `ADMIN_PASSWORD`, `ADMIN_NAME`. See `.env.example`.
 
 ## Conventions
 
-- TypeScript strict mode. `jsx: preserve`. Path alias `@/*` → repo root.
-- `"use client"` only on files that actually need it (state, refs, effects, browser APIs, Framer Motion). Favor RSC.
-- Don't reintroduce Chakra, Emotion, FontAwesome, or SCSS modules.
-- Light mode only — the Chakra light-mode lock is preserved via not shipping `next-themes`.
+- TS strict. `jsx: preserve`. Path alias `@/*` → repo root.
+- `"use client"` only on files that need it.
+- Public RSC pages read via `server/db/queries/*`, never tRPC.
+- Admin mutations always call `revalidate(CACHE_TAGS.*)` after writes.
+- ImageKit upload URLs are stored in the DB directly; delete old URL in the update/delete mutation before replacing.
+- Don't reintroduce Chakra, Emotion, FontAwesome, SCSS modules, Appwrite, Firebase, Prisma, Axios for data fetching.
+- Light mode only.

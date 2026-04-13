@@ -1,0 +1,39 @@
+"use client";
+
+import { useParams } from "next/navigation";
+import { trpc } from "@/lib/trpc/client";
+import StoreForm from "../StoreForm";
+
+export default function EditStorePage() {
+  const { id } = useParams<{ id: string }>();
+  const storeId = Number(id);
+  const { data, isLoading } = trpc.admin.stores.byId.useQuery(storeId);
+
+  if (isLoading) return <div>Loading…</div>;
+  if (!data) return <div>Not found</div>;
+
+  return (
+    <div className="space-y-5">
+      <h1 className="text-2xl font-bold">Edit Store</h1>
+      <StoreForm
+        storeId={storeId}
+        initial={{
+          storeName: data.storeName,
+          slug: data.slug,
+          storeURL: data.storeURL,
+          image: data.image,
+          pageHTML: data.pageHTML,
+          country: data.country,
+          categoryId: data.categoryId,
+          subCategoryId: data.subCategoryId,
+          active: data.active,
+          featured: data.featured,
+          metaTitle: data.metaTitle,
+          metaDescription: data.metaDescription,
+          metaKeywords: data.metaKeywords,
+          metaSchema: data.metaSchema,
+        }}
+      />
+    </div>
+  );
+}
