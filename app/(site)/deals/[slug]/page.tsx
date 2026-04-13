@@ -4,38 +4,18 @@ import { notFound } from "next/navigation";
 import Banner from "@/components/Banner";
 import DealCard from "@/components/DealCard";
 import DealCTA from "./DealCTA";
-import { domain } from "@/lib/lib";
-
-export const revalidate = 60;
-
-type Deal = {
-  id: string | number;
-  slug: string;
-  title: string;
-  description: string;
-  affURL: string;
-  metaTitle?: string;
-  metaDescription?: string;
-  metaSchema?: string;
-  categoryId?: string | number;
-  store: { storeName: string; slug: string; image: string };
-  offerType: "coupon" | "deal";
-  endDate: string;
-  couponCode?: string;
-};
+import { getOfferBySlug, getPublicOffers } from "@/server/db/queries/offers";
 
 async function getData(slug: string) {
-  const res = await fetch(`${domain}/offers/getWithSlug/${slug}`, {
-    next: { revalidate: 60 },
+  const dealInfo = await getOfferBySlug(slug);
+  if (!dealInfo) return null;
+  const recs = await getPublicOffers({
+    offerType: "deal",
+    categoryId: dealInfo.categoryId,
+    featured: true,
+    limit: 20,
   });
-  if (!res.ok) return null;
-  const dealInfo: Deal = await res.json();
-  const rec = await fetch(
-    `${domain}/offers?offerType=deal&categoryId=${dealInfo.categoryId}&featured=true&limit=20`,
-    { next: { revalidate: 60 } }
-  );
-  let recommendedDeals: Deal[] = rec.ok ? await rec.json() : [];
-  recommendedDeals = recommendedDeals.filter((d) => d.id !== dealInfo.id);
+  const recommendedDeals = recs.filter((d) => d.id !== dealInfo.id);
   return { dealInfo, recommendedDeals };
 }
 
@@ -50,9 +30,13 @@ export async function generateMetadata({
   const url = `https://www.couponluxury.com/deals/${dealInfo.slug}`;
   return {
     title: dealInfo.title,
-    description: dealInfo.metaDescription,
+    description: dealInfo.metaDescription ?? undefined,
     alternates: { canonical: url },
-    openGraph: { url, title: dealInfo.title, description: dealInfo.metaDescription },
+    openGraph: {
+      url,
+      title: dealInfo.title,
+      description: dealInfo.metaDescription ?? undefined,
+    },
   };
 }
 

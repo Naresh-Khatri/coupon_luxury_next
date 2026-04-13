@@ -1,10 +1,7 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
 import Banner from "@/components/Banner";
 import DealCard from "@/components/DealCard";
-import { domain } from "@/lib/lib";
-
-export const revalidate = 60;
+import { getPublicOffers } from "@/server/db/queries/offers";
 
 export const metadata: Metadata = {
   title: "Deals - CouponLuxury",
@@ -13,28 +10,8 @@ export const metadata: Metadata = {
   alternates: { canonical: "https://www.couponluxury.com/deals" },
 };
 
-type Deal = {
-  id: string | number;
-  affURL: string;
-  slug: string;
-  title: string;
-  couponCode?: string;
-  offerType: "coupon" | "deal";
-  endDate: string;
-  store: { storeName: string; slug: string; image: string };
-};
-
-async function getDeals(): Promise<Deal[]> {
-  const res = await fetch(`${domain}/offers?offerType=deal&limit=50`, {
-    next: { revalidate: 60 },
-  });
-  if (!res.ok) return [];
-  return res.json();
-}
-
 export default async function DealsPage() {
-  const dealsList = await getDeals();
-  if (!dealsList) notFound();
+  const dealsList = await getPublicOffers({ offerType: "deal", limit: 50 });
 
   return (
     <div className="bg-[#e0e0e0]">

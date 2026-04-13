@@ -6,36 +6,14 @@ import { ChevronRight, Home as HomeIcon, Store as StoreIcon, ShoppingBag } from 
 import Banner from "@/components/Banner";
 import RecommendedStores from "@/components/RecommendedStores";
 import StoreFilter from "./StoreFilter";
-import { domain } from "@/lib/lib";
-
-type StoreInfo = {
-  slug: string;
-  storeName: string;
-  image: string;
-  metaTitle?: string;
-  metaDescription?: string;
-  keywords?: string;
-  metaSchema?: string;
-  pageHTML: string;
-  offers: Array<{
-    id: string | number;
-    offerType: "coupon" | "deal";
-    [key: string]: any;
-  }>;
-};
+import { getStoreBySlug, getPublicStores } from "@/server/db/queries/stores";
 
 async function getData(slug: string) {
-  const [sRes, fRes] = await Promise.all([
-    fetch(`${domain}/stores/getUsingSlug/${slug}`, {
-      next: { revalidate: 60 },
-    }),
-    fetch(`${domain}/stores?featured=true&limit=16`, {
-      next: { revalidate: 60 },
-    }),
+  const [storeInfo, featuredStores] = await Promise.all([
+    getStoreBySlug(slug),
+    getPublicStores({ featured: true, limit: 16 }),
   ]);
-  if (!sRes.ok) return null;
-  const storeInfo: StoreInfo = await sRes.json();
-  const featuredStores = fRes.ok ? await fRes.json() : [];
+  if (!storeInfo) return null;
   return { storeInfo, featuredStores };
 }
 
@@ -49,11 +27,15 @@ export async function generateMetadata({
   const { storeInfo } = data;
   const url = `https://www.couponluxury.com/stores/${storeInfo.slug}`;
   return {
-    title: storeInfo.metaTitle,
-    description: storeInfo.metaDescription,
-    keywords: storeInfo.keywords,
+    title: storeInfo.metaTitle ?? storeInfo.storeName,
+    description: storeInfo.metaDescription ?? undefined,
+    keywords: storeInfo.metaKeywords ?? undefined,
     alternates: { canonical: url },
-    openGraph: { url, title: storeInfo.metaTitle, description: storeInfo.metaDescription },
+    openGraph: {
+      url,
+      title: storeInfo.metaTitle ?? storeInfo.storeName,
+      description: storeInfo.metaDescription ?? undefined,
+    },
   };
 }
 

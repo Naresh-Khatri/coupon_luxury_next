@@ -10,9 +10,6 @@ const nextConfig = {
       },
     ],
   },
-  env: {
-    domain: "https://apiv2.couponluxury.com",
-  },
 };
 
 module.exports = nextConfig;

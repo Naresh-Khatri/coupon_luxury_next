@@ -17,10 +17,10 @@ export default function DealCard({
   storeName: string;
   storeSlug: string;
   dealSlug: string;
-  code?: string;
+  code?: string | null;
   title: string;
-  type?: string;
-  endDate?: string;
+  type?: string | null;
+  endDate?: string | null;
   showValidTill?: boolean;
 }) {
   return (

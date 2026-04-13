@@ -26,9 +26,9 @@ const formatDate = (date: string | number | Date) => {
 
 type Blog = {
   title: string;
-  thumbnailImg: string;
-  imgAlt: string;
-  createdAt: string;
+  thumbnailImg: string | null;
+  imgAlt: string | null;
+  createdAt: string | Date;
   smallDescription: string;
   slug: string;
 };
@@ -52,7 +52,12 @@ export default function BlogPreviewSmall({ blog }: { blog: Blog }) {
       >
         <div className="flex items-center gap-3 p-3">
           <div className="relative size-[72px] shrink-0 overflow-hidden rounded-lg">
-            <Image src={thumbnailImg} alt={imgAlt} fill className="object-cover" />
+            <Image
+              src={thumbnailImg ?? "/placeholder.svg"}
+              alt={imgAlt ?? title}
+              fill
+              className="object-cover"
+            />
           </div>
           <div className="min-w-0 flex-1">
             <h4 className="mb-1 line-clamp-2 font-[var(--font-display)] text-sm font-bold leading-[1.3] text-gray-900">

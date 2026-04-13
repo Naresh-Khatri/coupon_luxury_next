@@ -23,9 +23,9 @@ type Deal = {
   affURL: string;
   slug: string;
   title: string;
-  couponCode?: string;
-  offerType: "coupon" | "deal";
-  endDate: string;
+  couponCode?: string | null;
+  offerType?: string;
+  endDate?: string;
   store: { storeName: string; slug: string; image: string };
 };
 

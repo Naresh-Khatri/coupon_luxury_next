@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import BlogPreview from "@/components/BlogPreview";
-import { domain } from "@/lib/lib";
-
-export const revalidate = 60;
+import { getPublicBlogs } from "@/server/db/queries/blogs";
 
 export const metadata: Metadata = {
   title: "CouponLuxury Blog: Money Saving Tips & Updates",
@@ -11,27 +9,8 @@ export const metadata: Metadata = {
   alternates: { canonical: "https://www.couponluxury.com/blogs" },
 };
 
-type Blog = {
-  id: string | number;
-  title: string;
-  smallDescription: string;
-  thumbnailImg: string;
-  slug: string;
-  imgAlt: string;
-};
-
-async function getBlogs(): Promise<Blog[]> {
-  try {
-    const res = await fetch(`${domain}/blogs`, { next: { revalidate: 60 } });
-    if (!res.ok) return [];
-    return res.json();
-  } catch {
-    return [];
-  }
-}
-
 export default async function BlogsIndex() {
-  const blogsData = await getBlogs();
+  const blogsData = await getPublicBlogs();
 
   return (
     <>

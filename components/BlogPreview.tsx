@@ -12,9 +12,9 @@ function estimateReadTime(text = "") {
 type Blog = {
   title: string;
   smallDescription: string;
-  thumbnailImg: string;
+  thumbnailImg: string | null;
   slug: string;
-  imgAlt: string;
+  imgAlt: string | null;
 };
 
 export default function BlogPreview({ blog }: { blog: Blog }) {
@@ -37,8 +37,8 @@ export default function BlogPreview({ blog }: { blog: Blog }) {
       <Link href={`/blogs/${slug}`} className="contents">
         <div className="relative w-full overflow-hidden aspect-[16/9]">
           <Image
-            src={thumbnailImg}
-            alt={imgAlt}
+            src={thumbnailImg ?? "/placeholder.svg"}
+            alt={imgAlt ?? title}
             fill
             className="object-cover"
           />

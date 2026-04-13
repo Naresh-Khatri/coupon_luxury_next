@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Banner from "@/components/Banner";
-import { domain } from "@/lib/lib";
-
-export const revalidate = 60;
+import { getAllCategories } from "@/server/db/queries/categories";
 
 export const metadata: Metadata = {
   title: "Sitemap - CouponLuxury",
@@ -11,23 +9,8 @@ export const metadata: Metadata = {
   alternates: { canonical: "https://www.couponluxury.com/sitemap" },
 };
 
-type Category = {
-  id: string | number;
-  slug: string;
-  categoryName: string;
-  subCategories: Array<{ id: string | number; subCategoryName: string }>;
-};
-
-async function getData(): Promise<Category[]> {
-  const res = await fetch(`${domain}/misc/sitemap`, {
-    next: { revalidate: 60 },
-  });
-  if (!res.ok) return [];
-  return res.json();
-}
-
 export default async function SitemapPage() {
-  const sitemapData = await getData();
+  const sitemapData = await getAllCategories();
 
   return (
     <>

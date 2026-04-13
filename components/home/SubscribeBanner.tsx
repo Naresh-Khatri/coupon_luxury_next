@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import axios from "axios";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
 import Confetti from "../Confetti";
+import { trpc } from "@/lib/trpc/client";
 
 const emailRegex =
   /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
@@ -13,20 +13,28 @@ export default function SubscribeBanner() {
   const [email, setEmail] = useState("");
   const [showConfetti, setShowConfetti] = useState(false);
 
-  const subscribe = async () => {
-    if (!emailRegex.test(email)) {
-      toast.error("Please enter a valid email address");
-      return;
-    }
-    try {
-      await axios.post("https://apiv2.couponluxury.com/subscribers", { email });
+  const mutation = trpc.public.subscribe.useMutation({
+    onSuccess: () => {
       toast.success("Subscribed successfully");
       setShowConfetti(true);
       setTimeout(() => setShowConfetti(false), 2000);
       setEmail("");
-    } catch {
-      toast.error("You are already subscribed");
+    },
+    onError: (err) => {
+      toast.error(
+        err.data?.code === "CONFLICT"
+          ? "You are already subscribed"
+          : "Something went wrong"
+      );
+    },
+  });
+
+  const subscribe = () => {
+    if (!emailRegex.test(email)) {
+      toast.error("Please enter a valid email address");
+      return;
     }
+    mutation.mutate({ email });
   };
 
   return (

@@ -7,8 +7,8 @@ import { cn } from "@/lib/utils";
 
 type Offer = {
   id: string | number;
-  offerType: "coupon" | "deal";
-  store?: { storeName: string };
+  offerType: string;
+  store?: { storeName: string } | null;
   [key: string]: any;
 };
 
@@ -16,6 +16,7 @@ type CategoryInfo = {
   categoryName: string;
   image: string;
   offers: Offer[];
+  [key: string]: any;
 };
 
 type Filter = "all" | "coupons" | "deals";

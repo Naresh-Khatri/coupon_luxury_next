@@ -6,37 +6,17 @@ import { ChevronRight, Home as HomeIcon, Box, ShoppingBag } from "lucide-react";
 import Banner from "@/components/Banner";
 import RecommendedStores from "@/components/RecommendedStores";
 import CategoryFilter from "./CategoryFilter";
-import { domain } from "@/lib/lib";
-
-export const revalidate = 60;
-
-type CategoryInfo = {
-  slug: string;
-  categoryName: string;
-  image: string;
-  metaTitle?: string;
-  metaDescription?: string;
-  keywords?: string;
-  offers: Array<{
-    id: string | number;
-    offerType: "coupon" | "deal";
-    store?: { storeName: string };
-    [key: string]: any;
-  }>;
-};
+import {
+  getCategoryBySlug,
+} from "@/server/db/queries/categories";
+import { getPublicStores } from "@/server/db/queries/stores";
 
 async function getData(slug: string) {
-  const [cRes, fRes] = await Promise.all([
-    fetch(`${domain}/categories/getUsingSlug/${slug}`, {
-      next: { revalidate: 60 },
-    }),
-    fetch(`${domain}/stores?featured=true`, {
-      next: { revalidate: 60 },
-    }),
+  const [categoryInfo, featuredStores] = await Promise.all([
+    getCategoryBySlug(slug),
+    getPublicStores({ featured: true }),
   ]);
-  if (!cRes.ok) return null;
-  const categoryInfo: CategoryInfo = await cRes.json();
-  const featuredStores = fRes.ok ? await fRes.json() : [];
+  if (!categoryInfo) return null;
   return { categoryInfo, featuredStores };
 }
 
@@ -50,9 +30,9 @@ export async function generateMetadata({
   const { categoryInfo } = data;
   const url = `https://www.couponluxury.com/categories/${categoryInfo.slug}`;
   return {
-    title: categoryInfo.metaTitle,
-    description: categoryInfo.metaDescription,
-    keywords: categoryInfo.keywords,
+    title: categoryInfo.metaTitle ?? categoryInfo.categoryName,
+    description: categoryInfo.metaDescription ?? undefined,
+    keywords: categoryInfo.metaKeywords ?? undefined,
     alternates: { canonical: url },
   };
 }

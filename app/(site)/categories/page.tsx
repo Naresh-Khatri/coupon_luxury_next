@@ -1,12 +1,9 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { notFound } from "next/navigation";
 import { ChevronRight, Home as HomeIcon, Box } from "lucide-react";
 import Banner from "@/components/Banner";
-import { domain } from "@/lib/lib";
-
-export const revalidate = 60;
+import { getPublicCategories } from "@/server/db/queries/categories";
 
 export const metadata: Metadata = {
   title: "All Deals and discount Offers in different categories",
@@ -15,26 +12,8 @@ export const metadata: Metadata = {
   alternates: { canonical: "https://www.couponluxury.com/categories" },
 };
 
-type Category = {
-  id: string | number;
-  slug: string;
-  categoryName: string;
-  image: string;
-  imgAlt: string;
-  offers: unknown[];
-};
-
-async function getData(): Promise<Category[]> {
-  const res = await fetch(`${domain}/categories`, {
-    next: { revalidate: 60 },
-  });
-  if (!res.ok) return [];
-  return res.json();
-}
-
 export default async function CategoriesPage() {
-  const featuredCat = await getData();
-  if (!featuredCat) notFound();
+  const featuredCat = await getPublicCategories();
 
   return (
     <>

@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState } from "react";
 import Link from "next/link";
-import axios from "axios";
 import { Search, X, Loader2 } from "lucide-react";
+import { trpc } from "@/lib/trpc/client";
 import {
   Popover,
   PopoverAnchor,
@@ -12,44 +12,14 @@ import {
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 
-type Result = {
-  slug: string;
-  storeName?: string;
-  categoryName?: string;
-};
-
 export default function SearchBox() {
   const [searchText, setSearchText] = useState("");
-  const [searchResults, setSearchResults] = useState<Result[]>([]);
-  const [fetchingList, setFetchingList] = useState(false);
-  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  const debounce = (fn: () => void, delay: number) => {
-    setFetchingList(true);
-    setSearchResults([]);
-    if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    timeoutRef.current = setTimeout(fn, delay);
-  };
-
-  const handleSearch = async (text: string) => {
-    try {
-      const res = await Promise.allSettled([
-        axios.post(process.env.domain + "/stores/getAutoCompleteData", {
-          searchText: text,
-        }),
-        axios.post(process.env.domain + "/categories/getAutoCompleteData", {
-          searchText: text,
-        }),
-      ]);
-      const storeData =
-        res[0].status === "fulfilled" ? res[0].value.data : [];
-      const catData = res[1].status === "fulfilled" ? res[1].value.data : [];
-      setSearchResults([...catData, ...storeData]);
-    } finally {
-      setFetchingList(false);
-    }
-  };
-
+  const query = trpc.public.searchStores.useQuery(
+    { q: searchText },
+    { enabled: searchText.length > 0, staleTime: 30_000 }
+  );
+  const fetchingList = query.isFetching;
+  const searchResults = query.data ?? [];
   const clearSearch = () => setSearchText("");
 
   return (
@@ -63,11 +33,9 @@ export default function SearchBox() {
               placeholder="Search"
               className="h-10 w-full rounded-[10px] bg-white pr-10 font-semibold text-black"
               value={searchText}
-              onInput={(e) => {
-                const value = (e.target as HTMLInputElement).value;
-                setSearchText(value);
-                if (value) debounce(() => handleSearch(value), 500);
-              }}
+              onInput={(e) =>
+                setSearchText((e.target as HTMLInputElement).value)
+              }
             />
             <div className="absolute right-3 top-1/2 -translate-y-1/2 text-black/60">
               {searchText.length > 0 ? (
@@ -106,17 +74,13 @@ export default function SearchBox() {
               {searchResults.map((result) => (
                 <li key={result.slug}>
                   <Link
-                    href={
-                      result.storeName
-                        ? `/stores/${result.slug}`
-                        : `/categories/${result.slug}`
-                    }
+                    href={`/stores/${result.slug}`}
                     onClick={clearSearch}
                     className="flex items-center justify-between rounded-sm px-2 py-1.5 font-semibold text-foreground hover:bg-muted"
                   >
-                    <span>{result.storeName || result.categoryName}</span>
+                    <span>{result.storeName}</span>
                     <span className="text-[10px] text-muted-foreground">
-                      {result.storeName ? "Store" : "Category"}
+                      Store
                     </span>
                   </Link>
                 </li>

@@ -4,10 +4,7 @@ import { ChevronRight, Home as HomeIcon, Store as StoreIcon } from "lucide-react
 import Banner from "@/components/Banner";
 import StoreCard from "@/components/StoreCard";
 import Header from "@/components/Header";
-import { domain } from "@/lib/lib";
-import { notFound } from "next/navigation";
-
-export const revalidate = 60;
+import { getPublicStores } from "@/server/db/queries/stores";
 
 export const metadata: Metadata = {
   title: "CouponLuxury - Deals, Promo codes & exclusive coupons",
@@ -16,19 +13,8 @@ export const metadata: Metadata = {
   alternates: { canonical: "https://www.couponluxury.com/stores" },
 };
 
-type Store = { id: string | number; slug: string; storeName: string; image: string };
-
-async function getStores(): Promise<Store[]> {
-  const res = await fetch(`${domain}/stores?limit=20`, {
-    next: { revalidate: 60 },
-  });
-  if (!res.ok) return [];
-  return res.json();
-}
-
 export default async function StoresPage() {
-  const stores = await getStores();
-  if (!stores) notFound();
+  const stores = await getPublicStores({ limit: 20 });
 
   return (
     <div className="bg-[#eeeeee] pb-10 font-semibold">

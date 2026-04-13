@@ -3,25 +3,7 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import BlogPreviewSmall from "@/components/BlogPreviewSmall";
 import ReadingProgress from "./ReadingProgress";
-import { domain } from "@/lib/lib";
-
-export const revalidate = 60;
-
-type Blog = {
-  id: string | number;
-  slug: string;
-  title: string;
-  coverImg: string;
-  thumbnailImg: string;
-  imgAlt: string;
-  fullDescription: string;
-  smallDescription: string;
-  createdAt: string;
-  metaTitle?: string;
-  metaDescription?: string;
-  keywords?: string;
-  metaSchema?: string;
-};
+import { getBlogBySlug, getPublicBlogs } from "@/server/db/queries/blogs";
 
 const months = [
   "January",
@@ -44,16 +26,10 @@ const formatDate = (date: string | number | Date) => {
 };
 
 async function getData(slug: string) {
-  const res = await fetch(`${domain}/blogs/getUsingSlug/${slug}`, {
-    next: { revalidate: 60 },
-  });
-  if (!res.ok) return null;
-  const blogData: Blog = await res.json();
-  const allRes = await fetch(`${domain}/blogs?limit=10`, {
-    next: { revalidate: 60 },
-  });
-  let allBlogs: Blog[] = allRes.ok ? await allRes.json() : [];
-  allBlogs = allBlogs.filter(
+  const blogData = await getBlogBySlug(slug);
+  if (!blogData) return null;
+  const all = await getPublicBlogs(10);
+  const allBlogs = all.filter(
     (b) => b.slug.toLowerCase() !== slug.toLowerCase()
   );
   return { blogData, allBlogs };
@@ -69,15 +45,15 @@ export async function generateMetadata({
   const { blogData } = data;
   const url = `https://www.couponluxury.com/blogs/${blogData.slug}`;
   return {
-    title: `${blogData.metaTitle} - Coupons Luxury`,
-    description: blogData.metaDescription,
-    keywords: blogData.keywords,
+    title: `${blogData.metaTitle ?? blogData.title} - Coupons Luxury`,
+    description: blogData.metaDescription ?? undefined,
+    keywords: blogData.metaKeywords ?? undefined,
     alternates: { canonical: url },
     openGraph: {
       url,
-      title: blogData.metaTitle,
-      description: blogData.metaDescription,
-      images: [blogData.coverImg],
+      title: blogData.metaTitle ?? blogData.title,
+      description: blogData.metaDescription ?? undefined,
+      images: blogData.coverImg ? [blogData.coverImg] : [],
     },
   };
 }
@@ -100,8 +76,8 @@ export default async function BlogPage({
           <article className="overflow-hidden rounded-2xl border border-black/5 bg-white shadow-sm">
             <div className="relative aspect-[16/9] w-full">
               <Image
-                src={coverImg}
-                alt={imgAlt}
+                src={coverImg ?? "/placeholder.svg"}
+                alt={imgAlt ?? title}
                 fill
                 className="object-cover"
                 priority
