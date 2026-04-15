@@ -1,15 +1,22 @@
 "use client";
 
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
 import { trpc } from "@/lib/trpc/client";
 import ImageKitUpload from "../_components/ImageKitUpload";
+import {
+  PageHeader,
+  SectionCard,
+  Field,
+  FieldGrid,
+  StickyFooter,
+} from "../_components/FormKit";
 
 const schema = z.object({
   title: z.string().min(1),
@@ -68,51 +75,84 @@ export default function SlideForm({
   }
 
   const imgURL = form.watch("imgURL");
+
   return (
-    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
-      <div className="grid gap-5 md:grid-cols-2">
-        <div className="space-y-1.5">
-          <Label>Title</Label>
-          <Input {...form.register("title")} />
-        </div>
-        <div className="space-y-1.5">
-          <Label>Order</Label>
-          <Input
-            type="number"
-            {...form.register("order", { valueAsNumber: true })}
+    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      <PageHeader
+        eyebrow={id ? "Edit slide" : "New slide"}
+        title={id ? (initial?.title ?? "Slide") : "Create slide"}
+        description="A hero carousel entry on the public homepage."
+      />
+
+      <SectionCard title="Identity" description="Title, order, destination.">
+        <FieldGrid>
+          <Field label="Title">
+            <Input {...form.register("title")} />
+          </Field>
+          <Field label="Order">
+            <Input
+              type="number"
+              {...form.register("order", { valueAsNumber: true })}
+            />
+          </Field>
+          <Field label="Link">
+            <Input {...form.register("link")} />
+          </Field>
+          <Field label="Image alt">
+            <Input {...form.register("imgAlt")} />
+          </Field>
+        </FieldGrid>
+        <Field label="Image">
+          <ImageKitUpload
+            value={imgURL || null}
+            onChange={(url) => form.setValue("imgURL", url ?? "")}
+          />
+        </Field>
+      </SectionCard>
+
+      <SectionCard title="Visibility" description="Publish and promotion.">
+        <div className="flex flex-wrap gap-6">
+          <Controller
+            control={form.control}
+            name="active"
+            render={({ field }) => (
+              <label className="flex items-center gap-2 text-sm">
+                <Switch
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+                Active
+              </label>
+            )}
+          />
+          <Controller
+            control={form.control}
+            name="featured"
+            render={({ field }) => (
+              <label className="flex items-center gap-2 text-sm">
+                <Switch
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+                Featured
+              </label>
+            )}
           />
         </div>
-        <div className="space-y-1.5">
-          <Label>Link</Label>
-          <Input {...form.register("link")} />
-        </div>
-        <div className="space-y-1.5">
-          <Label>Image alt</Label>
-          <Input {...form.register("imgAlt")} />
-        </div>
-      </div>
-      <ImageKitUpload
-        value={imgURL || null}
-        onChange={(url) => form.setValue("imgURL", url ?? "")}
-      />
-      <div className="flex items-center gap-6">
-        <label className="flex items-center gap-2">
-          <input type="checkbox" {...form.register("active")} /> Active
-        </label>
-        <label className="flex items-center gap-2">
-          <input type="checkbox" {...form.register("featured")} /> Featured
-        </label>
-      </div>
-      <div className="flex gap-3">
-        <Button type="submit">{id ? "Update" : "Create"}</Button>
+      </SectionCard>
+
+      <StickyFooter>
         <Button
           type="button"
-          variant="outline"
+          variant="ghost"
           onClick={() => router.push("/admin/slides")}
         >
           Cancel
         </Button>
-      </div>
+        <Button type="submit" disabled={form.formState.isSubmitting}>
+          {id ? "Save changes" : "Create slide"}
+        </Button>
+      </StickyFooter>
     </form>
   );
 }

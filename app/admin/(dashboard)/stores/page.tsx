@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { trpc } from "@/lib/trpc/client";
 import ResourceTable, { BoolCell } from "../_components/ResourceTable";
 import { toast } from "sonner";
+import { PageHeader } from "../_components/FormKit";
 
 export default function StoresAdminPage() {
   const utils = trpc.useUtils();
@@ -19,24 +20,45 @@ export default function StoresAdminPage() {
   });
 
   return (
-    <div className="space-y-5">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Stores</h1>
-        <Button asChild>
-          <Link href="/admin/stores/new">
-            <Plus className="size-4" /> Add Store
-          </Link>
-        </Button>
-      </div>
+    <div className="space-y-6">
+      <PageHeader
+        eyebrow="Catalog"
+        title="Stores"
+        description="Retail partners and brands."
+        actions={
+          <Button asChild>
+            <Link href="/admin/stores/new">
+              <Plus className="size-4" /> Add store
+            </Link>
+          </Button>
+        }
+      />
 
       {isLoading ? (
-        <div>Loading…</div>
+        <div className="py-8 text-center text-sm text-muted-foreground">
+          Loading…
+        </div>
       ) : (
         <ResourceTable
           rows={data}
+          emptyLabel="No stores yet"
           columns={[
-            { key: "name", label: "Name", render: (r) => r.storeName },
-            { key: "slug", label: "Slug", render: (r) => r.slug },
+            {
+              key: "name",
+              label: "Name",
+              render: (r) => (
+                <span className="font-medium">{r.storeName}</span>
+              ),
+            },
+            {
+              key: "slug",
+              label: "Slug",
+              render: (r) => (
+                <span className="font-mono text-xs text-muted-foreground">
+                  {r.slug}
+                </span>
+              ),
+            },
             {
               key: "cat",
               label: "Category",
@@ -44,13 +66,18 @@ export default function StoresAdminPage() {
             },
             {
               key: "active",
-              label: "Active",
+              label: "Status",
               render: (r) => <BoolCell value={r.active} />,
             },
             {
               key: "featured",
               label: "Featured",
-              render: (r) => <BoolCell value={r.featured} />,
+              render: (r) => (
+                <BoolCell
+                  value={r.featured}
+                  label={{ on: "Featured", off: "Normal" }}
+                />
+              ),
             },
           ]}
           editHref={(r) => `/admin/stores/${r.id}`}

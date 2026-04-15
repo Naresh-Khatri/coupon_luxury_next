@@ -3,6 +3,7 @@
 import { trpc } from "@/lib/trpc/client";
 import { toast } from "sonner";
 import ResourceTable from "../_components/ResourceTable";
+import { PageHeader } from "../_components/FormKit";
 
 export default function SubscribersAdminPage() {
   const utils = trpc.useUtils();
@@ -16,19 +17,36 @@ export default function SubscribersAdminPage() {
   });
 
   return (
-    <div className="space-y-5">
-      <h1 className="text-2xl font-bold">Subscribers</h1>
+    <div className="space-y-6">
+      <PageHeader
+        eyebrow="Audience"
+        title="Subscribers"
+        description="Newsletter and email list."
+      />
       {isLoading ? (
-        <div>Loading…</div>
+        <div className="py-8 text-center text-sm text-muted-foreground">
+          Loading…
+        </div>
       ) : (
         <ResourceTable
           rows={data}
+          emptyLabel="No subscribers yet"
           columns={[
-            { key: "email", label: "Email", render: (r) => r.email },
+            {
+              key: "email",
+              label: "Email",
+              render: (r) => (
+                <span className="font-mono text-sm">{r.email}</span>
+              ),
+            },
             {
               key: "date",
               label: "Subscribed",
-              render: (r) => new Date(r.createdAt).toLocaleDateString(),
+              render: (r) => (
+                <span className="tabular-nums text-sm text-muted-foreground">
+                  {new Date(r.createdAt).toLocaleDateString()}
+                </span>
+              ),
             },
           ]}
           onDelete={(id) => del.mutate(id)}

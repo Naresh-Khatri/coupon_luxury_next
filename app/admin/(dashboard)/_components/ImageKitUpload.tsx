@@ -11,7 +11,7 @@ import { toast } from "sonner";
 export default function ImageKitUpload({
   value,
   onChange,
-  label = "Image",
+  label,
   accept = "image/*",
 }: {
   value?: string | null;
@@ -55,7 +55,7 @@ export default function ImageKitUpload({
 
   return (
     <div className="space-y-2">
-      <p className="text-sm font-medium">{label}</p>
+      {label && <p className="text-xs font-semibold">{label}</p>}
       {value ? (
         <div className="relative w-40 overflow-hidden rounded-md border">
           <Image

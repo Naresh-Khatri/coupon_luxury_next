@@ -2,22 +2,32 @@
 
 import { useState } from "react";
 import { Plus } from "lucide-react";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Switch } from "@/components/ui/switch";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogFooter,
 } from "@/components/ui/dialog";
 import { trpc } from "@/lib/trpc/client";
 import ResourceTable, { BoolCell } from "../_components/ResourceTable";
+import { PageHeader, Field } from "../_components/FormKit";
 
 const schema = z.object({
   subCategoryName: z.string().min(1),
@@ -79,52 +89,79 @@ function SubCategoryDialog({
       <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>{id ? "Edit" : "New"} Sub-category</DialogTitle>
+          <DialogTitle className="font-display text-xl">
+            {id ? "Edit" : "New"} sub-category
+          </DialogTitle>
         </DialogHeader>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-4"
-        >
-          <div className="space-y-1.5">
-            <Label>Name</Label>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <Field label="Name">
             <Input {...form.register("subCategoryName")} />
-          </div>
-          <div className="space-y-1.5">
-            <Label>Slug</Label>
+          </Field>
+          <Field label="Slug">
             <Input {...form.register("slug")} />
-          </div>
-          <div className="space-y-1.5">
-            <Label>Category</Label>
-            <select
-              className="h-10 w-full rounded-md border px-3"
-              {...form.register("categoryId", { valueAsNumber: true })}
-            >
-              <option value="">Select</option>
-              {cats.map((c) => (
-                <option key={c.id} value={c.id}>
-                  {c.categoryName}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="space-y-1.5">
-            <Label>Description</Label>
-            <textarea
-              className="min-h-[80px] w-full rounded-md border p-3"
+          </Field>
+          <Field label="Category">
+            <Controller
+              control={form.control}
+              name="categoryId"
+              render={({ field }) => (
+                <Select
+                  value={field.value ? String(field.value) : ""}
+                  onValueChange={(v) => field.onChange(Number(v))}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select category" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {cats.map((c) => (
+                      <SelectItem key={c.id} value={String(c.id)}>
+                        {c.categoryName}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
+            />
+          </Field>
+          <Field label="Description">
+            <Textarea
+              className="min-h-[80px]"
               {...form.register("description")}
             />
-          </div>
+          </Field>
           <div className="flex items-center gap-6">
-            <label className="flex items-center gap-2">
-              <input type="checkbox" {...form.register("active")} /> Active
-            </label>
-            <label className="flex items-center gap-2">
-              <input type="checkbox" {...form.register("featured")} /> Featured
-            </label>
+            <Controller
+              control={form.control}
+              name="active"
+              render={({ field }) => (
+                <label className="flex items-center gap-2 text-sm">
+                  <Switch
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                  Active
+                </label>
+              )}
+            />
+            <Controller
+              control={form.control}
+              name="featured"
+              render={({ field }) => (
+                <label className="flex items-center gap-2 text-sm">
+                  <Switch
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                  Featured
+                </label>
+              )}
+            />
           </div>
-          <Button type="submit" className="w-full">
-            {id ? "Update" : "Create"}
-          </Button>
+          <DialogFooter>
+            <Button type="submit" className="w-full">
+              {id ? "Save changes" : "Create"}
+            </Button>
+          </DialogFooter>
         </form>
       </DialogContent>
     </Dialog>
@@ -143,29 +180,46 @@ export default function SubCategoriesAdminPage() {
   });
 
   return (
-    <div className="space-y-5">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Sub-categories</h1>
-        <SubCategoryDialog
-          trigger={
-            <Button>
-              <Plus className="size-4" /> Add Sub-category
-            </Button>
-          }
-        />
-      </div>
+    <div className="space-y-6">
+      <PageHeader
+        eyebrow="Catalog"
+        title="Sub-categories"
+        description="Second-level groupings within each category."
+        actions={
+          <SubCategoryDialog
+            trigger={
+              <Button>
+                <Plus className="size-4" /> Add sub-category
+              </Button>
+            }
+          />
+        }
+      />
       {isLoading ? (
-        <div>Loading…</div>
+        <div className="py-8 text-center text-sm text-muted-foreground">
+          Loading…
+        </div>
       ) : (
         <ResourceTable
           rows={data as any[]}
+          emptyLabel="No sub-categories yet"
           columns={[
             {
               key: "name",
               label: "Name",
-              render: (r: any) => r.subCategoryName,
+              render: (r: any) => (
+                <span className="font-medium">{r.subCategoryName}</span>
+              ),
             },
-            { key: "slug", label: "Slug", render: (r: any) => r.slug },
+            {
+              key: "slug",
+              label: "Slug",
+              render: (r: any) => (
+                <span className="font-mono text-xs text-muted-foreground">
+                  {r.slug}
+                </span>
+              ),
+            },
             {
               key: "cat",
               label: "Category",
@@ -173,12 +227,13 @@ export default function SubCategoriesAdminPage() {
             },
             {
               key: "active",
-              label: "Active",
+              label: "Status",
               render: (r: any) => <BoolCell value={r.active} />,
             },
             {
               key: "edit",
               label: "",
+              align: "right",
               render: (r: any) => (
                 <SubCategoryDialog
                   id={r.id}

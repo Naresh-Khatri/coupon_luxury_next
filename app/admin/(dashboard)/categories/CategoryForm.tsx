@@ -1,15 +1,23 @@
 "use client";
 
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Switch } from "@/components/ui/switch";
 import { trpc } from "@/lib/trpc/client";
 import ImageKitUpload from "../_components/ImageKitUpload";
+import {
+  PageHeader,
+  SectionCard,
+  Field,
+  FieldGrid,
+  StickyFooter,
+} from "../_components/FormKit";
 
 const schema = z.object({
   categoryName: z.string().min(1),
@@ -71,84 +79,106 @@ export default function CategoryForm({
     else create.mutate(values);
   }
 
-  const { register, handleSubmit, setValue, watch } = form;
+  const { register, handleSubmit, setValue, watch, control, formState } = form;
   const image = watch("image");
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-      <div className="grid gap-5 md:grid-cols-2">
-        <div className="space-y-1.5">
-          <Label>Category name</Label>
-          <Input {...register("categoryName")} />
-        </div>
-        <div className="space-y-1.5">
-          <Label>Slug</Label>
-          <Input {...register("slug")} />
-        </div>
-        <div className="space-y-1.5 md:col-span-2">
-          <Label>Image alt</Label>
-          <Input {...register("imgAlt")} />
-        </div>
-      </div>
-
-      <ImageKitUpload
-        value={image || null}
-        onChange={(url) => setValue("image", url ?? "")}
+      <PageHeader
+        eyebrow={id ? "Edit category" : "New category"}
+        title={id ? (initial?.categoryName ?? "Category") : "Create category"}
+        description="Top-level grouping for stores and offers."
       />
 
-      <div className="space-y-1.5">
-        <Label>Description</Label>
-        <textarea
-          className="min-h-[100px] w-full rounded-md border p-3"
-          {...register("description")}
-        />
-      </div>
+      <SectionCard title="Identity" description="Name, slug, and imagery.">
+        <FieldGrid>
+          <Field label="Category name">
+            <Input {...register("categoryName")} />
+          </Field>
+          <Field label="Slug">
+            <Input {...register("slug")} />
+          </Field>
+        </FieldGrid>
+        <Field label="Image alt text">
+          <Input {...register("imgAlt")} />
+        </Field>
+        <Field label="Image">
+          <ImageKitUpload
+            value={image || null}
+            onChange={(url) => setValue("image", url ?? "")}
+          />
+        </Field>
+      </SectionCard>
 
-      <div className="space-y-1.5">
-        <Label>Page HTML</Label>
-        <textarea
-          className="min-h-[150px] w-full rounded-md border p-3 font-mono text-sm"
-          {...register("pageHTML")}
-        />
-      </div>
+      <SectionCard title="Content" description="Description and landing HTML.">
+        <Field label="Short description">
+          <Textarea className="min-h-[100px]" {...register("description")} />
+        </Field>
+        <Field label="Page HTML">
+          <Textarea
+            className="min-h-[180px] font-mono text-xs"
+            {...register("pageHTML")}
+          />
+        </Field>
+      </SectionCard>
 
-      <div className="grid gap-5 md:grid-cols-2">
-        <div className="space-y-1.5">
-          <Label>Meta title</Label>
-          <Input {...register("metaTitle")} />
-        </div>
-        <div className="space-y-1.5">
-          <Label>Meta keywords</Label>
-          <Input {...register("metaKeywords")} />
-        </div>
-        <div className="space-y-1.5 md:col-span-2">
-          <Label>Meta description</Label>
-          <textarea
-            className="min-h-[80px] w-full rounded-md border p-3"
-            {...register("metaDescription")}
+      <SectionCard title="SEO" description="Search engine metadata.">
+        <FieldGrid>
+          <Field label="Meta title">
+            <Input {...register("metaTitle")} />
+          </Field>
+          <Field label="Meta keywords">
+            <Input {...register("metaKeywords")} />
+          </Field>
+        </FieldGrid>
+        <Field label="Meta description">
+          <Textarea className="min-h-[80px]" {...register("metaDescription")} />
+        </Field>
+      </SectionCard>
+
+      <SectionCard title="Visibility" description="Publish and promotion.">
+        <div className="flex flex-wrap gap-6">
+          <Controller
+            control={control}
+            name="active"
+            render={({ field }) => (
+              <label className="flex items-center gap-2 text-sm">
+                <Switch
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+                Active
+              </label>
+            )}
+          />
+          <Controller
+            control={control}
+            name="featured"
+            render={({ field }) => (
+              <label className="flex items-center gap-2 text-sm">
+                <Switch
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+                Featured
+              </label>
+            )}
           />
         </div>
-      </div>
+      </SectionCard>
 
-      <div className="flex items-center gap-6">
-        <label className="flex items-center gap-2">
-          <input type="checkbox" {...register("active")} /> Active
-        </label>
-        <label className="flex items-center gap-2">
-          <input type="checkbox" {...register("featured")} /> Featured
-        </label>
-      </div>
-
-      <div className="flex gap-3">
-        <Button type="submit">{id ? "Update" : "Create"}</Button>
+      <StickyFooter>
         <Button
           type="button"
-          variant="outline"
+          variant="ghost"
           onClick={() => router.push("/admin/categories")}
         >
           Cancel
         </Button>
-      </div>
+        <Button type="submit" disabled={formState.isSubmitting}>
+          {id ? "Save changes" : "Create category"}
+        </Button>
+      </StickyFooter>
     </form>
   );
 }

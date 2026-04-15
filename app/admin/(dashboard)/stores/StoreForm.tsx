@@ -1,15 +1,30 @@
 "use client";
 
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Switch } from "@/components/ui/switch";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { trpc } from "@/lib/trpc/client";
 import ImageKitUpload from "../_components/ImageKitUpload";
+import {
+  PageHeader,
+  SectionCard,
+  Field,
+  FieldGrid,
+  StickyFooter,
+} from "../_components/FormKit";
 
 const schema = z.object({
   storeName: z.string().min(1),
@@ -79,114 +94,171 @@ export default function StoreForm({
     else create.mutate(values);
   }
 
-  const { register, handleSubmit, setValue, watch, formState } = form;
+  const { register, handleSubmit, setValue, watch, formState, control } = form;
   const image = watch("image");
   const categoryId = watch("categoryId");
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-      <div className="grid gap-5 md:grid-cols-2">
-        <div className="space-y-1.5">
-          <Label>Store Name</Label>
-          <Input {...register("storeName")} />
-        </div>
-        <div className="space-y-1.5">
-          <Label>Slug</Label>
-          <Input {...register("slug")} />
-        </div>
-        <div className="space-y-1.5">
-          <Label>Store URL</Label>
-          <Input {...register("storeURL")} />
-        </div>
-        <div className="space-y-1.5">
-          <Label>Country</Label>
-          <Input {...register("country")} />
-        </div>
-        <div className="space-y-1.5">
-          <Label>Category</Label>
-          <select
-            className="h-10 w-full rounded-md border px-3"
-            {...register("categoryId", { valueAsNumber: true })}
-          >
-            <option value="">Select category</option>
-            {categories.map((c) => (
-              <option key={c.id} value={c.id}>
-                {c.categoryName}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="space-y-1.5">
-          <Label>Sub-category</Label>
-          <select
-            className="h-10 w-full rounded-md border px-3"
-            {...register("subCategoryId", { valueAsNumber: true })}
-          >
-            <option value="">Select sub-category</option>
-            {subCategories
-              .filter((s) => !categoryId || s.categoryId === categoryId)
-              .map((s) => (
-                <option key={s.id} value={s.id}>
-                  {s.subCategoryName}
-                </option>
-              ))}
-          </select>
-        </div>
-      </div>
-
-      <ImageKitUpload
-        label="Logo"
-        value={image || null}
-        onChange={(url) => setValue("image", url ?? "")}
+      <PageHeader
+        eyebrow={storeId ? "Edit store" : "New store"}
+        title={storeId ? (initial?.storeName ?? "Store") : "Create store"}
+        description="Identity, taxonomy, content, and SEO for a retail partner."
       />
 
-      <div className="space-y-1.5">
-        <Label>Page HTML</Label>
-        <textarea
-          className="min-h-[200px] w-full rounded-md border p-3 font-mono text-sm"
-          {...register("pageHTML")}
-        />
-      </div>
+      <SectionCard
+        title="Identity"
+        description="Primary attributes customers see."
+      >
+        <FieldGrid>
+          <Field label="Store name">
+            <Input {...register("storeName")} />
+          </Field>
+          <Field label="Slug">
+            <Input {...register("slug")} />
+          </Field>
+          <Field label="Store URL">
+            <Input {...register("storeURL")} placeholder="https://..." />
+          </Field>
+          <Field label="Country">
+            <Input {...register("country")} />
+          </Field>
+        </FieldGrid>
+        <Field label="Logo">
+          <ImageKitUpload
+            value={image || null}
+            onChange={(url) => setValue("image", url ?? "")}
+          />
+        </Field>
+      </SectionCard>
 
-      <div className="grid gap-5 md:grid-cols-2">
-        <div className="space-y-1.5">
-          <Label>Meta title</Label>
-          <Input {...register("metaTitle")} />
-        </div>
-        <div className="space-y-1.5">
-          <Label>Meta keywords</Label>
-          <Input {...register("metaKeywords")} />
-        </div>
-        <div className="space-y-1.5 md:col-span-2">
-          <Label>Meta description</Label>
-          <textarea
-            className="min-h-[80px] w-full rounded-md border p-3"
-            {...register("metaDescription")}
+      <SectionCard
+        title="Taxonomy"
+        description="Where this store lives in the catalog."
+      >
+        <FieldGrid>
+          <Field label="Category">
+            <Controller
+              control={control}
+              name="categoryId"
+              render={({ field }) => (
+                <Select
+                  value={field.value ? String(field.value) : ""}
+                  onValueChange={(v) => field.onChange(Number(v))}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select category" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {categories.map((c) => (
+                      <SelectItem key={c.id} value={String(c.id)}>
+                        {c.categoryName}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
+            />
+          </Field>
+          <Field label="Sub-category">
+            <Controller
+              control={control}
+              name="subCategoryId"
+              render={({ field }) => (
+                <Select
+                  value={field.value ? String(field.value) : ""}
+                  onValueChange={(v) => field.onChange(Number(v))}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select sub-category" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {subCategories
+                      .filter(
+                        (s) => !categoryId || s.categoryId === categoryId
+                      )
+                      .map((s) => (
+                        <SelectItem key={s.id} value={String(s.id)}>
+                          {s.subCategoryName}
+                        </SelectItem>
+                      ))}
+                  </SelectContent>
+                </Select>
+              )}
+            />
+          </Field>
+        </FieldGrid>
+      </SectionCard>
+
+      <SectionCard
+        title="Content"
+        description="Full page HTML shown on the store detail view."
+      >
+        <Field label="Page HTML">
+          <Textarea
+            className="min-h-[220px] font-mono text-xs"
+            {...register("pageHTML")}
+          />
+        </Field>
+      </SectionCard>
+
+      <SectionCard title="SEO" description="Search engine metadata.">
+        <FieldGrid>
+          <Field label="Meta title">
+            <Input {...register("metaTitle")} />
+          </Field>
+          <Field label="Meta keywords">
+            <Input {...register("metaKeywords")} />
+          </Field>
+        </FieldGrid>
+        <Field label="Meta description">
+          <Textarea className="min-h-[80px]" {...register("metaDescription")} />
+        </Field>
+      </SectionCard>
+
+      <SectionCard title="Visibility" description="Publish and promotion.">
+        <div className="flex flex-wrap gap-6">
+          <Controller
+            control={control}
+            name="active"
+            render={({ field }) => (
+              <label className="flex items-center gap-2 text-sm">
+                <Switch
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+                Active
+              </label>
+            )}
+          />
+          <Controller
+            control={control}
+            name="featured"
+            render={({ field }) => (
+              <label className="flex items-center gap-2 text-sm">
+                <Switch
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+                Featured
+              </label>
+            )}
           />
         </div>
-      </div>
+      </SectionCard>
 
-      <div className="flex items-center gap-6">
-        <label className="flex items-center gap-2">
-          <input type="checkbox" {...register("active")} /> Active
-        </label>
-        <label className="flex items-center gap-2">
-          <input type="checkbox" {...register("featured")} /> Featured
-        </label>
-      </div>
-
-      <div className="flex gap-3">
-        <Button type="submit" disabled={formState.isSubmitting}>
-          {storeId ? "Update" : "Create"}
-        </Button>
+      <StickyFooter>
         <Button
           type="button"
-          variant="outline"
+          variant="ghost"
           onClick={() => router.push("/admin/stores")}
         >
           Cancel
         </Button>
-      </div>
+        <Button type="submit" disabled={formState.isSubmitting}>
+          {storeId ? "Save changes" : "Create store"}
+        </Button>
+      </StickyFooter>
     </form>
   );
 }

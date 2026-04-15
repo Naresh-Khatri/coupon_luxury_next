@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { trpc } from "@/lib/trpc/client";
 import { toast } from "sonner";
 import ResourceTable, { BoolCell } from "../_components/ResourceTable";
+import { PageHeader } from "../_components/FormKit";
 
 export default function SlidesAdminPage() {
   const utils = trpc.useUtils();
@@ -20,20 +21,27 @@ export default function SlidesAdminPage() {
   });
 
   return (
-    <div className="space-y-5">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Slides</h1>
-        <Button asChild>
-          <Link href="/admin/slides/new">
-            <Plus className="size-4" /> Add Slide
-          </Link>
-        </Button>
-      </div>
+    <div className="space-y-6">
+      <PageHeader
+        eyebrow="Content"
+        title="Slides"
+        description="Homepage hero carousel."
+        actions={
+          <Button asChild>
+            <Link href="/admin/slides/new">
+              <Plus className="size-4" /> Add slide
+            </Link>
+          </Button>
+        }
+      />
       {isLoading ? (
-        <div>Loading…</div>
+        <div className="py-8 text-center text-sm text-muted-foreground">
+          Loading…
+        </div>
       ) : (
         <ResourceTable
           rows={data}
+          emptyLabel="No slides yet"
           columns={[
             {
               key: "img",
@@ -44,15 +52,27 @@ export default function SlidesAdminPage() {
                   alt={r.imgAlt}
                   width={80}
                   height={40}
-                  className="rounded"
+                  className="rounded border border-border/60"
                 />
               ),
             },
-            { key: "title", label: "Title", render: (r) => r.title },
-            { key: "order", label: "Order", render: (r) => r.order },
+            {
+              key: "title",
+              label: "Title",
+              render: (r) => <span className="font-medium">{r.title}</span>,
+            },
+            {
+              key: "order",
+              label: "Order",
+              render: (r) => (
+                <span className="font-mono tabular-nums text-sm">
+                  {r.order}
+                </span>
+              ),
+            },
             {
               key: "active",
-              label: "Active",
+              label: "Status",
               render: (r) => <BoolCell value={r.active} />,
             },
           ]}
