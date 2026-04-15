@@ -189,7 +189,12 @@ function SortableSlideRow({
         height={40}
         className="rounded border border-border/60"
       />
-      <span className="font-medium">{row.title}</span>
+      <Link
+        href={`/admin/slides/${row.id}`}
+        className="font-medium hover:underline underline-offset-4"
+      >
+        {row.title}
+      </Link>
       <BoolCell value={row.active} />
       <BoolCell
         value={row.featured}

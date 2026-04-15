@@ -49,7 +49,12 @@ export default function CategoriesAdminPage() {
           <DataTableColumnHeader column={column} label="Name" />
         ),
         cell: ({ row }) => (
-          <span className="font-medium">{row.original.categoryName}</span>
+          <Link
+            href={`/admin/categories/${row.original.id}`}
+            className="font-medium hover:underline underline-offset-4"
+          >
+            {row.original.categoryName}
+          </Link>
         ),
         meta: {
           label: "Name",

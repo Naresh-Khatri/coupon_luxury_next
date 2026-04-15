@@ -78,12 +78,13 @@ export default function OffersAdminPage() {
           <DataTableColumnHeader column={column} label="Title" />
         ),
         cell: ({ row }) => (
-          <span
-            className="block max-w-[320px] truncate font-medium"
+          <Link
+            href={`/admin/offers/${row.original.id}`}
+            className="block max-w-[320px] truncate font-medium hover:underline underline-offset-4"
             title={row.original.title}
           >
             {row.original.title}
-          </span>
+          </Link>
         ),
         meta: {
           label: "Title",

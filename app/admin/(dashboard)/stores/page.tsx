@@ -76,7 +76,12 @@ export default function StoresAdminPage() {
           <DataTableColumnHeader column={column} label="Name" />
         ),
         cell: ({ row }) => (
-          <span className="font-medium">{row.original.storeName}</span>
+          <Link
+            href={`/admin/stores/${row.original.id}`}
+            className="font-medium hover:underline underline-offset-4"
+          >
+            {row.original.storeName}
+          </Link>
         ),
         meta: {
           label: "Name",

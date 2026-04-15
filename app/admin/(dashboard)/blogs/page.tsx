@@ -67,7 +67,12 @@ export default function BlogsAdminPage() {
           <DataTableColumnHeader column={column} label="Title" />
         ),
         cell: ({ row }) => (
-          <span className="font-medium">{row.original.title}</span>
+          <Link
+            href={`/admin/blogs/${row.original.id}`}
+            className="font-medium hover:underline underline-offset-4"
+          >
+            {row.original.title}
+          </Link>
         ),
         meta: {
           label: "Title",
