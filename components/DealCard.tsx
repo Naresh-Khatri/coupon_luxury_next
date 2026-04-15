@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import transformPath from "@/utils/transformImagePath";
 
 export default function DealCard({
@@ -28,11 +28,11 @@ export default function DealCard({
       initial={{ opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-40px" }}
-      transition={{ duration: 0.4, ease: "easeOut" }}
+      transition={{ duration: 0.4, ease: "easeOut" as const }}
       whileHover={{
         y: -6,
         boxShadow: "0 20px 40px rgba(0,0,0,0.12)",
-        transition: { duration: 0.22, ease: "easeOut" },
+        transition: { duration: 0.22, ease: "easeOut" as const },
       }}
       whileTap={{ scale: 0.97, transition: { duration: 0.1 } }}
       className="flex h-[200px] w-[160px] flex-col items-center justify-between overflow-hidden rounded-2xl border border-black/5 bg-white shadow-md lg:h-[248px] lg:w-[196px]"

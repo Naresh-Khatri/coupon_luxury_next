@@ -25,5 +25,5 @@ export function cached<A extends unknown[], T>(
 }
 
 export function revalidate(...tags: string[]) {
-  for (const t of tags) revalidateTag(t);
+  for (const t of tags) revalidateTag(t, "max");
 }

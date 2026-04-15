@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import axios from "axios";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 import { Menu as MenuIcon, X, ChevronDown } from "lucide-react";
 import {
   DropdownMenu,
@@ -36,12 +36,12 @@ const mobileMenuVariants = {
   visible: {
     opacity: 1,
     x: 0,
-    transition: { duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] },
+    transition: { duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] as const },
   },
   exit: {
     opacity: 0,
     x: "100%",
-    transition: { duration: 0.25, ease: [0.55, 0, 1, 0.45] },
+    transition: { duration: 0.25, ease: [0.55, 0, 1, 0.45] as const },
   },
 };
 
@@ -50,7 +50,7 @@ const mobileLinkVariants = {
   visible: (i: number) => ({
     opacity: 1,
     x: 0,
-    transition: { delay: i * 0.07 + 0.1, duration: 0.35, ease: "easeOut" },
+    transition: { delay: i * 0.07 + 0.1, duration: 0.35, ease: "easeOut" as const },
   }),
 };
 

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import DealCard from "../DealCard";
 
 const containerVariants = {
@@ -14,7 +14,7 @@ const itemVariants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.4, ease: "easeOut" },
+    transition: { duration: 0.4, ease: "easeOut" as const },
   },
 };
 
@@ -38,7 +38,7 @@ export default function DealsOfTheDay({ deals }: { deals: Deal[] }) {
         initial={{ opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        transition={{ duration: 0.5, ease: "easeOut" }}
+        transition={{ duration: 0.5, ease: "easeOut" as const }}
         className="mb-8 text-center"
       >
         <p className="mb-2 text-xs font-semibold uppercase tracking-[3px] text-gold md:text-sm">

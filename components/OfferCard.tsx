@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 import { ChevronDown, Info } from "lucide-react";
 import CodeRevealingButton from "./CodeRevealingButton/CodeRevealingButton";
 
@@ -51,7 +51,7 @@ export default function OfferCard({ offerDetails }: { offerDetails: OfferDetails
       initial={{ opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-30px" }}
-      transition={{ duration: 0.4, ease: "easeOut" }}
+      transition={{ duration: 0.4, ease: "easeOut" as const }}
       whileHover={{
         boxShadow: "0 8px 32px rgba(0,0,0,0.10)",
         transition: { duration: 0.2 },

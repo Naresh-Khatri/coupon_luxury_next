@@ -19,11 +19,12 @@ async function getData(slug: string) {
   return { dealInfo, recommendedDeals };
 }
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { slug: string };
-}): Promise<Metadata> {
+export async function generateMetadata(
+  props: {
+    params: Promise<{ slug: string }>;
+  }
+): Promise<Metadata> {
+  const params = await props.params;
   const data = await getData(params.slug);
   if (!data) return {};
   const { dealInfo } = data;
@@ -40,11 +41,12 @@ export async function generateMetadata({
   };
 }
 
-export default async function DealPage({
-  params,
-}: {
-  params: { slug: string };
-}) {
+export default async function DealPage(
+  props: {
+    params: Promise<{ slug: string }>;
+  }
+) {
+  const params = await props.params;
   const data = await getData(params.slug);
   if (!data) notFound();
   const { dealInfo, recommendedDeals } = data;

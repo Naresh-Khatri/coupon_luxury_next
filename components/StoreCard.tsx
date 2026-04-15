@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 
 export default function StoreCard({
   title,
@@ -18,11 +18,11 @@ export default function StoreCard({
       initial={{ opacity: 0, scale: 0.96 }}
       whileInView={{ opacity: 1, scale: 1 }}
       viewport={{ once: true, margin: "-20px" }}
-      transition={{ duration: 0.35, ease: "easeOut" }}
+      transition={{ duration: 0.35, ease: "easeOut" as const }}
       whileHover={{
         y: -5,
         boxShadow: "0 16px 32px rgba(0,0,0,0.14)",
-        transition: { duration: 0.2, ease: "easeOut" },
+        transition: { duration: 0.2, ease: "easeOut" as const },
       }}
       whileTap={{ scale: 0.97, transition: { duration: 0.1 } }}
       className="h-[150px]"

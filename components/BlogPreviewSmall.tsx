@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 
 const months = [
   "January",
@@ -42,7 +42,7 @@ export default function BlogPreviewSmall({ blog }: { blog: Blog }) {
         initial={{ opacity: 0, x: 16 }}
         whileInView={{ opacity: 1, x: 0 }}
         viewport={{ once: true }}
-        transition={{ duration: 0.35, ease: "easeOut" }}
+        transition={{ duration: 0.35, ease: "easeOut" as const }}
         whileHover={{
           x: 3,
           boxShadow: "0 8px 24px rgba(0,0,0,0.09)",

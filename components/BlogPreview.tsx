@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 
 function estimateReadTime(text = "") {
   const words = text.trim().split(/\s+/).length;
@@ -26,11 +26,11 @@ export default function BlogPreview({ blog }: { blog: Blog }) {
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-30px" }}
-      transition={{ duration: 0.4, ease: "easeOut" }}
+      transition={{ duration: 0.4, ease: "easeOut" as const }}
       whileHover={{
         y: -6,
         boxShadow: "0 20px 40px rgba(0,0,0,0.10)",
-        transition: { duration: 0.22, ease: "easeOut" },
+        transition: { duration: 0.22, ease: "easeOut" as const },
       }}
       className="flex max-w-[300px] flex-col overflow-hidden rounded-2xl border border-black/5 bg-white"
     >

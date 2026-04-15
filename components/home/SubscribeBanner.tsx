@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { toast } from "sonner";
 import Confetti from "../Confetti";
 import { trpc } from "@/lib/trpc/client";
@@ -43,7 +43,7 @@ export default function SubscribeBanner() {
         initial={{ opacity: 0, y: 32 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        transition={{ duration: 0.55, ease: "easeOut" }}
+        transition={{ duration: 0.55, ease: "easeOut" as const }}
         className="subscribe-banner-bg relative flex w-full max-w-[1100px] flex-col items-center justify-center overflow-hidden rounded-3xl px-6 py-12 md:px-12 md:py-16"
       >
         <div className="pointer-events-none absolute -top-20 -right-20 size-80 rounded-full border-[60px] border-[rgba(196,154,60,0.06)]" />
