@@ -212,12 +212,6 @@ export const subscribers = pgTable("Subscriber", {
   updatedAt: timestamp("updatedAt", { precision: 3 }).notNull().defaultNow(),
 });
 
-export const backgroundVideo = pgTable("BackgroundVideo", {
-  id: serial("id").primaryKey(),
-  url: text("url").notNull(),
-  updatedAt: timestamp("updatedAt", { precision: 3 }).notNull().defaultNow(),
-});
-
 // ---------- Relations ----------
 
 export const categoriesRelations = relations(categories, ({ many }) => ({

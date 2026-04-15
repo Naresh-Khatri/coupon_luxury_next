@@ -11,7 +11,6 @@ import {
   Boxes,
   Newspaper,
   Images,
-  Film,
   Mail,
   LogOut,
   Menu,
@@ -28,7 +27,6 @@ const nav = [
   { href: "/admin/subcategories", label: "Subcategories", icon: Boxes },
   { href: "/admin/blogs", label: "Blogs", icon: Newspaper },
   { href: "/admin/slides", label: "Slides", icon: Images },
-  { href: "/admin/video", label: "Background Video", icon: Film },
   { href: "/admin/subscribers", label: "Subscribers", icon: Mail },
 ];
 

@@ -14,7 +14,6 @@ export const CACHE_TAGS = {
   subscribers: "subscribers",
   main: "main",
   sitemap: "sitemap",
-  video: "video",
 } as const;
 
 export function cached<A extends unknown[], T>(

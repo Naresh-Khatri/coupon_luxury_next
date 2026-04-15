@@ -473,33 +473,4 @@ export const adminRouter = router({
         return { ok: true };
       }),
   }),
-
-  // ---------- Background video ----------
-  video: router({
-    get: adminProcedure.query(async () => {
-      const [row] = await db.select().from(s.backgroundVideo).limit(1);
-      return row ?? null;
-    }),
-    set: adminProcedure
-      .input(z.object({ url: z.string().url() }))
-      .mutation(async ({ input }) => {
-        const [existing] = await db.select().from(s.backgroundVideo).limit(1);
-        if (existing) {
-          await deleteImageByUrl(existing.url);
-          const [row] = await db
-            .update(s.backgroundVideo)
-            .set({ url: input.url, updatedAt: new Date() })
-            .where(eq(s.backgroundVideo.id, existing.id))
-            .returning();
-          revalidate(CACHE_TAGS.video);
-          return row;
-        }
-        const [row] = await db
-          .insert(s.backgroundVideo)
-          .values({ url: input.url })
-          .returning();
-        revalidate(CACHE_TAGS.video);
-        return row;
-      }),
-  }),
 });

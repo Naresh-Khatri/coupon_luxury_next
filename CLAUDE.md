@@ -21,7 +21,7 @@ Single Next.js 14 **App Router** app in TypeScript. UI: Tailwind v4 + shadcn/ui,
 ### Route groups
 
 - `app/(site)/` — public pages (NavBar + Footer layout). `/`, `/stores`, `/stores/[slug]`, `/deals`, `/deals/[slug]`, `/categories`, `/categories/[slug]`, `/blogs`, `/blogs/[slug]`, `/about`, `/contact`, `/privacy-policy`, `/sitemap`.
-- `app/admin/(dashboard)/` — better-auth-gated admin UI (sidebar + account). Dashboard at `/admin`; CRUD at `/admin/stores`, `/admin/offers`, `/admin/blogs`, `/admin/categories`, `/admin/subcategories`, `/admin/slides`, `/admin/subscribers`, `/admin/video`.
+- `app/admin/(dashboard)/` — better-auth-gated admin UI (sidebar + account). Dashboard at `/admin`; CRUD at `/admin/stores`, `/admin/offers`, `/admin/blogs`, `/admin/categories`, `/admin/subcategories`, `/admin/slides`, `/admin/subscribers`.
 - `app/admin/login/` — better-auth signin form (outside the gated group).
 - `app/api/auth/[...all]/` — better-auth catch-all handler via `toNextJsHandler`.
 - `app/api/trpc/[trpc]/` — tRPC fetch handler.
@@ -59,7 +59,7 @@ Procedures:
 
 ### Drizzle schema
 
-`db/schema.ts` — domain tables (`stores`, `offers`, `categories`, `subCategories`, `blogs`, `slides`, `subscribers`, `backgroundVideo`) mirror the legacy Prisma schema 1:1, plus better-auth tables (`user`, `session`, `account`, `verification`). Relations defined via `drizzle-orm`'s `relations()` so `db.query.*.findMany({ with: {...} })` works.
+`db/schema.ts` — domain tables (`stores`, `offers`, `categories`, `subCategories`, `blogs`, `slides`, `subscribers`) mirror the legacy Prisma schema 1:1, plus better-auth tables (`user`, `session`, `account`, `verification`). Relations defined via `drizzle-orm`'s `relations()` so `db.query.*.findMany({ with: {...} })` works.
 
 `db/index.ts` exports `db` (neon-http drizzle) and re-exports the schema as `s`.
 

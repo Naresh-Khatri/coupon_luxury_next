@@ -42,12 +42,3 @@ export async function addSubscriber(email: string) {
     .returning();
   return row;
 }
-
-export const getBackgroundVideo = cached(
-  async () => {
-    const [row] = await db.select().from(s.backgroundVideo).limit(1);
-    return row ?? null;
-  },
-  ["video:public"],
-  [CACHE_TAGS.video]
-);
