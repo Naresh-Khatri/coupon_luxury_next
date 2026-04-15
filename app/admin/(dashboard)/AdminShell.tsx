@@ -181,8 +181,8 @@ export default function AdminShell({
                       className={cn(
                         "group relative flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition",
                         active
-                          ? "bg-sidebar-accent/15 text-sidebar-foreground"
-                          : "text-sidebar-foreground/70 hover:bg-sidebar-accent/10 hover:text-sidebar-foreground"
+                          ? "bg-sidebar-accent text-sidebar-accent-foreground"
+                          : "text-sidebar-foreground/70 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground"
                       )}
                     >
                       <span
@@ -190,7 +190,7 @@ export default function AdminShell({
                         className={cn(
                           "absolute left-0 top-1/2 h-5 w-[2px] -translate-y-1/2 rounded-r-full transition-opacity",
                           active
-                            ? "bg-sidebar-accent opacity-100"
+                            ? "bg-sidebar-primary opacity-100"
                             : "opacity-0"
                         )}
                       />
@@ -198,7 +198,7 @@ export default function AdminShell({
                         className={cn(
                           "size-4 transition",
                           active
-                            ? "text-sidebar-accent"
+                            ? "text-sidebar-accent-foreground"
                             : "text-sidebar-foreground/60"
                         )}
                       />

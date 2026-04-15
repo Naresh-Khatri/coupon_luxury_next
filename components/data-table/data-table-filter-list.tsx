@@ -580,9 +580,8 @@ function onFilterInputRender<TData>({
       <div
         id={inputId}
         role="status"
-        aria-label={`${columnMeta?.label} filter is ${
-          filter.operator === "isEmpty" ? "empty" : "not empty"
-        }`}
+        aria-label={`${columnMeta?.label} filter is ${filter.operator === "isEmpty" ? "empty" : "not empty"
+          }`}
         aria-live="polite"
         className="h-8 w-full rounded border bg-transparent dark:bg-input/30"
       />
@@ -790,21 +789,21 @@ function onFilterInputRender<TData>({
                 selected={
                   dateValue.length === 2
                     ? {
-                        from: new Date(Number(dateValue[0])),
-                        to: new Date(Number(dateValue[1])),
-                      }
+                      from: new Date(Number(dateValue[0])),
+                      to: new Date(Number(dateValue[1])),
+                    }
                     : {
-                        from: new Date(),
-                        to: new Date(),
-                      }
+                      from: new Date(),
+                      to: new Date(),
+                    }
                 }
                 onSelect={(date) => {
                   onFilterUpdate(filter.filterId, {
                     value: date
                       ? [
-                          (date.from?.getTime() ?? "").toString(),
-                          (date.to?.getTime() ?? "").toString(),
-                        ]
+                        (date.from?.getTime() ?? "").toString(),
+                        (date.to?.getTime() ?? "").toString(),
+                      ]
                       : [],
                   });
                 }}
