@@ -2,7 +2,13 @@ import { z } from "zod";
 import { router, adminProcedure } from "../trpc";
 import { TRPCError } from "@trpc/server";
 import { db, s } from "@/db";
-import { eq, desc } from "drizzle-orm";
+import { eq, desc, sql } from "drizzle-orm";
+import {
+  tableListInput,
+  buildWhere,
+  buildOrderBy,
+  type ColumnMap,
+} from "../list-helpers";
 import { revalidate, CACHE_TAGS } from "@/server/db/cache";
 import { imagekit, deleteImageByUrl } from "@/lib/imagekit";
 import { getAllStores } from "@/server/db/queries/stores";
@@ -144,6 +150,39 @@ export const adminRouter = router({
   // ---------- Stores ----------
   stores: router({
     list: adminProcedure.query(() => getAllStores()),
+    table: adminProcedure.input(tableListInput).query(async ({ input }) => {
+      const map: ColumnMap = {
+        storeName: { column: s.stores.storeName, kind: "text" },
+        slug: { column: s.stores.slug, kind: "text" },
+        country: { column: s.stores.country, kind: "text" },
+        categoryId: { column: s.stores.categoryId, kind: "number" },
+        subCategoryId: { column: s.stores.subCategoryId, kind: "number" },
+        active: { column: s.stores.active, kind: "boolean" },
+        featured: { column: s.stores.featured, kind: "boolean" },
+        createdAt: { column: s.stores.createdAt, kind: "date" },
+        updatedAt: { column: s.stores.updatedAt, kind: "date" },
+      };
+      const where = buildWhere(input, map);
+      const orderBy = buildOrderBy(input, map);
+      const [rows, countRow] = await Promise.all([
+        db.query.stores.findMany({
+          where,
+          orderBy: orderBy.length ? orderBy : [desc(s.stores.updatedAt)],
+          limit: input.perPage,
+          offset: (input.page - 1) * input.perPage,
+          with: {
+            category: { columns: { id: true, categoryName: true } },
+            subCategory: { columns: { id: true, subCategoryName: true } },
+          },
+        }),
+        db
+          .select({ count: sql<number>`count(*)::int` })
+          .from(s.stores)
+          .where(where),
+      ]);
+      const total = countRow[0]?.count ?? 0;
+      return { rows, pageCount: Math.max(1, Math.ceil(total / input.perPage)) };
+    }),
     byId: adminProcedure
       .input(z.number().int())
       .query(({ input }) =>
@@ -202,6 +241,43 @@ export const adminRouter = router({
   // ---------- Offers ----------
   offers: router({
     list: adminProcedure.query(() => getAllOffers()),
+    table: adminProcedure.input(tableListInput).query(async ({ input }) => {
+      const map: ColumnMap = {
+        title: { column: s.offers.title, kind: "text" },
+        slug: { column: s.offers.slug, kind: "text" },
+        offerType: { column: s.offers.offerType, kind: "text" },
+        discountType: { column: s.offers.discountType, kind: "text" },
+        couponCode: { column: s.offers.couponCode, kind: "text" },
+        country: { column: s.offers.country, kind: "text" },
+        storeId: { column: s.offers.storeId, kind: "number" },
+        categoryId: { column: s.offers.categoryId, kind: "number" },
+        subCategoryId: { column: s.offers.subCategoryId, kind: "number" },
+        discountValue: { column: s.offers.discountValue, kind: "number" },
+        active: { column: s.offers.active, kind: "boolean" },
+        featured: { column: s.offers.featured, kind: "boolean" },
+        createdAt: { column: s.offers.createdAt, kind: "date" },
+        updatedAt: { column: s.offers.updatedAt, kind: "date" },
+      };
+      const where = buildWhere(input, map);
+      const orderBy = buildOrderBy(input, map);
+      const [rows, countRow] = await Promise.all([
+        db.query.offers.findMany({
+          where,
+          orderBy: orderBy.length ? orderBy : [desc(s.offers.updatedAt)],
+          limit: input.perPage,
+          offset: (input.page - 1) * input.perPage,
+          with: {
+            store: { columns: { id: true, storeName: true, slug: true } },
+          },
+        }),
+        db
+          .select({ count: sql<number>`count(*)::int` })
+          .from(s.offers)
+          .where(where),
+      ]);
+      const total = countRow[0]?.count ?? 0;
+      return { rows, pageCount: Math.max(1, Math.ceil(total / input.perPage)) };
+    }),
     byId: adminProcedure
       .input(z.number().int())
       .query(({ input }) =>
@@ -256,6 +332,32 @@ export const adminRouter = router({
   // ---------- Categories ----------
   categories: router({
     list: adminProcedure.query(() => getAllCategories()),
+    table: adminProcedure.input(tableListInput).query(async ({ input }) => {
+      const map: ColumnMap = {
+        categoryName: { column: s.categories.categoryName, kind: "text" },
+        slug: { column: s.categories.slug, kind: "text" },
+        active: { column: s.categories.active, kind: "boolean" },
+        featured: { column: s.categories.featured, kind: "boolean" },
+        createdAt: { column: s.categories.createdAt, kind: "date" },
+        updatedAt: { column: s.categories.updatedAt, kind: "date" },
+      };
+      const where = buildWhere(input, map);
+      const orderBy = buildOrderBy(input, map);
+      const [rows, countRow] = await Promise.all([
+        db.query.categories.findMany({
+          where,
+          orderBy: orderBy.length ? orderBy : [desc(s.categories.updatedAt)],
+          limit: input.perPage,
+          offset: (input.page - 1) * input.perPage,
+        }),
+        db
+          .select({ count: sql<number>`count(*)::int` })
+          .from(s.categories)
+          .where(where),
+      ]);
+      const total = countRow[0]?.count ?? 0;
+      return { rows, pageCount: Math.max(1, Math.ceil(total / input.perPage)) };
+    }),
     byId: adminProcedure
       .input(z.number().int())
       .query(({ input }) =>
@@ -314,6 +416,34 @@ export const adminRouter = router({
   // ---------- SubCategories ----------
   subCategories: router({
     list: adminProcedure.query(() => getAllSubCategories()),
+    table: adminProcedure.input(tableListInput).query(async ({ input }) => {
+      const map: ColumnMap = {
+        subCategoryName: { column: s.subCategories.subCategoryName, kind: "text" },
+        slug: { column: s.subCategories.slug, kind: "text" },
+        categoryId: { column: s.subCategories.categoryId, kind: "number" },
+        active: { column: s.subCategories.active, kind: "boolean" },
+        featured: { column: s.subCategories.featured, kind: "boolean" },
+        createdAt: { column: s.subCategories.createdAt, kind: "date" },
+        updatedAt: { column: s.subCategories.updatedAt, kind: "date" },
+      };
+      const where = buildWhere(input, map);
+      const orderBy = buildOrderBy(input, map);
+      const [rows, countRow] = await Promise.all([
+        db.query.subCategories.findMany({
+          where,
+          orderBy: orderBy.length ? orderBy : [desc(s.subCategories.updatedAt)],
+          limit: input.perPage,
+          offset: (input.page - 1) * input.perPage,
+          with: { category: { columns: { id: true, categoryName: true } } },
+        }),
+        db
+          .select({ count: sql<number>`count(*)::int` })
+          .from(s.subCategories)
+          .where(where),
+      ]);
+      const total = countRow[0]?.count ?? 0;
+      return { rows, pageCount: Math.max(1, Math.ceil(total / input.perPage)) };
+    }),
     byId: adminProcedure
       .input(z.number().int())
       .query(({ input }) =>
@@ -356,6 +486,35 @@ export const adminRouter = router({
   // ---------- Blogs ----------
   blogs: router({
     list: adminProcedure.query(() => getAllBlogs()),
+    table: adminProcedure.input(tableListInput).query(async ({ input }) => {
+      const map: ColumnMap = {
+        title: { column: s.blogs.title, kind: "text" },
+        slug: { column: s.blogs.slug, kind: "text" },
+        blogType: { column: s.blogs.blogType, kind: "text" },
+        storeId: { column: s.blogs.storeId, kind: "number" },
+        active: { column: s.blogs.active, kind: "boolean" },
+        featured: { column: s.blogs.featured, kind: "boolean" },
+        createdAt: { column: s.blogs.createdAt, kind: "date" },
+        updatedAt: { column: s.blogs.updatedAt, kind: "date" },
+      };
+      const where = buildWhere(input, map);
+      const orderBy = buildOrderBy(input, map);
+      const [rows, countRow] = await Promise.all([
+        db.query.blogs.findMany({
+          where,
+          orderBy: orderBy.length ? orderBy : [desc(s.blogs.updatedAt)],
+          limit: input.perPage,
+          offset: (input.page - 1) * input.perPage,
+          with: { store: { columns: { id: true, storeName: true } } },
+        }),
+        db
+          .select({ count: sql<number>`count(*)::int` })
+          .from(s.blogs)
+          .where(where),
+      ]);
+      const total = countRow[0]?.count ?? 0;
+      return { rows, pageCount: Math.max(1, Math.ceil(total / input.perPage)) };
+    }),
     byId: adminProcedure
       .input(z.number().int())
       .query(({ input }) =>
@@ -415,6 +574,33 @@ export const adminRouter = router({
   // ---------- Slides ----------
   slides: router({
     list: adminProcedure.query(() => getAllSlides()),
+    table: adminProcedure.input(tableListInput).query(async ({ input }) => {
+      const map: ColumnMap = {
+        title: { column: s.slides.title, kind: "text" },
+        order: { column: s.slides.order, kind: "number" },
+        link: { column: s.slides.link, kind: "text" },
+        active: { column: s.slides.active, kind: "boolean" },
+        featured: { column: s.slides.featured, kind: "boolean" },
+        createdAt: { column: s.slides.createdAt, kind: "date" },
+        updatedAt: { column: s.slides.updatedAt, kind: "date" },
+      };
+      const where = buildWhere(input, map);
+      const orderBy = buildOrderBy(input, map);
+      const [rows, countRow] = await Promise.all([
+        db.query.slides.findMany({
+          where,
+          orderBy: orderBy.length ? orderBy : [desc(s.slides.order)],
+          limit: input.perPage,
+          offset: (input.page - 1) * input.perPage,
+        }),
+        db
+          .select({ count: sql<number>`count(*)::int` })
+          .from(s.slides)
+          .where(where),
+      ]);
+      const total = countRow[0]?.count ?? 0;
+      return { rows, pageCount: Math.max(1, Math.ceil(total / input.perPage)) };
+    }),
     byId: adminProcedure
       .input(z.number().int())
       .query(({ input }) =>
@@ -465,6 +651,30 @@ export const adminRouter = router({
   // ---------- Subscribers ----------
   subscribers: router({
     list: adminProcedure.query(() => getAllSubscribers()),
+    table: adminProcedure.input(tableListInput).query(async ({ input }) => {
+      const map: ColumnMap = {
+        email: { column: s.subscribers.email, kind: "text" },
+        phone: { column: s.subscribers.phone, kind: "text" },
+        createdAt: { column: s.subscribers.createdAt, kind: "date" },
+      };
+      const where = buildWhere(input, map);
+      const orderBy = buildOrderBy(input, map);
+      const [rows, countRow] = await Promise.all([
+        db
+          .select()
+          .from(s.subscribers)
+          .where(where)
+          .orderBy(...(orderBy.length ? orderBy : [desc(s.subscribers.createdAt)]))
+          .limit(input.perPage)
+          .offset((input.page - 1) * input.perPage),
+        db
+          .select({ count: sql<number>`count(*)::int` })
+          .from(s.subscribers)
+          .where(where),
+      ]);
+      const total = countRow[0]?.count ?? 0;
+      return { rows, pageCount: Math.max(1, Math.ceil(total / input.perPage)) };
+    }),
     delete: adminProcedure
       .input(z.number().int())
       .mutation(async ({ input }) => {

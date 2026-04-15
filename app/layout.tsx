@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, DM_Sans } from "next/font/google";
 import Script from "next/script";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { Toaster } from "@/components/ui/sonner";
 import { TRPCProvider } from "@/lib/trpc/Provider";
 import "@/styles/globals.css";
@@ -106,7 +107,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             style={{ display: "none", visibility: "hidden" }}
           />
         </noscript>
-        <TRPCProvider>{children}</TRPCProvider>
+        <NuqsAdapter>
+          <TRPCProvider>{children}</TRPCProvider>
+        </NuqsAdapter>
         <Toaster />
       </body>
     </html>

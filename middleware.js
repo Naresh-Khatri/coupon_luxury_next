@@ -1,8 +1,11 @@
 import { NextResponse } from "next/server";
 
 export function middleware(request) {
-  if (request.url !== request.url.toLowerCase()) {
-    return NextResponse.redirect(request.url.toLowerCase(), 301);
+  const url = request.nextUrl;
+  if (url.pathname !== url.pathname.toLowerCase()) {
+    const redirectUrl = url.clone();
+    redirectUrl.pathname = url.pathname.toLowerCase();
+    return NextResponse.redirect(redirectUrl, 301);
   }
   return NextResponse.next();
 }
