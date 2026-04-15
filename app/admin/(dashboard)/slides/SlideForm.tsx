@@ -20,7 +20,6 @@ import {
 
 const schema = z.object({
   title: z.string().min(1),
-  order: z.number().int(),
   link: z.string(),
   imgURL: z.string().url(),
   imgAlt: z.string().default(""),
@@ -42,7 +41,6 @@ export default function SlideForm({
     resolver: zodResolver(schema) as any,
     defaultValues: {
       title: "",
-      order: 0,
       link: "",
       imgURL: "",
       imgAlt: "",
@@ -88,12 +86,6 @@ export default function SlideForm({
         <FieldGrid>
           <Field label="Title">
             <Input {...form.register("title")} />
-          </Field>
-          <Field label="Order">
-            <Input
-              type="number"
-              {...form.register("order", { valueAsNumber: true })}
-            />
           </Field>
           <Field label="Link">
             <Input {...form.register("link")} />

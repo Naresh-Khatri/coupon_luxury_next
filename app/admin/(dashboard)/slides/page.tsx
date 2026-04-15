@@ -3,21 +3,31 @@
 import * as React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Plus, Text, Hash, ToggleLeft } from "lucide-react";
-import type { ColumnDef } from "@tanstack/react-table";
+import { Plus, GripVertical } from "lucide-react";
+import {
+  DndContext,
+  PointerSensor,
+  KeyboardSensor,
+  closestCenter,
+  useSensor,
+  useSensors,
+  type DragEndEvent,
+} from "@dnd-kit/core";
+import { restrictToVerticalAxis, restrictToParentElement } from "@dnd-kit/modifiers";
+import {
+  SortableContext,
+  arrayMove,
+  sortableKeyboardCoordinates,
+  useSortable,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 import { Button } from "@/components/ui/button";
 import { trpc } from "@/lib/trpc/client";
 import { toast } from "sonner";
 import { PageHeader } from "../_components/FormKit";
 import { BoolCell, RowActions } from "../_components/TableKit";
-import { useTableQuery } from "../_components/useTableQuery";
-import { DataTable } from "@/components/data-table/data-table";
-import { DataTableAdvancedToolbar } from "@/components/data-table/data-table-advanced-toolbar";
-import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
-import { DataTableFilterList } from "@/components/data-table/data-table-filter-list";
-import { DataTableSortList } from "@/components/data-table/data-table-sort-list";
-import { DataTableSkeleton } from "@/components/data-table/data-table-skeleton";
-import { useDataTable } from "@/hooks/use-data-table";
+import { cn } from "@/lib/utils";
 
 type Row = {
   id: number;
@@ -29,125 +39,56 @@ type Row = {
   featured: boolean;
 };
 
-const COL_IDS = ["title", "order", "active", "featured"];
-
 export default function SlidesAdminPage() {
-  const qs = useTableQuery(COL_IDS);
   const utils = trpc.useUtils();
-  const { data, isLoading } = trpc.admin.slides.table.useQuery(qs);
+  const { data, isLoading } = trpc.admin.slides.list.useQuery();
+  const [rows, setRows] = React.useState<Row[]>([]);
+
+  React.useEffect(() => {
+    if (data) setRows(data as Row[]);
+  }, [data]);
+
   const del = trpc.admin.slides.delete.useMutation({
     onSuccess: () => {
       toast.success("Deleted");
-      utils.admin.slides.table.invalidate();
+      utils.admin.slides.list.invalidate();
     },
     onError: () => toast.error("Delete failed"),
   });
 
-  const columns = React.useMemo<ColumnDef<Row>[]>(
-    () => [
-      {
-        id: "image",
-        accessorKey: "imgURL",
-        header: "Image",
-        cell: ({ row }) => (
-          <Image
-            src={row.original.imgURL}
-            alt={row.original.imgAlt}
-            width={80}
-            height={40}
-            className="rounded border border-border/60"
-          />
-        ),
-        enableSorting: false,
-      },
-      {
-        id: "title",
-        accessorKey: "title",
-        header: ({ column }) => (
-          <DataTableColumnHeader column={column} label="Title" />
-        ),
-        cell: ({ row }) => (
-          <span className="font-medium">{row.original.title}</span>
-        ),
-        meta: {
-          label: "Title",
-          placeholder: "Search slides…",
-          variant: "text",
-          icon: Text,
-        },
-        enableColumnFilter: true,
-      },
-      {
-        id: "order",
-        accessorKey: "order",
-        header: ({ column }) => (
-          <DataTableColumnHeader column={column} label="Order" />
-        ),
-        cell: ({ row }) => (
-          <span className="font-mono tabular-nums text-sm">
-            {row.original.order}
-          </span>
-        ),
-        meta: { label: "Order", variant: "number", icon: Hash },
-        enableColumnFilter: true,
-      },
-      {
-        id: "active",
-        accessorKey: "active",
-        header: ({ column }) => (
-          <DataTableColumnHeader column={column} label="Status" />
-        ),
-        cell: ({ row }) => <BoolCell value={row.original.active} />,
-        meta: { label: "Status", variant: "boolean", icon: ToggleLeft },
-        enableColumnFilter: true,
-      },
-      {
-        id: "featured",
-        accessorKey: "featured",
-        header: ({ column }) => (
-          <DataTableColumnHeader column={column} label="Featured" />
-        ),
-        cell: ({ row }) => (
-          <BoolCell
-            value={row.original.featured}
-            label={{ on: "Featured", off: "Normal" }}
-          />
-        ),
-        meta: { label: "Featured", variant: "boolean", icon: ToggleLeft },
-        enableColumnFilter: true,
-      },
-      {
-        id: "actions",
-        cell: ({ row }) => (
-          <RowActions
-            editHref={`/admin/slides/${row.original.id}`}
-            onDelete={() => del.mutate(row.original.id)}
-            deleting={del.isPending}
-          />
-        ),
-        size: 80,
-        enableSorting: false,
-        enableHiding: false,
-      },
-    ],
-    [del],
+  const reorder = trpc.admin.slides.reorder.useMutation({
+    onSuccess: () => utils.admin.slides.list.invalidate(),
+    onError: () => {
+      toast.error("Reorder failed");
+      utils.admin.slides.list.invalidate();
+    },
+  });
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 4 } }),
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
   );
 
-  const { table } = useDataTable<Row>({
-    data: (data?.rows ?? []) as Row[],
-    columns,
-    pageCount: data?.pageCount ?? 0,
-    enableAdvancedFilter: true,
-    getRowId: (r) => String(r.id),
-    initialState: { pagination: { pageSize: 10, pageIndex: 0 } },
-  });
+  function onDragEnd(e: DragEndEvent) {
+    const { active, over } = e;
+    if (!over || active.id === over.id) return;
+    const oldIndex = rows.findIndex((r) => r.id === active.id);
+    const newIndex = rows.findIndex((r) => r.id === over.id);
+    if (oldIndex < 0 || newIndex < 0) return;
+    const next = arrayMove(rows, oldIndex, newIndex).map((r, i) => ({
+      ...r,
+      order: i + 1,
+    }));
+    setRows(next);
+    reorder.mutate(next.map((r) => ({ id: r.id, order: r.order })));
+  }
 
   return (
     <div className="space-y-6">
       <PageHeader
         eyebrow="Content"
         title="Slides"
-        description="Homepage hero carousel."
+        description="Drag rows to reorder the homepage hero carousel."
         actions={
           <Button asChild>
             <Link href="/admin/slides/new">
@@ -156,16 +97,109 @@ export default function SlidesAdminPage() {
           </Button>
         }
       />
-      {isLoading ? (
-        <DataTableSkeleton columnCount={5} rowCount={10} />
-      ) : (
-        <DataTable table={table}>
-          <DataTableAdvancedToolbar table={table}>
-            <DataTableFilterList table={table} />
-            <DataTableSortList table={table} />
-          </DataTableAdvancedToolbar>
-        </DataTable>
+
+      <div className="overflow-hidden rounded-md border">
+        <div className="grid grid-cols-[40px_100px_1fr_110px_110px_90px] items-center gap-3 border-b bg-muted/40 px-3 py-2 text-xs font-medium text-muted-foreground">
+          <span className="sr-only">Drag</span>
+          <span>Image</span>
+          <span>Title</span>
+          <span>Status</span>
+          <span>Featured</span>
+          <span className="text-right">Actions</span>
+        </div>
+
+        {isLoading ? (
+          <div className="p-6 text-sm text-muted-foreground">Loading…</div>
+        ) : rows.length === 0 ? (
+          <div className="p-6 text-sm text-muted-foreground">No slides.</div>
+        ) : (
+          <DndContext
+            sensors={sensors}
+            collisionDetection={closestCenter}
+            modifiers={[restrictToVerticalAxis, restrictToParentElement]}
+            onDragEnd={onDragEnd}
+          >
+            <SortableContext
+              items={rows.map((r) => r.id)}
+              strategy={verticalListSortingStrategy}
+            >
+              <div>
+                {rows.map((r) => (
+                  <SortableSlideRow
+                    key={r.id}
+                    row={r}
+                    onDelete={() => del.mutate(r.id)}
+                    deleting={del.isPending}
+                  />
+                ))}
+              </div>
+            </SortableContext>
+          </DndContext>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function SortableSlideRow({
+  row,
+  onDelete,
+  deleting,
+}: {
+  row: Row;
+  onDelete: () => void;
+  deleting: boolean;
+}) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: row.id });
+
+  const style: React.CSSProperties = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+
+  return (
+    <div
+      ref={setNodeRef}
+      style={style}
+      className={cn(
+        "grid grid-cols-[40px_100px_1fr_110px_110px_90px] items-center gap-3 border-b bg-background px-3 py-2 last:border-b-0",
+        isDragging && "z-10 shadow-md",
       )}
+    >
+      <button
+        type="button"
+        aria-label="Drag to reorder"
+        className="flex size-8 cursor-grab items-center justify-center rounded text-muted-foreground hover:bg-muted active:cursor-grabbing"
+        {...attributes}
+        {...listeners}
+      >
+        <GripVertical className="size-4" />
+      </button>
+      <Image
+        src={row.imgURL}
+        alt={row.imgAlt}
+        width={80}
+        height={40}
+        className="rounded border border-border/60"
+      />
+      <span className="font-medium">{row.title}</span>
+      <BoolCell value={row.active} />
+      <BoolCell
+        value={row.featured}
+        label={{ on: "Featured", off: "Normal" }}
+      />
+      <RowActions
+        editHref={`/admin/slides/${row.id}`}
+        onDelete={onDelete}
+        deleting={deleting}
+      />
     </div>
   );
 }

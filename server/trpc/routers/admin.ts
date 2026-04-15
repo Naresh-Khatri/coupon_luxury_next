@@ -120,7 +120,7 @@ const blogInput = z.object({
 
 const slideInput = z.object({
   title: z.string().min(1),
-  order: z.number().int(),
+  order: z.number().int().optional(),
   link: z.string(),
   imgURL: z.string().url(),
   imgAlt: z.string(),
@@ -609,9 +609,16 @@ export const adminRouter = router({
     create: adminProcedure
       .input(slideInput)
       .mutation(async ({ input, ctx }) => {
+        let order = input.order;
+        if (order === undefined) {
+          const [maxRow] = await db
+            .select({ max: sql<number>`coalesce(max(${s.slides.order}), 0)::int` })
+            .from(s.slides);
+          order = (maxRow?.max ?? 0) + 1;
+        }
         const [row] = await db
           .insert(s.slides)
-          .values({ ...input, uid: ctx.session.user.id })
+          .values({ ...input, order, uid: ctx.session.user.id })
           .returning();
         revalidate(CACHE_TAGS.slides, CACHE_TAGS.main);
         return row;
@@ -643,6 +650,20 @@ export const adminRouter = router({
         if (!existing) throw new TRPCError({ code: "NOT_FOUND" });
         await db.delete(s.slides).where(eq(s.slides.id, input));
         await deleteImageByUrl(existing.imgURL);
+        revalidate(CACHE_TAGS.slides, CACHE_TAGS.main);
+        return { ok: true };
+      }),
+    reorder: adminProcedure
+      .input(z.array(z.object({ id: z.number().int(), order: z.number().int() })))
+      .mutation(async ({ input }) => {
+        await Promise.all(
+          input.map((it) =>
+            db
+              .update(s.slides)
+              .set({ order: it.order, updatedAt: new Date() })
+              .where(eq(s.slides.id, it.id))
+          )
+        );
         revalidate(CACHE_TAGS.slides, CACHE_TAGS.main);
         return { ok: true };
       }),
