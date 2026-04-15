@@ -68,7 +68,7 @@ export const verification = pgTable("verification", {
 
 // ---------- Domain tables (mirror of Prisma schema) ----------
 
-export const categories = pgTable("Category", {
+export const categories = pgTable("category", {
   id: serial("id").primaryKey(),
   uid: text("uid").notNull(),
   slug: text("slug").notNull().unique(),
@@ -87,7 +87,7 @@ export const categories = pgTable("Category", {
   updatedAt: timestamp("updatedAt", { precision: 3 }).notNull().defaultNow(),
 });
 
-export const subCategories = pgTable("SubCategory", {
+export const subCategories = pgTable("sub_category", {
   id: serial("id").primaryKey(),
   uid: text("uid").notNull(),
   categoryId: integer("categoryId")
@@ -102,7 +102,7 @@ export const subCategories = pgTable("SubCategory", {
   updatedAt: timestamp("updatedAt", { precision: 3 }).notNull().defaultNow(),
 });
 
-export const stores = pgTable("Store", {
+export const stores = pgTable("store", {
   id: serial("id").primaryKey(),
   uid: text("uid").notNull(),
   categoryId: integer("categoryId")
@@ -127,7 +127,7 @@ export const stores = pgTable("Store", {
   updatedAt: timestamp("updatedAt", { precision: 3 }).notNull().defaultNow(),
 });
 
-export const offers = pgTable("Offer", {
+export const offers = pgTable("offer", {
   id: serial("id").primaryKey(),
   uid: text("uid").notNull(),
   slug: text("slug").notNull().unique(),
@@ -162,7 +162,7 @@ export const offers = pgTable("Offer", {
   updatedAt: timestamp("updatedAt", { precision: 3 }).notNull().defaultNow(),
 });
 
-export const blogs = pgTable("Blog", {
+export const blogs = pgTable("blog", {
   id: serial("id").primaryKey(),
   uid: text("uid").notNull(),
   title: text("title").notNull(),
@@ -186,7 +186,7 @@ export const blogs = pgTable("Blog", {
   updatedAt: timestamp("updatedAt", { precision: 3 }).notNull().defaultNow(),
 });
 
-export const slides = pgTable("Slide", {
+export const slides = pgTable("slide", {
   id: serial("id").primaryKey(),
   uid: text("uid").notNull(),
   title: text("title").notNull(),
@@ -204,7 +204,7 @@ export const slides = pgTable("Slide", {
   updatedAt: timestamp("updatedAt", { precision: 3 }).notNull().defaultNow(),
 });
 
-export const subscribers = pgTable("Subscriber", {
+export const subscribers = pgTable("subscriber", {
   id: serial("id").primaryKey(),
   email: text("email").notNull().unique(),
   phone: text("phone"),
