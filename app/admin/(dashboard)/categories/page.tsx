@@ -10,6 +10,7 @@ import { toast } from "sonner";
 import { PageHeader } from "../_components/FormKit";
 import { BoolCell, RowActions } from "../_components/TableKit";
 import { useTableQuery } from "../_components/useTableQuery";
+import { TableSearch } from "../_components/TableSearch";
 import { DataTable } from "@/components/data-table/data-table";
 import { DataTableAdvancedToolbar } from "@/components/data-table/data-table-advanced-toolbar";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
@@ -31,7 +32,9 @@ const COL_IDS = ["categoryName", "slug", "active", "featured"];
 export default function CategoriesAdminPage() {
   const qs = useTableQuery(COL_IDS);
   const utils = trpc.useUtils();
-  const { data, isLoading } = trpc.admin.categories.table.useQuery(qs);
+  const { data, isFetching } = trpc.admin.categories.table.useQuery(qs, {
+    placeholderData: (prev) => prev,
+  });
   const del = trpc.admin.categories.delete.useMutation({
     onSuccess: () => {
       toast.success("Deleted");
@@ -143,11 +146,12 @@ export default function CategoriesAdminPage() {
           </Button>
         }
       />
-      {isLoading ? (
+      {!data ? (
         <DataTableSkeleton columnCount={4} rowCount={10} />
       ) : (
         <DataTable table={table}>
           <DataTableAdvancedToolbar table={table}>
+            <TableSearch placeholder="Search name, slug…" loading={isFetching} />
             <DataTableFilterList table={table} />
             <DataTableSortList table={table} />
           </DataTableAdvancedToolbar>

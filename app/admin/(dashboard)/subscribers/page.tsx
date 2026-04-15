@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { PageHeader } from "../_components/FormKit";
 import { RowActions } from "../_components/TableKit";
 import { useTableQuery } from "../_components/useTableQuery";
+import { TableSearch } from "../_components/TableSearch";
 import { DataTable } from "@/components/data-table/data-table";
 import { DataTableAdvancedToolbar } from "@/components/data-table/data-table-advanced-toolbar";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
@@ -28,7 +29,9 @@ const COL_IDS = ["email", "phone", "createdAt"];
 export default function SubscribersAdminPage() {
   const qs = useTableQuery(COL_IDS);
   const utils = trpc.useUtils();
-  const { data, isLoading } = trpc.admin.subscribers.table.useQuery(qs);
+  const { data, isFetching } = trpc.admin.subscribers.table.useQuery(qs, {
+    placeholderData: (prev) => prev,
+  });
   const del = trpc.admin.subscribers.delete.useMutation({
     onSuccess: () => {
       toast.success("Deleted");
@@ -112,11 +115,12 @@ export default function SubscribersAdminPage() {
         title="Subscribers"
         description="Newsletter and email list."
       />
-      {isLoading ? (
+      {!data ? (
         <DataTableSkeleton columnCount={3} rowCount={10} />
       ) : (
         <DataTable table={table}>
           <DataTableAdvancedToolbar table={table}>
+            <TableSearch placeholder="Search email, phone…" loading={isFetching} />
             <DataTableFilterList table={table} />
             <DataTableSortList table={table} />
           </DataTableAdvancedToolbar>

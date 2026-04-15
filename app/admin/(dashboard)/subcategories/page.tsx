@@ -31,6 +31,7 @@ import { trpc } from "@/lib/trpc/client";
 import { PageHeader, Field } from "../_components/FormKit";
 import { BoolCell, RowActions } from "../_components/TableKit";
 import { useTableQuery } from "../_components/useTableQuery";
+import { TableSearch } from "../_components/TableSearch";
 import { DataTable } from "@/components/data-table/data-table";
 import { DataTableAdvancedToolbar } from "@/components/data-table/data-table-advanced-toolbar";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
@@ -202,7 +203,9 @@ const COL_IDS = [
 export default function SubCategoriesAdminPage() {
   const qs = useTableQuery(COL_IDS);
   const utils = trpc.useUtils();
-  const { data, isLoading } = trpc.admin.subCategories.table.useQuery(qs);
+  const { data, isFetching } = trpc.admin.subCategories.table.useQuery(qs, {
+    placeholderData: (prev) => prev,
+  });
   const { data: cats = [] } = trpc.admin.categories.list.useQuery();
 
   const del = trpc.admin.subCategories.delete.useMutation({
@@ -345,11 +348,12 @@ export default function SubCategoriesAdminPage() {
           />
         }
       />
-      {isLoading ? (
+      {!data ? (
         <DataTableSkeleton columnCount={5} rowCount={10} />
       ) : (
         <DataTable table={table}>
           <DataTableAdvancedToolbar table={table}>
+            <TableSearch placeholder="Search name, slug…" loading={isFetching} />
             <DataTableFilterList table={table} />
             <DataTableSortList table={table} />
           </DataTableAdvancedToolbar>

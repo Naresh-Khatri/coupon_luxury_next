@@ -10,6 +10,7 @@ import { toast } from "sonner";
 import { PageHeader } from "../_components/FormKit";
 import { BoolCell, RowActions } from "../_components/TableKit";
 import { useTableQuery } from "../_components/useTableQuery";
+import { TableSearch } from "../_components/TableSearch";
 import { DataTable } from "@/components/data-table/data-table";
 import { DataTableAdvancedToolbar } from "@/components/data-table/data-table-advanced-toolbar";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
@@ -41,7 +42,9 @@ const COL_IDS = [
 export default function BlogsAdminPage() {
   const qs = useTableQuery(COL_IDS);
   const utils = trpc.useUtils();
-  const { data, isLoading } = trpc.admin.blogs.table.useQuery(qs);
+  const { data, isFetching } = trpc.admin.blogs.table.useQuery(qs, {
+    placeholderData: (prev) => prev,
+  });
   const { data: storesAll = [] } = trpc.admin.stores.list.useQuery();
 
   const del = trpc.admin.blogs.delete.useMutation({
@@ -191,11 +194,12 @@ export default function BlogsAdminPage() {
           </Button>
         }
       />
-      {isLoading ? (
+      {!data ? (
         <DataTableSkeleton columnCount={6} rowCount={10} />
       ) : (
         <DataTable table={table}>
           <DataTableAdvancedToolbar table={table}>
+            <TableSearch placeholder="Search title, slug, description…" loading={isFetching} />
             <DataTableFilterList table={table} />
             <DataTableSortList table={table} />
           </DataTableAdvancedToolbar>

@@ -11,6 +11,7 @@ import { toast } from "sonner";
 import { PageHeader } from "../_components/FormKit";
 import { BoolCell, RowActions } from "../_components/TableKit";
 import { useTableQuery } from "../_components/useTableQuery";
+import { TableSearch } from "../_components/TableSearch";
 import { DataTable } from "@/components/data-table/data-table";
 import { DataTableAdvancedToolbar } from "@/components/data-table/data-table-advanced-toolbar";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
@@ -49,7 +50,9 @@ const COL_IDS = [
 export default function OffersAdminPage() {
   const qs = useTableQuery(COL_IDS);
   const utils = trpc.useUtils();
-  const { data, isLoading, isFetching } = trpc.admin.offers.table.useQuery(qs);
+  const { data, isFetching } = trpc.admin.offers.table.useQuery(qs, {
+    placeholderData: (prev) => prev,
+  });
   const { data: storesAll = [] } = trpc.admin.stores.list.useQuery();
 
   const del = trpc.admin.offers.delete.useMutation({
@@ -237,13 +240,14 @@ export default function OffersAdminPage() {
           </Button>
         }
       />
-      {isLoading ? (
+      {!data ? (
         <DataTableSkeleton columnCount={8} rowCount={10} />
       ) : (
         <DataTable table={table}>
           <DataTableAdvancedToolbar table={table}>
             <DataTableFilterList table={table} />
             <DataTableSortList table={table} />
+            <TableSearch placeholder="Search title, slug, code, country…" loading={isFetching} />
           </DataTableAdvancedToolbar>
         </DataTable>
       )}

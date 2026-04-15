@@ -1,6 +1,11 @@
 "use client";
 
-import { parseAsInteger, parseAsStringEnum, useQueryState } from "nuqs";
+import {
+  parseAsInteger,
+  parseAsString,
+  parseAsStringEnum,
+  useQueryState,
+} from "nuqs";
 import {
   getFiltersStateParser,
   getSortingStateParser,
@@ -21,6 +26,7 @@ export function useTableQuery(columnIds: string[]) {
     "joinOperator",
     parseAsStringEnum(["and", "or"] as const).withDefault("and"),
   );
+  const [q] = useQueryState("q", parseAsString.withDefault(""));
   return {
     page,
     perPage,
@@ -33,5 +39,6 @@ export function useTableQuery(columnIds: string[]) {
       filterId: f.filterId,
     })),
     joinOperator,
+    q,
   };
 }

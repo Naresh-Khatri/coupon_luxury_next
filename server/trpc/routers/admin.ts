@@ -162,7 +162,7 @@ export const adminRouter = router({
         createdAt: { column: s.stores.createdAt, kind: "date" },
         updatedAt: { column: s.stores.updatedAt, kind: "date" },
       };
-      const where = buildWhere(input, map);
+      const where = buildWhere(input, map, ["storeName", "slug", "country"]);
       const orderBy = buildOrderBy(input, map);
       const [rows, countRow] = await Promise.all([
         db.query.stores.findMany({
@@ -258,7 +258,12 @@ export const adminRouter = router({
         createdAt: { column: s.offers.createdAt, kind: "date" },
         updatedAt: { column: s.offers.updatedAt, kind: "date" },
       };
-      const where = buildWhere(input, map);
+      const where = buildWhere(input, map, [
+        "title",
+        "slug",
+        "couponCode",
+        "country",
+      ]);
       const orderBy = buildOrderBy(input, map);
       const [rows, countRow] = await Promise.all([
         db.query.offers.findMany({
@@ -341,7 +346,7 @@ export const adminRouter = router({
         createdAt: { column: s.categories.createdAt, kind: "date" },
         updatedAt: { column: s.categories.updatedAt, kind: "date" },
       };
-      const where = buildWhere(input, map);
+      const where = buildWhere(input, map, ["categoryName", "slug"]);
       const orderBy = buildOrderBy(input, map);
       const [rows, countRow] = await Promise.all([
         db.query.categories.findMany({
@@ -426,7 +431,7 @@ export const adminRouter = router({
         createdAt: { column: s.subCategories.createdAt, kind: "date" },
         updatedAt: { column: s.subCategories.updatedAt, kind: "date" },
       };
-      const where = buildWhere(input, map);
+      const where = buildWhere(input, map, ["subCategoryName", "slug"]);
       const orderBy = buildOrderBy(input, map);
       const [rows, countRow] = await Promise.all([
         db.query.subCategories.findMany({
@@ -490,6 +495,7 @@ export const adminRouter = router({
       const map: ColumnMap = {
         title: { column: s.blogs.title, kind: "text" },
         slug: { column: s.blogs.slug, kind: "text" },
+        smallDescription: { column: s.blogs.smallDescription, kind: "text" },
         blogType: { column: s.blogs.blogType, kind: "text" },
         storeId: { column: s.blogs.storeId, kind: "number" },
         active: { column: s.blogs.active, kind: "boolean" },
@@ -497,7 +503,11 @@ export const adminRouter = router({
         createdAt: { column: s.blogs.createdAt, kind: "date" },
         updatedAt: { column: s.blogs.updatedAt, kind: "date" },
       };
-      const where = buildWhere(input, map);
+      const where = buildWhere(input, map, [
+        "title",
+        "slug",
+        "smallDescription",
+      ]);
       const orderBy = buildOrderBy(input, map);
       const [rows, countRow] = await Promise.all([
         db.query.blogs.findMany({
@@ -584,7 +594,7 @@ export const adminRouter = router({
         createdAt: { column: s.slides.createdAt, kind: "date" },
         updatedAt: { column: s.slides.updatedAt, kind: "date" },
       };
-      const where = buildWhere(input, map);
+      const where = buildWhere(input, map, ["title", "link"]);
       const orderBy = buildOrderBy(input, map);
       const [rows, countRow] = await Promise.all([
         db.query.slides.findMany({
@@ -678,7 +688,7 @@ export const adminRouter = router({
         phone: { column: s.subscribers.phone, kind: "text" },
         createdAt: { column: s.subscribers.createdAt, kind: "date" },
       };
-      const where = buildWhere(input, map);
+      const where = buildWhere(input, map, ["email", "phone"]);
       const orderBy = buildOrderBy(input, map);
       const [rows, countRow] = await Promise.all([
         db

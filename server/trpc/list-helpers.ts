@@ -68,6 +68,7 @@ export const tableListInput = z.object({
   sort: z.array(tableSortItem).default([]),
   filters: z.array(tableFilterItem).default([]),
   joinOperator: z.enum(["and", "or"]).default("and"),
+  q: z.string().trim().max(200).default(""),
 });
 
 export type TableListInput = z.infer<typeof tableListInput>;
@@ -178,6 +179,7 @@ function filterToSql(
 export function buildWhere(
   input: TableListInput,
   map: ColumnMap,
+  searchColumns: string[] = [],
 ): SQL | undefined {
   const parts: SQL[] = [];
   for (const f of input.filters) {
@@ -186,8 +188,45 @@ export function buildWhere(
     const sqlPart = filterToSql(entry, f.operator, f.value);
     if (sqlPart) parts.push(sqlPart);
   }
-  if (parts.length === 0) return undefined;
-  return input.joinOperator === "or" ? or(...parts) : and(...parts);
+  const filterWhere =
+    parts.length === 0
+      ? undefined
+      : input.joinOperator === "or"
+        ? or(...parts)
+        : and(...parts);
+  const searchWhere = buildSearch(input.q, searchColumns, map);
+  if (filterWhere && searchWhere) return and(filterWhere, searchWhere);
+  return filterWhere ?? searchWhere;
+}
+
+function escapeLike(s: string) {
+  return s.replace(/[\\%_]/g, (c) => `\\${c}`);
+}
+
+// Tokenize on whitespace. Each token must match at least one searchable
+// column via ilike (AND across tokens, OR across columns) so multi-word
+// queries narrow down instead of exploding.
+export function buildSearch(
+  q: string,
+  searchColumns: string[],
+  map: ColumnMap,
+): SQL | undefined {
+  if (!q || searchColumns.length === 0) return undefined;
+  const tokens = q.split(/\s+/).filter(Boolean);
+  if (tokens.length === 0) return undefined;
+  const cols = searchColumns
+    .map((id) => map[id]?.column)
+    .filter((c): c is AnyColumn => Boolean(c));
+  if (cols.length === 0) return undefined;
+  const tokenParts: SQL[] = [];
+  for (const t of tokens) {
+    const pattern = `%${escapeLike(t)}%`;
+    const perCol = cols.map((c) => ilike(c, pattern));
+    const combined = perCol.length === 1 ? perCol[0] : or(...perCol);
+    if (combined) tokenParts.push(combined);
+  }
+  if (tokenParts.length === 0) return undefined;
+  return tokenParts.length === 1 ? tokenParts[0] : and(...tokenParts);
 }
 
 export function buildOrderBy(input: TableListInput, map: ColumnMap) {
