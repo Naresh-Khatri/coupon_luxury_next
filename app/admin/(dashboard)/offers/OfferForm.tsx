@@ -1,5 +1,6 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -24,6 +25,10 @@ import {
   FieldGrid,
   StickyFooter,
 } from "../_components/FormKit";
+
+const CustomEditor = dynamic(() => import("@/components/CustomEditor"), {
+  ssr: false,
+});
 
 const schema = z.object({
   title: z.string().min(1),
@@ -107,9 +112,11 @@ export default function OfferForm({
     else create.mutate(v);
   }
 
-  const { register, handleSubmit, watch, control, formState } = form;
+  const { register, handleSubmit, setValue, watch, control, formState } = form;
   const categoryId = watch("categoryId");
   const offerType = watch("offerType");
+  const description = watch("description");
+  const TnC = watch("TnC");
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -265,10 +272,20 @@ export default function OfferForm({
 
       <SectionCard title="Copy" description="Shown on the offer detail page.">
         <Field label="Description">
-          <Textarea className="min-h-[120px]" {...register("description")} />
+          <CustomEditor
+            variant="minimal"
+            value={description ?? ""}
+            onChange={(html) =>
+              setValue("description", html, { shouldDirty: true })
+            }
+          />
         </Field>
         <Field label="Terms & Conditions">
-          <Textarea className="min-h-[80px]" {...register("TnC")} />
+          <CustomEditor
+            variant="minimal"
+            value={TnC ?? ""}
+            onChange={(html) => setValue("TnC", html, { shouldDirty: true })}
+          />
         </Field>
       </SectionCard>
 

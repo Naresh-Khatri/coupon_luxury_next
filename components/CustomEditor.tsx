@@ -39,13 +39,22 @@ import { env } from "@/lib/env";
 import { toast } from "sonner";
 import { useState } from "react";
 
+type Variant = "minimal" | "full";
+
 type Props = {
   value?: string;
   onChange?: (html: string) => void;
   placeholder?: string;
+  variant?: Variant;
 };
 
-export default function CustomEditor({ value = "", onChange, placeholder }: Props) {
+export default function CustomEditor({
+  value = "",
+  onChange,
+  placeholder,
+  variant = "full",
+}: Props) {
+  const minH = variant === "minimal" ? "min-h-[140px]" : "min-h-[320px]";
   const editor = useEditor({
     immediatelyRender: false,
     extensions: [
@@ -63,8 +72,7 @@ export default function CustomEditor({ value = "", onChange, placeholder }: Prop
     content: value || "",
     editorProps: {
       attributes: {
-        class:
-          "page-html min-h-[320px] max-h-[70vh] overflow-y-auto rounded-b-xl border border-t-0 border-input bg-background px-4 py-3 focus:outline-none",
+        class: `page-html ${minH} max-h-[70vh] overflow-y-auto rounded-b-xl border border-t-0 border-input bg-background px-4 py-3 focus:outline-none`,
       },
     },
     onUpdate: ({ editor }) => onChange?.(editor.getHTML()),
@@ -80,13 +88,14 @@ export default function CustomEditor({ value = "", onChange, placeholder }: Prop
 
   return (
     <div className="rounded-xl shadow-sm">
-      <Toolbar editor={editor} />
+      <Toolbar editor={editor} variant={variant} />
       <EditorContent editor={editor} />
     </div>
   );
 }
 
-function Toolbar({ editor }: { editor: Editor }) {
+function Toolbar({ editor, variant }: { editor: Editor; variant: Variant }) {
+  const minimal = variant === "minimal";
   const fileRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
   const utils = trpc.useUtils();
@@ -147,30 +156,34 @@ function Toolbar({ editor }: { editor: Editor }) {
           <Strikethrough className="size-4" />
         </Btn>
       </Group>
-      <Sep />
-      <Group>
-        <Btn
-          onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
-          active={editor.isActive("heading", { level: 1 })}
-          label="Heading 1"
-        >
-          <Heading1 className="size-4" />
-        </Btn>
-        <Btn
-          onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-          active={editor.isActive("heading", { level: 2 })}
-          label="Heading 2"
-        >
-          <Heading2 className="size-4" />
-        </Btn>
-        <Btn
-          onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
-          active={editor.isActive("heading", { level: 3 })}
-          label="Heading 3"
-        >
-          <Heading3 className="size-4" />
-        </Btn>
-      </Group>
+      {!minimal && (
+        <>
+          <Sep />
+          <Group>
+            <Btn
+              onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
+              active={editor.isActive("heading", { level: 1 })}
+              label="Heading 1"
+            >
+              <Heading1 className="size-4" />
+            </Btn>
+            <Btn
+              onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
+              active={editor.isActive("heading", { level: 2 })}
+              label="Heading 2"
+            >
+              <Heading2 className="size-4" />
+            </Btn>
+            <Btn
+              onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
+              active={editor.isActive("heading", { level: 3 })}
+              label="Heading 3"
+            >
+              <Heading3 className="size-4" />
+            </Btn>
+          </Group>
+        </>
+      )}
       <Sep />
       <Group>
         <Btn onClick={() => editor.chain().focus().toggleBulletList().run()} active={editor.isActive("bulletList")} label="Bullet list">
@@ -179,28 +192,36 @@ function Toolbar({ editor }: { editor: Editor }) {
         <Btn onClick={() => editor.chain().focus().toggleOrderedList().run()} active={editor.isActive("orderedList")} label="Ordered list">
           <ListOrdered className="size-4" />
         </Btn>
-        <Btn onClick={() => editor.chain().focus().toggleBlockquote().run()} active={editor.isActive("blockquote")} label="Quote">
-          <Quote className="size-4" />
-        </Btn>
-        <Btn onClick={() => editor.chain().focus().toggleCodeBlock().run()} active={editor.isActive("codeBlock")} label="Code block">
-          <Code2 className="size-4" />
-        </Btn>
+        {!minimal && (
+          <>
+            <Btn onClick={() => editor.chain().focus().toggleBlockquote().run()} active={editor.isActive("blockquote")} label="Quote">
+              <Quote className="size-4" />
+            </Btn>
+            <Btn onClick={() => editor.chain().focus().toggleCodeBlock().run()} active={editor.isActive("codeBlock")} label="Code block">
+              <Code2 className="size-4" />
+            </Btn>
+          </>
+        )}
       </Group>
-      <Sep />
-      <Group>
-        <Btn onClick={() => editor.chain().focus().setTextAlign("left").run()} active={editor.isActive({ textAlign: "left" })} label="Align left">
-          <AlignLeft className="size-4" />
-        </Btn>
-        <Btn onClick={() => editor.chain().focus().setTextAlign("center").run()} active={editor.isActive({ textAlign: "center" })} label="Align center">
-          <AlignCenter className="size-4" />
-        </Btn>
-        <Btn onClick={() => editor.chain().focus().setTextAlign("right").run()} active={editor.isActive({ textAlign: "right" })} label="Align right">
-          <AlignRight className="size-4" />
-        </Btn>
-        <Btn onClick={() => editor.chain().focus().setTextAlign("justify").run()} active={editor.isActive({ textAlign: "justify" })} label="Justify">
-          <AlignJustify className="size-4" />
-        </Btn>
-      </Group>
+      {!minimal && (
+        <>
+          <Sep />
+          <Group>
+            <Btn onClick={() => editor.chain().focus().setTextAlign("left").run()} active={editor.isActive({ textAlign: "left" })} label="Align left">
+              <AlignLeft className="size-4" />
+            </Btn>
+            <Btn onClick={() => editor.chain().focus().setTextAlign("center").run()} active={editor.isActive({ textAlign: "center" })} label="Align center">
+              <AlignCenter className="size-4" />
+            </Btn>
+            <Btn onClick={() => editor.chain().focus().setTextAlign("right").run()} active={editor.isActive({ textAlign: "right" })} label="Align right">
+              <AlignRight className="size-4" />
+            </Btn>
+            <Btn onClick={() => editor.chain().focus().setTextAlign("justify").run()} active={editor.isActive({ textAlign: "justify" })} label="Justify">
+              <AlignJustify className="size-4" />
+            </Btn>
+          </Group>
+        </>
+      )}
       <Sep />
       <Group>
         <Btn onClick={setLink} active={editor.isActive("link")} label="Link">
@@ -213,22 +234,28 @@ function Toolbar({ editor }: { editor: Editor }) {
         >
           <Unlink className="size-4" />
         </Btn>
-        <Btn onClick={() => fileRef.current?.click()} label="Insert image" disabled={uploading}>
-          {uploading ? <Loader2 className="size-4 animate-spin" /> : <ImageIcon className="size-4" />}
-        </Btn>
-        <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={handleImage} />
-        <Btn onClick={() => editor.chain().focus().setHorizontalRule().run()} label="Divider">
-          <Minus className="size-4" />
-        </Btn>
+        {!minimal && (
+          <>
+            <Btn onClick={() => fileRef.current?.click()} label="Insert image" disabled={uploading}>
+              {uploading ? <Loader2 className="size-4 animate-spin" /> : <ImageIcon className="size-4" />}
+            </Btn>
+            <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={handleImage} />
+            <Btn onClick={() => editor.chain().focus().setHorizontalRule().run()} label="Divider">
+              <Minus className="size-4" />
+            </Btn>
+          </>
+        )}
       </Group>
       <Sep />
       <Group>
-        <Btn
-          onClick={() => editor.chain().focus().unsetAllMarks().clearNodes().run()}
-          label="Clear formatting"
-        >
-          <Eraser className="size-4" />
-        </Btn>
+        {!minimal && (
+          <Btn
+            onClick={() => editor.chain().focus().unsetAllMarks().clearNodes().run()}
+            label="Clear formatting"
+          >
+            <Eraser className="size-4" />
+          </Btn>
+        )}
         <Btn onClick={() => editor.chain().focus().undo().run()} disabled={!editor.can().undo()} label="Undo">
           <Undo2 className="size-4" />
         </Btn>

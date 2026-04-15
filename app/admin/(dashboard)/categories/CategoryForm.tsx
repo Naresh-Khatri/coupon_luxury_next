@@ -1,5 +1,6 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -18,6 +19,10 @@ import {
   FieldGrid,
   StickyFooter,
 } from "../_components/FormKit";
+
+const CustomEditor = dynamic(() => import("@/components/CustomEditor"), {
+  ssr: false,
+});
 
 const schema = z.object({
   categoryName: z.string().min(1),
@@ -81,6 +86,7 @@ export default function CategoryForm({
 
   const { register, handleSubmit, setValue, watch, control, formState } = form;
   const image = watch("image");
+  const pageHTML = watch("pageHTML");
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -115,9 +121,11 @@ export default function CategoryForm({
           <Textarea className="min-h-[100px]" {...register("description")} />
         </Field>
         <Field label="Page HTML">
-          <Textarea
-            className="min-h-[180px] font-mono text-xs"
-            {...register("pageHTML")}
+          <CustomEditor
+            value={pageHTML ?? ""}
+            onChange={(html) =>
+              setValue("pageHTML", html, { shouldDirty: true })
+            }
           />
         </Field>
       </SectionCard>

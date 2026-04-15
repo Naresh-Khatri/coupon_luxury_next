@@ -1,5 +1,6 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -25,6 +26,10 @@ import {
   FieldGrid,
   StickyFooter,
 } from "../_components/FormKit";
+
+const CustomEditor = dynamic(() => import("@/components/CustomEditor"), {
+  ssr: false,
+});
 
 const schema = z.object({
   storeName: z.string().min(1),
@@ -97,6 +102,7 @@ export default function StoreForm({
   const { register, handleSubmit, setValue, watch, formState, control } = form;
   const image = watch("image");
   const categoryId = watch("categoryId");
+  const pageHTML = watch("pageHTML");
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -195,9 +201,11 @@ export default function StoreForm({
         description="Full page HTML shown on the store detail view."
       >
         <Field label="Page HTML">
-          <Textarea
-            className="min-h-[220px] font-mono text-xs"
-            {...register("pageHTML")}
+          <CustomEditor
+            value={pageHTML ?? ""}
+            onChange={(html) =>
+              setValue("pageHTML", html, { shouldDirty: true })
+            }
           />
         </Field>
       </SectionCard>
