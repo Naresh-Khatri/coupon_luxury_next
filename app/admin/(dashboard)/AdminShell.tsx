@@ -16,6 +16,7 @@ import {
   Menu,
   X,
   ChevronsUpDown,
+  ChevronRight,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -64,10 +65,26 @@ const sections: NavSection[] = [
 
 const THEME_KEY = "admin-theme";
 
-function getPageTitle(pathname: string): string {
-  if (pathname === "/admin") return "Dashboard";
-  const seg = pathname.split("/").filter(Boolean)[1] ?? "";
+function toTitle(seg: string): string {
   return seg.charAt(0).toUpperCase() + seg.slice(1);
+}
+
+function getBreadcrumbs(pathname: string): { label: string; href?: string }[] {
+  const segs = pathname.split("/").filter(Boolean);
+  const crumbs: { label: string; href?: string }[] = [
+    { label: "Admin", href: "/admin" },
+  ];
+  if (segs.length <= 1) return crumbs;
+  let href = "/admin";
+  for (let i = 1; i < segs.length; i++) {
+    href += `/${segs[i]}`;
+    const isLast = i === segs.length - 1;
+    crumbs.push({
+      label: toTitle(decodeURIComponent(segs[i])),
+      href: isLast ? undefined : href,
+    });
+  }
+  return crumbs;
 }
 
 export default function AdminShell({
@@ -94,7 +111,7 @@ export default function AdminShell({
     router.push("/admin/login");
   }
 
-  const pageTitle = getPageTitle(pathname);
+  const breadcrumbs = getBreadcrumbs(pathname);
   const initials = user.name
     .split(" ")
     .map((s) => s[0])
@@ -206,15 +223,38 @@ export default function AdminShell({
             >
               <Menu className="size-5" />
             </button>
-            <div className="flex items-baseline gap-2">
-              <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
-                Admin
-              </span>
-              <span className="text-muted-foreground/50">/</span>
-              <h1 className="font-display text-lg font-semibold leading-none">
-                {pageTitle}
-              </h1>
-            </div>
+            <nav aria-label="Breadcrumb">
+              <ol className="flex items-center gap-1.5 text-sm">
+                {breadcrumbs.map((crumb, i) => {
+                  const isLast = i === breadcrumbs.length - 1;
+                  return (
+                    <li key={i} className="flex items-center gap-1.5">
+                      {i > 0 && (
+                        <ChevronRight
+                          className="size-3.5 text-muted-foreground/60"
+                          aria-hidden
+                        />
+                      )}
+                      {crumb.href && !isLast ? (
+                        <Link
+                          href={crumb.href}
+                          className="text-muted-foreground transition hover:text-foreground"
+                        >
+                          {crumb.label}
+                        </Link>
+                      ) : (
+                        <span
+                          aria-current={isLast ? "page" : undefined}
+                          className="font-medium text-foreground"
+                        >
+                          {crumb.label}
+                        </span>
+                      )}
+                    </li>
+                  );
+                })}
+              </ol>
+            </nav>
           </div>
 
           <div className="flex items-center gap-2">
