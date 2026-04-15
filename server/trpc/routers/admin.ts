@@ -10,7 +10,7 @@ import {
   type ColumnMap,
 } from "../list-helpers";
 import { revalidate, CACHE_TAGS } from "@/server/db/cache";
-import { imagekit, deleteImageByUrl } from "@/lib/imagekit";
+import { imagekit, deleteImageByUrl, deleteOrphanedImages, extractImageKitUrls } from "@/lib/imagekit";
 import { getAllStores } from "@/server/db/queries/stores";
 import {
   getAllOffers,
@@ -208,6 +208,9 @@ export const adminRouter = router({
         if (input.data.image && input.data.image !== existing.image) {
           await deleteImageByUrl(existing.image);
         }
+        if (input.data.pageHTML !== undefined) {
+          await deleteOrphanedImages(existing.pageHTML, input.data.pageHTML);
+        }
         const [row] = await db
           .update(s.stores)
           .set({ ...input.data, updatedAt: new Date() })
@@ -228,7 +231,10 @@ export const adminRouter = router({
         });
         if (!existing) throw new TRPCError({ code: "NOT_FOUND" });
         await db.delete(s.stores).where(eq(s.stores.id, input));
-        await deleteImageByUrl(existing.image);
+        await Promise.all([
+          deleteImageByUrl(existing.image),
+          ...extractImageKitUrls(existing.pageHTML).map((u) => deleteImageByUrl(u)),
+        ]);
         revalidate(
           CACHE_TAGS.stores,
           CACHE_TAGS.store(existing.slug),
@@ -388,6 +394,9 @@ export const adminRouter = router({
         if (input.data.image && input.data.image !== existing.image) {
           await deleteImageByUrl(existing.image);
         }
+        if (input.data.pageHTML !== undefined) {
+          await deleteOrphanedImages(existing.pageHTML, input.data.pageHTML);
+        }
         const [row] = await db
           .update(s.categories)
           .set({ ...input.data, updatedAt: new Date() })
@@ -408,7 +417,10 @@ export const adminRouter = router({
         });
         if (!existing) throw new TRPCError({ code: "NOT_FOUND" });
         await db.delete(s.categories).where(eq(s.categories.id, input));
-        await deleteImageByUrl(existing.image);
+        await Promise.all([
+          deleteImageByUrl(existing.image),
+          ...extractImageKitUrls(existing.pageHTML).map((u) => deleteImageByUrl(u)),
+        ]);
         revalidate(
           CACHE_TAGS.categories,
           CACHE_TAGS.category(existing.slug),
@@ -556,6 +568,9 @@ export const adminRouter = router({
         ) {
           await deleteImageByUrl(existing.thumbnailImg);
         }
+        if (input.data.fullDescription !== undefined) {
+          await deleteOrphanedImages(existing.fullDescription, input.data.fullDescription);
+        }
         const [row] = await db
           .update(s.blogs)
           .set({ ...input.data, updatedAt: new Date() })
@@ -575,6 +590,7 @@ export const adminRouter = router({
         await Promise.all([
           deleteImageByUrl(existing.coverImg),
           deleteImageByUrl(existing.thumbnailImg),
+          ...extractImageKitUrls(existing.fullDescription).map((u) => deleteImageByUrl(u)),
         ]);
         revalidate(CACHE_TAGS.blogs, CACHE_TAGS.blog(existing.slug));
         return { ok: true };

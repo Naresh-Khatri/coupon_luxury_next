@@ -13,6 +13,31 @@ export function getImageFileId(url?: string | null) {
   return name ?? null;
 }
 
+export function extractImageKitUrls(html?: string | null): string[] {
+  if (!html) return [];
+  const host = new URL(env.IMAGEKIT_URL_ENDPOINT).host;
+  const re = /<img[^>]+src=["']([^"']+)["']/gi;
+  const urls = new Set<string>();
+  for (const m of html.matchAll(re)) {
+    const src = m[1];
+    try {
+      if (new URL(src).host === host) urls.add(src);
+    } catch {}
+  }
+  return [...urls];
+}
+
+export async function deleteOrphanedImages(
+  oldHtml?: string | null,
+  newHtml?: string | null,
+) {
+  const oldUrls = extractImageKitUrls(oldHtml);
+  if (!oldUrls.length) return;
+  const kept = new Set(extractImageKitUrls(newHtml));
+  const removed = oldUrls.filter((u) => !kept.has(u));
+  await Promise.all(removed.map((u) => deleteImageByUrl(u)));
+}
+
 export async function deleteImageByUrl(url?: string | null) {
   if (!url) return;
   try {
