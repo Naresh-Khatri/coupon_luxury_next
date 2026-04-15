@@ -19,6 +19,20 @@ import { getAllBlogs, getBlogCount } from "@/server/db/queries/blogs";
 import { getAllSlides, getAllSubscribers } from "@/server/db/queries/misc";
 import { getStoreCount } from "@/server/db/queries/stores";
 
+// Optional URL that also accepts "" (coerced to null) so forms don't have to
+// scrub empty inputs before submitting.
+const optionalUrl = () =>
+  z
+    .union([z.string().url(), z.literal(""), z.null()])
+    .nullish()
+    .transform((v) => (v === "" || v == null ? null : v));
+
+const optionalId = () =>
+  z
+    .union([z.number().int(), z.literal(0), z.null()])
+    .nullish()
+    .transform((v) => (v === 0 || v == null ? null : v));
+
 const metaFields = {
   metaTitle: z.string().nullish(),
   metaDescription: z.string().nullish(),
@@ -86,10 +100,10 @@ const subCategoryInput = z.object({
 const blogInput = z.object({
   title: z.string().min(1),
   slug: z.string().min(1),
-  storeId: z.number().int().nullish(),
+  storeId: optionalId(),
   imgAlt: z.string().nullish(),
-  coverImg: z.string().url().nullish(),
-  thumbnailImg: z.string().url().nullish(),
+  coverImg: optionalUrl(),
+  thumbnailImg: optionalUrl(),
   smallDescription: z.string(),
   fullDescription: z.string(),
   blogType: z.string().default("normal"),

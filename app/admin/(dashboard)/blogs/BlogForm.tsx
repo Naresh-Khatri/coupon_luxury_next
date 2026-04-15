@@ -1,6 +1,5 @@
 "use client";
 
-import { useRef } from "react";
 import dynamic from "next/dynamic";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -45,7 +44,6 @@ export default function BlogForm({
 }) {
   const router = useRouter();
   const utils = trpc.useUtils();
-  const editorRef = useRef<any>(null);
   const { data: stores = [] } = trpc.admin.stores.list.useQuery();
   const form = useForm<FormValues>({
     resolver: zodResolver(schema) as any,
@@ -79,9 +77,15 @@ export default function BlogForm({
   });
 
   function onSubmit(v: FormValues) {
-    const fullDescription =
-      editorRef.current?.getContent?.() ?? v.fullDescription;
-    const payload = { ...v, fullDescription };
+    const payload = {
+      ...v,
+      storeId:
+        v.storeId == null || Number.isNaN(v.storeId) || v.storeId === 0
+          ? null
+          : v.storeId,
+      coverImg: v.coverImg ? v.coverImg : null,
+      thumbnailImg: v.thumbnailImg ? v.thumbnailImg : null,
+    };
     if (id) update.mutate({ id, data: payload });
     else create.mutate(payload);
   }
@@ -89,6 +93,7 @@ export default function BlogForm({
   const { register, handleSubmit, setValue, watch } = form;
   const cover = watch("coverImg");
   const thumb = watch("thumbnailImg");
+  const fullDescription = watch("fullDescription");
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
@@ -144,7 +149,15 @@ export default function BlogForm({
         />
       </div>
 
-      <CustomEditor editorRef={editorRef} />
+      <div className="space-y-1.5">
+        <Label>Content</Label>
+        <CustomEditor
+          value={fullDescription ?? ""}
+          onChange={(html) =>
+            setValue("fullDescription", html, { shouldDirty: true })
+          }
+        />
+      </div>
 
       <div className="grid gap-5 md:grid-cols-2">
         <div className="space-y-1.5">
