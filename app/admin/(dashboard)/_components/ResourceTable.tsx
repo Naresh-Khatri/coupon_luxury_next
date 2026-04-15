@@ -30,9 +30,9 @@ export type Column<T> = {
 
 export function BoolCell({ value }: { value: boolean }) {
   return value ? (
-    <CheckCircle2 className="size-5 text-green-600" />
+    <CheckCircle2 className="size-5 text-accent" />
   ) : (
-    <XCircle className="size-5 text-red-500" />
+    <XCircle className="size-5 text-destructive" />
   );
 }
 
@@ -95,7 +95,7 @@ export default function ResourceTable<T extends { id: number }>({
                         >
                           <DialogTrigger asChild>
                             <Button variant="outline" size="sm">
-                              <Trash2 className="size-3.5 text-red-500" />
+                              <Trash2 className="size-3.5 text-destructive" />
                             </Button>
                           </DialogTrigger>
                           <DialogContent>

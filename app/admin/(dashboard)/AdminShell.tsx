@@ -51,14 +51,14 @@ export default function AdminShell({
   return (
     <div
       ref={rootRef}
-      className="flex min-h-screen bg-gray-50 text-gray-900 dark:bg-neutral-950 dark:text-neutral-100"
+      className="flex min-h-screen bg-background text-foreground"
     >
       <aside
-        className={`fixed inset-y-0 left-0 z-40 w-64 transform bg-white shadow-lg transition-transform md:static md:translate-x-0 dark:bg-neutral-900 dark:shadow-black/40 ${
+        className={`fixed inset-y-0 left-0 z-40 w-64 transform border-r border-sidebar-border bg-sidebar text-sidebar-foreground shadow-lg transition-transform md:static md:translate-x-0 ${
           open ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        <div className="flex h-16 items-center justify-between border-b px-6 dark:border-neutral-800">
+        <div className="flex h-16 items-center justify-between border-b border-sidebar-border px-6">
           <Link href="/admin" className="text-lg font-bold">
             CL Admin
           </Link>
@@ -83,8 +83,8 @@ export default function AdminShell({
                 onClick={() => setOpen(false)}
                 className={`mb-1 flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition ${
                   active
-                    ? "bg-brand-900 text-white"
-                    : "text-gray-700 hover:bg-gray-100 dark:text-neutral-300 dark:hover:bg-neutral-800"
+                    ? "bg-sidebar-primary text-sidebar-primary-foreground"
+                    : "text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
                 }`}
               >
                 <item.icon className="size-4" />
@@ -96,7 +96,7 @@ export default function AdminShell({
       </aside>
 
       <div className="flex-1">
-        <header className="flex h-16 items-center justify-between border-b bg-white px-4 md:px-8 dark:border-neutral-800 dark:bg-neutral-900">
+        <header className="flex h-16 items-center justify-between border-b border-border bg-card px-4 text-card-foreground md:px-8">
           <button
             type="button"
             className="md:hidden"
@@ -108,13 +108,11 @@ export default function AdminShell({
           <div className="ml-auto flex items-center gap-4">
             <AnimatedThemeToggler
               targetRef={rootRef}
-              className="inline-flex size-9 items-center justify-center rounded-md border text-gray-700 transition hover:bg-gray-100 dark:border-neutral-800 dark:text-neutral-200 dark:hover:bg-neutral-800"
+              className="inline-flex size-9 items-center justify-center rounded-md border border-border text-foreground transition hover:bg-accent hover:text-accent-foreground"
             />
             <div className="text-right text-sm">
               <p className="font-semibold">{user.name}</p>
-              <p className="text-xs text-gray-500 dark:text-neutral-400">
-                {user.email}
-              </p>
+              <p className="text-xs text-muted-foreground">{user.email}</p>
             </div>
             <Button variant="outline" size="sm" onClick={handleSignOut}>
               <LogOut className="size-4" /> Sign out
