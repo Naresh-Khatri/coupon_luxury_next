@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
   LayoutDashboard,
   Store,
@@ -17,6 +17,7 @@ import {
   X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler";
 import { authClient } from "@/lib/auth-client";
 
 const nav = [
@@ -40,6 +41,7 @@ export default function AdminShell({
   const pathname = usePathname();
   const router = useRouter();
   const [open, setOpen] = useState(false);
+  const rootRef = useRef<HTMLDivElement>(null);
 
   async function handleSignOut() {
     await authClient.signOut();
@@ -47,13 +49,16 @@ export default function AdminShell({
   }
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div
+      ref={rootRef}
+      className="flex min-h-screen bg-gray-50 text-gray-900 dark:bg-neutral-950 dark:text-neutral-100"
+    >
       <aside
-        className={`fixed inset-y-0 left-0 z-40 w-64 transform bg-white shadow-lg transition-transform md:static md:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-40 w-64 transform bg-white shadow-lg transition-transform md:static md:translate-x-0 dark:bg-neutral-900 dark:shadow-black/40 ${
           open ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        <div className="flex h-16 items-center justify-between border-b px-6">
+        <div className="flex h-16 items-center justify-between border-b px-6 dark:border-neutral-800">
           <Link href="/admin" className="text-lg font-bold">
             CL Admin
           </Link>
@@ -79,7 +84,7 @@ export default function AdminShell({
                 className={`mb-1 flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition ${
                   active
                     ? "bg-brand-900 text-white"
-                    : "text-gray-700 hover:bg-gray-100"
+                    : "text-gray-700 hover:bg-gray-100 dark:text-neutral-300 dark:hover:bg-neutral-800"
                 }`}
               >
                 <item.icon className="size-4" />
@@ -91,7 +96,7 @@ export default function AdminShell({
       </aside>
 
       <div className="flex-1">
-        <header className="flex h-16 items-center justify-between border-b bg-white px-4 md:px-8">
+        <header className="flex h-16 items-center justify-between border-b bg-white px-4 md:px-8 dark:border-neutral-800 dark:bg-neutral-900">
           <button
             type="button"
             className="md:hidden"
@@ -101,9 +106,15 @@ export default function AdminShell({
             <Menu className="size-5" />
           </button>
           <div className="ml-auto flex items-center gap-4">
+            <AnimatedThemeToggler
+              targetRef={rootRef}
+              className="inline-flex size-9 items-center justify-center rounded-md border text-gray-700 transition hover:bg-gray-100 dark:border-neutral-800 dark:text-neutral-200 dark:hover:bg-neutral-800"
+            />
             <div className="text-right text-sm">
               <p className="font-semibold">{user.name}</p>
-              <p className="text-xs text-gray-500">{user.email}</p>
+              <p className="text-xs text-gray-500 dark:text-neutral-400">
+                {user.email}
+              </p>
             </div>
             <Button variant="outline" size="sm" onClick={handleSignOut}>
               <LogOut className="size-4" /> Sign out

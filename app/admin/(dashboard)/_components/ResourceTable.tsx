@@ -52,7 +52,7 @@ export default function ResourceTable<T extends { id: number }>({
   const [target, setTarget] = useState<number | null>(null);
 
   return (
-    <div className="overflow-x-auto rounded-lg border bg-white">
+    <div className="overflow-x-auto rounded-lg border bg-card">
       <Table>
         <TableHeader>
           <TableRow>

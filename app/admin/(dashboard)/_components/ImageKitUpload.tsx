@@ -68,7 +68,7 @@ export default function ImageKitUpload({
           <button
             type="button"
             onClick={() => onChange(null)}
-            className="absolute right-1 top-1 rounded-full bg-white/90 p-1"
+            className="absolute right-1 top-1 rounded-full bg-background/90 p-1 text-foreground"
             aria-label="remove"
           >
             <X className="size-4" />
