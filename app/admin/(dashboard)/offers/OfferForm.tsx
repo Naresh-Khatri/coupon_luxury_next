@@ -18,6 +18,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { trpc } from "@/lib/trpc/client";
+import ImageKitUpload from "../_components/ImageKitUpload";
+import { resolveImage } from "../_components/uploadImage";
 import {
   PageHeader,
   SectionCard,
@@ -34,6 +36,7 @@ const schema = z.object({
   title: z.string().min(1),
   slug: z.string().min(1),
   description: z.string().default(""),
+  coverImg: z.union([z.string().url(), z.instanceof(File)]).nullish(),
   TnC: z.string().default(""),
   URL: z.string().default(""),
   affURL: z.string().default(""),
@@ -107,9 +110,22 @@ export default function OfferForm({
     onError: (e) => toast.error(e.message),
   });
 
-  function onSubmit(v: FormValues) {
-    if (id) update.mutate({ id, data: v });
-    else create.mutate(v);
+  async function onSubmit(v: FormValues) {
+    try {
+      const auth =
+        v.coverImg instanceof File
+          ? await utils.admin.imagekitAuth.fetch()
+          : null;
+      const coverImg = auth
+        ? await resolveImage(v.coverImg, auth)
+        : ((v.coverImg as string | null | undefined) ?? null);
+      const payload = { ...v, coverImg: coverImg || null };
+      if (id) update.mutate({ id, data: payload });
+      else create.mutate(payload);
+    } catch (err) {
+      console.error(err);
+      toast.error("Image upload failed");
+    }
   }
 
   const { register, handleSubmit, setValue, watch, control, formState } = form;
@@ -117,6 +133,7 @@ export default function OfferForm({
   const offerType = watch("offerType");
   const description = watch("description");
   const TnC = watch("TnC");
+  const cover = watch("coverImg");
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -271,6 +288,14 @@ export default function OfferForm({
       </SectionCard>
 
       <SectionCard title="Copy" description="Shown on the offer detail page.">
+        <Field label="Cover image" hint="Optional">
+          <ImageKitUpload
+            value={cover || null}
+            onChange={(v) =>
+              setValue("coverImg", v ?? null, { shouldDirty: true })
+            }
+          />
+        </Field>
         <Field label="Description">
           <CustomEditor
             variant="minimal"

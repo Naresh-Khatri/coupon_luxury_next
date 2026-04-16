@@ -64,6 +64,7 @@ const offerInput = z.object({
   title: z.string().min(1),
   slug: z.string().min(1),
   description: z.string(),
+  coverImg: optionalUrl(),
   TnC: z.string(),
   URL: z.string(),
   affURL: z.string(),
@@ -311,6 +312,12 @@ export const adminRouter = router({
           where: eq(s.offers.id, input.id),
         });
         if (!existing) throw new TRPCError({ code: "NOT_FOUND" });
+        if (
+          input.data.coverImg !== undefined &&
+          input.data.coverImg !== existing.coverImg
+        ) {
+          await deleteImageByUrl(existing.coverImg);
+        }
         const [row] = await db
           .update(s.offers)
           .set({ ...input.data, updatedAt: new Date() })
@@ -331,6 +338,7 @@ export const adminRouter = router({
         });
         if (!existing) throw new TRPCError({ code: "NOT_FOUND" });
         await db.delete(s.offers).where(eq(s.offers.id, input));
+        await deleteImageByUrl(existing.coverImg);
         revalidate(
           CACHE_TAGS.offers,
           CACHE_TAGS.offer(existing.slug),

@@ -142,6 +142,7 @@ export const offers = pgTable("offer", {
     .references(() => stores.id, { onDelete: "cascade" }),
   title: text("title").notNull(),
   description: text("description").notNull(),
+  coverImg: text("coverImg"),
   TnC: text("TnC").notNull(),
   URL: text("URL").notNull(),
   affURL: text("affURL").notNull(),
