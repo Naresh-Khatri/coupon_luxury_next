@@ -11,12 +11,44 @@ import { revalidate, CACHE_TAGS } from "@/server/db/cache";
 
 export const publicRouter = router({
   searchStores: publicProcedure
-    .input(z.object({ q: z.string().min(1) }))
-    .query(({ input }) => searchStoresByName(input.q)),
+    .input(
+      z.object({
+        q: z.string().min(1),
+        country: z.string().nullish(),
+      })
+    )
+    .query(({ input }) =>
+      searchStoresByName(input.q, 20, input.country ?? null)
+    ),
 
   searchOffers: publicProcedure
-    .input(z.object({ q: z.string().min(1) }))
-    .query(({ input }) => searchOffersByTitle(input.q)),
+    .input(
+      z.object({
+        q: z.string().min(1),
+        country: z.string().nullish(),
+      })
+    )
+    .query(({ input }) =>
+      searchOffersByTitle(input.q, 20, input.country ?? null)
+    ),
+
+  search: publicProcedure
+    .input(
+      z.object({
+        q: z.string().min(1),
+        country: z.string().nullish(),
+      })
+    )
+    .query(async ({ input }) => {
+      const country = input.country ?? null;
+      const [stores, offers] = await Promise.all([
+        searchStoresByName(input.q, 5, country),
+        searchOffersByTitle(input.q, 8, country),
+      ]);
+      const coupons = offers.filter((o) => o.offerType === "coupon");
+      const deals = offers.filter((o) => o.offerType === "deal");
+      return { stores, coupons, deals };
+    }),
 
   stores: publicProcedure
     .input(

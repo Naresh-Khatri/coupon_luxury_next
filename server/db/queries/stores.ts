@@ -10,11 +10,14 @@ const publicStoreCols = {
 };
 
 export const getPublicStores = cached(
-  async (opts: { featured?: boolean; limit?: number } = {}) => {
+  async (
+    opts: { featured?: boolean; limit?: number; country?: string | null } = {}
+  ) => {
     const limit = opts.limit ?? 50;
-    const where = opts.featured
-      ? and(eq(s.stores.active, true), eq(s.stores.featured, true))
-      : eq(s.stores.active, true);
+    const conds = [eq(s.stores.active, true)];
+    if (opts.featured) conds.push(eq(s.stores.featured, true));
+    if (opts.country) conds.push(eq(s.stores.country, opts.country));
+    const where = and(...conds);
     return db.query.stores.findMany({
       where,
       limit,
@@ -69,8 +72,17 @@ export async function getAllStores() {
   });
 }
 
-export async function searchStoresByName(q: string, limit = 20) {
+export async function searchStoresByName(
+  q: string,
+  limit = 20,
+  country?: string | null
+) {
   if (!q) return [];
+  const conds = [
+    eq(s.stores.active, true),
+    ilike(s.stores.storeName, `%${q}%`),
+  ];
+  if (country) conds.push(eq(s.stores.country, country));
   return db
     .select({
       id: s.stores.id,
@@ -79,7 +91,7 @@ export async function searchStoresByName(q: string, limit = 20) {
       image: s.stores.image,
     })
     .from(s.stores)
-    .where(ilike(s.stores.storeName, `%${q}%`))
+    .where(and(...conds))
     .orderBy(asc(s.stores.storeName))
     .limit(limit);
 }
