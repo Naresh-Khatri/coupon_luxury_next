@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/select";
 import { trpc } from "@/lib/trpc/client";
 import ImageKitUpload from "../_components/ImageKitUpload";
+import { resolveImage } from "../_components/uploadImage";
 import {
   PageHeader,
   SectionCard,
@@ -35,7 +36,7 @@ const schema = z.object({
   storeName: z.string().min(1),
   slug: z.string().min(1),
   storeURL: z.string().url(),
-  image: z.string().url(),
+  image: z.union([z.string().url(), z.instanceof(File)]),
   pageHTML: z.string().default(""),
   country: z.string().default("global"),
   categoryId: z.number().int(),
@@ -94,9 +95,22 @@ export default function StoreForm({
     onError: (e) => toast.error(e.message),
   });
 
-  function onSubmit(values: FormValues) {
-    if (storeId) update.mutate({ id: storeId, data: values });
-    else create.mutate(values);
+  async function onSubmit(values: FormValues) {
+    try {
+      const auth =
+        values.image instanceof File
+          ? await utils.admin.imagekitAuth.fetch()
+          : null;
+      const image = auth
+        ? await resolveImage(values.image, auth)
+        : (values.image as string);
+      const payload = { ...values, image: image ?? "" };
+      if (storeId) update.mutate({ id: storeId, data: payload });
+      else create.mutate(payload);
+    } catch (err) {
+      console.error(err);
+      toast.error("Image upload failed");
+    }
   }
 
   const { register, handleSubmit, setValue, watch, formState, control } = form;
@@ -133,7 +147,7 @@ export default function StoreForm({
         <Field label="Logo">
           <ImageKitUpload
             value={image || null}
-            onChange={(url) => setValue("image", url ?? "")}
+            onChange={(v) => setValue("image", v ?? "", { shouldDirty: true })}
           />
         </Field>
       </SectionCard>

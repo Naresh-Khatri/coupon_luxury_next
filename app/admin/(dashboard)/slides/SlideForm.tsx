@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { trpc } from "@/lib/trpc/client";
 import ImageKitUpload from "../_components/ImageKitUpload";
+import { resolveImage } from "../_components/uploadImage";
 import {
   PageHeader,
   SectionCard,
@@ -21,7 +22,7 @@ import {
 const schema = z.object({
   title: z.string().min(1),
   link: z.string(),
-  imgURL: z.string().url(),
+  imgURL: z.union([z.string().url(), z.instanceof(File)]),
   imgAlt: z.string().default(""),
   active: z.boolean().default(false),
   featured: z.boolean().default(false),
@@ -67,9 +68,22 @@ export default function SlideForm({
     onError: (e) => toast.error(e.message),
   });
 
-  function onSubmit(values: FormValues) {
-    if (id) update.mutate({ id, data: values });
-    else create.mutate(values);
+  async function onSubmit(values: FormValues) {
+    try {
+      const auth =
+        values.imgURL instanceof File
+          ? await utils.admin.imagekitAuth.fetch()
+          : null;
+      const imgURL = auth
+        ? await resolveImage(values.imgURL, auth)
+        : (values.imgURL as string);
+      const payload = { ...values, imgURL: imgURL ?? "" };
+      if (id) update.mutate({ id, data: payload });
+      else create.mutate(payload);
+    } catch (err) {
+      console.error(err);
+      toast.error("Image upload failed");
+    }
   }
 
   const imgURL = form.watch("imgURL");
@@ -97,7 +111,9 @@ export default function SlideForm({
         <Field label="Image">
           <ImageKitUpload
             value={imgURL || null}
-            onChange={(url) => form.setValue("imgURL", url ?? "")}
+            onChange={(v) =>
+              form.setValue("imgURL", v ?? "", { shouldDirty: true })
+            }
           />
         </Field>
       </SectionCard>

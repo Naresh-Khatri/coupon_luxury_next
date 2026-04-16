@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/select";
 import { trpc } from "@/lib/trpc/client";
 import ImageKitUpload from "../_components/ImageKitUpload";
+import { hasPendingFile, resolveImage } from "../_components/uploadImage";
 import {
   PageHeader,
   SectionCard,
@@ -37,8 +38,8 @@ const schema = z.object({
   smallDescription: z.string(),
   fullDescription: z.string(),
   storeId: z.number().int().nullish(),
-  coverImg: z.string().url().nullish(),
-  thumbnailImg: z.string().url().nullish(),
+  coverImg: z.union([z.string().url(), z.instanceof(File)]).nullish(),
+  thumbnailImg: z.union([z.string().url(), z.instanceof(File)]).nullish(),
   imgAlt: z.string().nullish(),
   blogType: z.string().default("normal"),
   active: z.boolean().default(false),
@@ -91,18 +92,32 @@ export default function BlogForm({
     onError: (e) => toast.error(e.message),
   });
 
-  function onSubmit(v: FormValues) {
-    const payload = {
-      ...v,
-      storeId:
-        v.storeId == null || Number.isNaN(v.storeId) || v.storeId === 0
-          ? null
-          : v.storeId,
-      coverImg: v.coverImg ? v.coverImg : null,
-      thumbnailImg: v.thumbnailImg ? v.thumbnailImg : null,
-    };
-    if (id) update.mutate({ id, data: payload });
-    else create.mutate(payload);
+  async function onSubmit(v: FormValues) {
+    try {
+      const auth = hasPendingFile(v.coverImg, v.thumbnailImg)
+        ? await utils.admin.imagekitAuth.fetch()
+        : null;
+      const coverImg = auth
+        ? await resolveImage(v.coverImg, auth)
+        : ((v.coverImg as string | null | undefined) ?? null);
+      const thumbnailImg = auth
+        ? await resolveImage(v.thumbnailImg, auth)
+        : ((v.thumbnailImg as string | null | undefined) ?? null);
+      const payload = {
+        ...v,
+        storeId:
+          v.storeId == null || Number.isNaN(v.storeId) || v.storeId === 0
+            ? null
+            : v.storeId,
+        coverImg: coverImg || null,
+        thumbnailImg: thumbnailImg || null,
+      };
+      if (id) update.mutate({ id, data: payload });
+      else create.mutate(payload);
+    } catch (err) {
+      console.error(err);
+      toast.error("Image upload failed");
+    }
   }
 
   const { register, handleSubmit, setValue, watch, control, formState } = form;
@@ -163,13 +178,17 @@ export default function BlogForm({
           <Field label="Cover image">
             <ImageKitUpload
               value={cover || null}
-              onChange={(url) => setValue("coverImg", url ?? null)}
+              onChange={(v) =>
+                setValue("coverImg", v ?? null, { shouldDirty: true })
+              }
             />
           </Field>
           <Field label="Thumbnail">
             <ImageKitUpload
               value={thumb || null}
-              onChange={(url) => setValue("thumbnailImg", url ?? null)}
+              onChange={(v) =>
+                setValue("thumbnailImg", v ?? null, { shouldDirty: true })
+              }
             />
           </Field>
         </FieldGrid>

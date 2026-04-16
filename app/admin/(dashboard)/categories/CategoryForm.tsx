@@ -12,6 +12,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { trpc } from "@/lib/trpc/client";
 import ImageKitUpload from "../_components/ImageKitUpload";
+import { resolveImage } from "../_components/uploadImage";
 import {
   PageHeader,
   SectionCard,
@@ -27,7 +28,7 @@ const CustomEditor = dynamic(() => import("@/components/CustomEditor"), {
 const schema = z.object({
   categoryName: z.string().min(1),
   slug: z.string().min(1),
-  image: z.string().url(),
+  image: z.union([z.string().url(), z.instanceof(File)]),
   imgAlt: z.string().default(""),
   description: z.string().nullish(),
   pageHTML: z.string().nullish(),
@@ -79,9 +80,22 @@ export default function CategoryForm({
     onError: (e) => toast.error(e.message),
   });
 
-  function onSubmit(values: FormValues) {
-    if (id) update.mutate({ id, data: values });
-    else create.mutate(values);
+  async function onSubmit(values: FormValues) {
+    try {
+      const auth =
+        values.image instanceof File
+          ? await utils.admin.imagekitAuth.fetch()
+          : null;
+      const image = auth
+        ? await resolveImage(values.image, auth)
+        : (values.image as string);
+      const payload = { ...values, image: image ?? "" };
+      if (id) update.mutate({ id, data: payload });
+      else create.mutate(payload);
+    } catch (err) {
+      console.error(err);
+      toast.error("Image upload failed");
+    }
   }
 
   const { register, handleSubmit, setValue, watch, control, formState } = form;
@@ -111,7 +125,7 @@ export default function CategoryForm({
         <Field label="Image">
           <ImageKitUpload
             value={image || null}
-            onChange={(url) => setValue("image", url ?? "")}
+            onChange={(v) => setValue("image", v ?? "", { shouldDirty: true })}
           />
         </Field>
       </SectionCard>
