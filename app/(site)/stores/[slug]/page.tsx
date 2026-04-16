@@ -2,26 +2,30 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ChevronRight, Home as HomeIcon, Store as StoreIcon, ShoppingBag } from "lucide-react";
-import Banner from "@/components/Banner";
+import {
+  ChevronRight,
+  ExternalLink,
+  Home as HomeIcon,
+  Ticket,
+  Tag,
+} from "lucide-react";
 import RecommendedStores from "@/components/RecommendedStores";
-import StoreFilter from "./StoreFilter";
+import StoreOffers from "./StoreOffers";
 import { getStoreBySlug, getPublicStores } from "@/server/db/queries/stores";
+import transformPath from "@/utils/transformImagePath";
 
 async function getData(slug: string) {
   const [storeInfo, featuredStores] = await Promise.all([
     getStoreBySlug(slug),
-    getPublicStores({ featured: true, limit: 16 }),
+    getPublicStores({ featured: true, limit: 8 }),
   ]);
   if (!storeInfo) return null;
   return { storeInfo, featuredStores };
 }
 
-export async function generateMetadata(
-  props: {
-    params: Promise<{ slug: string }>;
-  }
-): Promise<Metadata> {
+export async function generateMetadata(props: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
   const params = await props.params;
   const data = await getData(params.slug);
   if (!data) return {};
@@ -40,78 +44,158 @@ export async function generateMetadata(
   };
 }
 
-function getMonthAndYear() {
+function monthYear() {
   const d = new Date();
   return `${d.toLocaleString("default", { month: "long" })} ${d.getFullYear()}`;
 }
 
-export default async function StorePage(
-  props: {
-    params: Promise<{ slug: string }>;
+function hostFromUrl(url: string): string {
+  try {
+    return new URL(url).host.replace(/^www\./, "");
+  } catch {
+    return url;
   }
-) {
+}
+
+export default async function StorePage(props: {
+  params: Promise<{ slug: string }>;
+}) {
   const params = await props.params;
   const data = await getData(params.slug);
   if (!data) notFound();
   const { storeInfo, featuredStores } = data;
 
+  const couponCount = storeInfo.offers.filter(
+    (o) => o.offerType === "coupon"
+  ).length;
+  const dealCount = storeInfo.offers.length - couponCount;
+
   return (
-    <div className="bg-[#e0e0e0] pb-5">
-      <Banner
-        title={`${storeInfo.storeName} Coupons & Deals For ${getMonthAndYear()}`}
-        titleAsH1
-      />
-      <div className="flex flex-col items-center">
-        <div className="w-screen max-w-[1200px]">
-          <div className="p-4">
-            <nav
-              aria-label="Breadcrumb"
-              className="flex items-center gap-2 rounded-xl bg-white p-4 text-sm font-semibold text-brand-900"
+    <div className="bg-cream">
+      {/* Hero */}
+      <section className="banner-bg relative overflow-hidden">
+        <div className="relative mx-auto max-w-[1280px] px-4 py-10 md:px-6 md:py-14">
+          <nav
+            aria-label="Breadcrumb"
+            className="mb-6 flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-[0.14em] text-white/70"
+          >
+            <Link
+              href="/"
+              className="inline-flex items-center gap-1 transition-colors hover:text-gold"
             >
-              <Link href="/" className="flex items-center gap-2 hover:text-teal">
-                <HomeIcon className="size-4" /> Home
-              </Link>
-              <ChevronRight className="size-4 text-gray-500" />
-              <Link href="/stores" className="flex items-center gap-2 hover:text-teal">
-                <StoreIcon className="size-4" /> Stores
-              </Link>
-              <ChevronRight className="size-4 text-gray-500" />
-              <span className="flex items-center gap-2">
-                <ShoppingBag className="size-4" /> {storeInfo.storeName}
-              </span>
-            </nav>
-          </div>
+              <HomeIcon className="size-3" />
+              Home
+            </Link>
+            <ChevronRight className="size-3 text-white/40" />
+            <Link
+              href="/stores"
+              className="transition-colors hover:text-gold"
+            >
+              Stores
+            </Link>
+            <ChevronRight className="size-3 text-white/40" />
+            <span className="text-gold">{storeInfo.storeName}</span>
+          </nav>
 
-          <div className="grid md:grid-cols-7">
-            <aside className="col-span-7 px-4 md:col-span-2">
-              <div className="rounded-xl bg-white">
-                <Image
-                  src={storeInfo.image}
-                  alt={`${storeInfo.storeName} - Logo`}
-                  priority
-                  width={200}
-                  height={100}
-                  className="w-full rounded-xl"
-                />
+          <div className="flex flex-col gap-6 md:flex-row md:items-center md:gap-8">
+            <div className="flex size-24 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-white/15 bg-white shadow-xl md:size-28">
+              <Image
+                src={transformPath(storeInfo.image, 240)}
+                alt={`${storeInfo.storeName} logo`}
+                width={120}
+                height={120}
+                priority
+                className="max-h-[72px] w-auto max-w-[80%] object-contain md:max-h-[80px]"
+              />
+            </div>
+
+            <div className="min-w-0 flex-1">
+              {storeInfo.category?.categoryName && (
+                <Link
+                  href={`/categories/${storeInfo.category.slug}`}
+                  className="inline-flex items-center gap-1 rounded-full border border-gold/40 bg-gold/10 px-2.5 py-0.5 text-[10.5px] font-medium uppercase tracking-[0.16em] text-gold transition-colors hover:bg-gold/20"
+                >
+                  {storeInfo.category.categoryName}
+                </Link>
+              )}
+              <h1 className="mt-2 text-3xl font-bold tracking-tight text-white md:text-4xl">
+                {storeInfo.storeName} Coupons & Deals
+              </h1>
+              <p className="mt-1 text-[13px] text-white/60">
+                Updated for {monthYear()}
+              </p>
+
+              <div className="mt-4 flex flex-wrap items-center gap-2">
+                <Stat icon={<Ticket className="size-3.5" />} label="Coupons" value={couponCount} />
+                <Stat icon={<Tag className="size-3.5" />} label="Deals" value={dealCount} />
+                {storeInfo.storeURL && (
+                  <a
+                    href={storeInfo.storeURL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 rounded-full bg-gold px-3.5 py-1 text-[12px] font-semibold text-navy transition-colors hover:bg-gold-light"
+                  >
+                    Visit {hostFromUrl(storeInfo.storeURL)}
+                    <ExternalLink className="size-3" />
+                  </a>
+                )}
               </div>
-
-              <div className="hidden md:block">
-                <RecommendedStores stores={featuredStores} />
-              </div>
-            </aside>
-
-            <StoreFilter
-              storeInfo={storeInfo}
-              className="col-span-5 px-4 pt-4 md:pt-0"
-            />
+            </div>
           </div>
-
-          <div
-            className="page-html m-4 min-h-[100px] rounded-xl bg-white p-10"
-            dangerouslySetInnerHTML={{ __html: storeInfo.pageHTML }}
-          />
         </div>
+      </section>
+
+      {/* Offers */}
+      <div className="mx-auto max-w-[1280px] px-4 py-8 md:px-6">
+        <StoreOffers
+          offers={storeInfo.offers as React.ComponentProps<typeof StoreOffers>["offers"]}
+          store={{
+            storeName: storeInfo.storeName,
+            slug: storeInfo.slug,
+            image: storeInfo.image,
+          }}
+        />
+
+        {/* About */}
+        {storeInfo.pageHTML?.trim() && (
+          <section className="mt-12 overflow-hidden rounded-2xl border border-gray-200 bg-white">
+            <div className="border-b border-gray-100 px-6 py-4 md:px-8">
+              <h2 className="text-[11px] font-bold uppercase tracking-[0.18em] text-gray-500">
+                About {storeInfo.storeName}
+              </h2>
+            </div>
+            <div
+              className="page-html px-6 py-6 md:px-8 md:py-8"
+              dangerouslySetInnerHTML={{ __html: storeInfo.pageHTML }}
+            />
+          </section>
+        )}
+
+        {/* Recommended */}
+        {featuredStores.length > 0 && (
+          <div className="mt-12">
+            <RecommendedStores stores={featuredStores} />
+          </div>
+        )}
       </div>
     </div>
+  );
+}
+
+function Stat({
+  icon,
+  label,
+  value,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  value: number;
+}) {
+  return (
+    <span className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/5 px-3 py-1 text-[12px] text-white/80 backdrop-blur-sm">
+      <span className="text-gold">{icon}</span>
+      <span className="font-semibold text-white">{value}</span>
+      <span className="text-white/60">{label}</span>
+    </span>
   );
 }
