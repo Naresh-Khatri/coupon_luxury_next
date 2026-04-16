@@ -117,6 +117,94 @@
     --radius-2xl: calc(var(--radius) * 1.8);
     --radius-3xl: calc(var(--radius) * 2.2);
     --radius-4xl: calc(var(--radius) * 2.6);
+
+    /* Brand palette */
+    --color-gold: #c49a3c;
+    --color-gold-light: #e8c56a;
+    --color-navy: #0d1b2a;
+    --color-navy-mid: #1c2e42;
+    --color-teal: #0092c0;
+    --color-cream: #fdfaf6;
+    --color-brand-700: #00a8d6;
+    --color-brand-800: #0092c0;
+    --color-brand-900: #0072a0;
+    --color-brand-1000: #005a80;
+}
+
+/* Decorative backgrounds */
+.hero-bg {
+    background-color: var(--color-cream);
+    background-image: radial-gradient(circle, #d4b896 1px, transparent 1px);
+    background-size: 28px 28px;
+}
+
+.banner-bg {
+    width: 100%;
+    background: linear-gradient(
+        135deg,
+        var(--color-navy) 0%,
+        var(--color-navy-mid) 50%,
+        #1a3a5c 100%
+    );
+    position: relative;
+}
+.banner-bg::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+        radial-gradient(
+            ellipse at 30% 50%,
+            rgba(0, 146, 192, 0.15) 0%,
+            transparent 60%
+        ),
+        radial-gradient(
+            ellipse at 70% 50%,
+            rgba(196, 154, 60, 0.08) 0%,
+            transparent 60%
+        );
+    pointer-events: none;
+}
+
+.subscribe-banner-bg {
+    background: linear-gradient(135deg, #0d1b2a 0%, #0a2540 50%, #0d1b2a 100%);
+    position: relative;
+    overflow: hidden;
+}
+.subscribe-banner-bg::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+        radial-gradient(
+            ellipse at 20% 50%,
+            rgba(0, 146, 192, 0.2) 0%,
+            transparent 50%
+        ),
+        radial-gradient(
+            ellipse at 80% 50%,
+            rgba(196, 154, 60, 0.12) 0%,
+            transparent 50%
+        );
+    pointer-events: none;
+}
+.subscribe-banner-bg::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+}
+
+.ham-background {
+    background-color: var(--color-navy);
+    background-image:
+        linear-gradient(rgba(0, 146, 192, 0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 146, 192, 0.06) 1px, transparent 1px);
+    background-size: 40px 40px;
 }
 
 @layer base {

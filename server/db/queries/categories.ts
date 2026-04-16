@@ -1,5 +1,5 @@
 import { db, s } from "@/db";
-import { asc, desc, eq, ilike, sql } from "drizzle-orm";
+import { and, asc, desc, eq, ilike, sql } from "drizzle-orm";
 import { cached, CACHE_TAGS } from "../cache";
 
 export const getPublicCategories = cached(
@@ -15,7 +15,7 @@ export const getPublicCategories = cached(
   [CACHE_TAGS.categories]
 );
 
-export const getCategoryBySlug = (slug: string) =>
+export const getCategoryBySlug = (slug: string, country?: string | null) =>
   cached(
     async () =>
       db.query.categories.findFirst({
@@ -23,7 +23,9 @@ export const getCategoryBySlug = (slug: string) =>
         with: {
           subCategories: true,
           stores: {
-            where: eq(s.stores.active, true),
+            where: country
+              ? and(eq(s.stores.active, true), eq(s.stores.country, country))
+              : eq(s.stores.active, true),
             orderBy: asc(s.stores.storeName),
             columns: {
               id: true,
@@ -34,7 +36,9 @@ export const getCategoryBySlug = (slug: string) =>
             },
           },
           offers: {
-            where: eq(s.offers.active, true),
+            where: country
+              ? and(eq(s.offers.active, true), eq(s.offers.country, country))
+              : eq(s.offers.active, true),
             orderBy: desc(s.offers.updatedAt),
             with: {
               store: {
@@ -49,7 +53,7 @@ export const getCategoryBySlug = (slug: string) =>
           },
         },
       }),
-    ["category:slug", slug],
+    ["category:slug", slug, country ?? "all"],
     [CACHE_TAGS.categories, CACHE_TAGS.category(slug)]
   )();
 

@@ -1,35 +1,39 @@
 import MainCarousel from "@/components/home/MainCarousel";
-import CategoriesCarousel from "@/components/home/CategoriesCarousel";
+import PopularStores from "@/components/home/PopularStores";
+import TopCoupons from "@/components/home/TopCoupons";
 import DealsOfTheDay from "@/components/home/DealsOfTheDay";
-import StoresCarousel from "@/components/home/StoresCarousel";
-import FeaturedCategories from "@/components/home/FeaturedCategories";
+import PopularCategoriesList from "@/components/home/PopularCategoriesList";
 import SubscribeBanner from "@/components/home/SubscribeBanner";
 import { getMainFeed } from "@/server/db/queries/main";
+import { getSelectedCountry } from "@/lib/country";
 
 export default async function Home() {
+  const country = await getSelectedCountry();
   const {
     slides,
     featuredStores,
-    featuredOffers: deals,
+    featuredDeals,
+    featuredCoupons,
     categories,
-  } = await getMainFeed();
+  } = await getMainFeed(country);
 
   return (
     <>
-      <section className="hero-bg flex justify-center overflow-hidden">
+      <section className="hero-bg overflow-hidden">
         <h1 hidden>Couponluxury: Deals, coupon codes, Discounts &amp; offers</h1>
         <h2 hidden>
           Find Your Luxury Deals: Exclusive Discounts and Offers on High-End
           Brands
         </h2>
-        <div className="w-screen max-w-[1300px] pt-5">
+        <div className="mx-auto w-full max-w-[1400px] px-4 pt-6 pb-10">
           <MainCarousel slides={slides} />
-          <CategoriesCarousel carouselCat={categories} />
-          <DealsOfTheDay deals={deals} />
         </div>
       </section>
-      <StoresCarousel featuredStores={featuredStores} />
-      <FeaturedCategories featuredCat={categories} />
+
+      <PopularStores featuredStores={featuredStores} />
+      <TopCoupons coupons={featuredCoupons} categories={categories} />
+      <DealsOfTheDay deals={featuredDeals} />
+      <PopularCategoriesList categories={categories} />
       <SubscribeBanner />
     </>
   );

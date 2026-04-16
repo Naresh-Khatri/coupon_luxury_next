@@ -113,9 +113,7 @@ export default function AdminShell({
             />
           </header>
 
-          <ScrollArea className="flex-1">
-            <div className="p-4 md:p-6">{children}</div>
-          </ScrollArea>
+          <div className="p-4 md:p-6 overflow-auto">{children}</div>
         </SidebarInset>
       </SidebarProvider>
     </div>

@@ -1,0 +1,67 @@
+"use client";
+
+import { useTransition } from "react";
+import { Check, ChevronDown, Globe } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { cn } from "@/lib/utils";
+import { setCountryAction } from "@/app/actions/country";
+
+export default function CountrySelector({
+  countries,
+  selected,
+}: {
+  countries: string[];
+  selected: string | null;
+}) {
+  const [pending, start] = useTransition();
+
+  const pick = (country: string | null) => {
+    start(() => {
+      setCountryAction(country);
+    });
+  };
+
+  if (countries.length === 0) return null;
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger
+        className={cn(
+          "inline-flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-[13px] font-medium text-white/85 transition-all outline-none hover:bg-white/10 hover:text-white",
+          pending && "opacity-60"
+        )}
+      >
+        <Globe className="size-4 text-white/70" />
+        <span className="max-w-[80px] truncate">{selected ?? "All"}</span>
+        <ChevronDown className="size-3.5 text-white/60" />
+      </DropdownMenuTrigger>
+      <DropdownMenuContent
+        align="end"
+        className="max-h-[320px] overflow-auto"
+      >
+        <DropdownMenuItem
+          className="flex items-center justify-between gap-6 text-sm"
+          onSelect={() => pick(null)}
+        >
+          <span>All countries</span>
+          {selected === null && <Check className="size-4 text-teal" />}
+        </DropdownMenuItem>
+        {countries.map((c) => (
+          <DropdownMenuItem
+            key={c}
+            className="flex items-center justify-between gap-6 text-sm"
+            onSelect={() => pick(c)}
+          >
+            <span>{c}</span>
+            {selected === c && <Check className="size-4 text-teal" />}
+          </DropdownMenuItem>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}

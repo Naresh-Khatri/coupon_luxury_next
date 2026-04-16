@@ -3,14 +3,45 @@ import { and, asc, desc, eq } from "drizzle-orm";
 import { cached, CACHE_TAGS } from "../cache";
 
 export const getMainFeed = cached(
-  async () => {
-    const [featuredStores, categories, slides, featuredOffers] =
+  async (country?: string | null) => {
+    const storeWhere = country
+      ? and(
+          eq(s.stores.active, true),
+          eq(s.stores.featured, true),
+          eq(s.stores.country, country)
+        )
+      : and(eq(s.stores.active, true), eq(s.stores.featured, true));
+
+    const dealsWhere = country
+      ? and(
+          eq(s.offers.active, true),
+          eq(s.offers.featured, true),
+          eq(s.offers.offerType, "deal"),
+          eq(s.offers.country, country)
+        )
+      : and(
+          eq(s.offers.active, true),
+          eq(s.offers.featured, true),
+          eq(s.offers.offerType, "deal")
+        );
+
+    const couponsWhere = country
+      ? and(
+          eq(s.offers.active, true),
+          eq(s.offers.featured, true),
+          eq(s.offers.offerType, "coupon"),
+          eq(s.offers.country, country)
+        )
+      : and(
+          eq(s.offers.active, true),
+          eq(s.offers.featured, true),
+          eq(s.offers.offerType, "coupon")
+        );
+
+    const [featuredStores, categories, slides, featuredDeals, featuredCoupons] =
       await Promise.all([
         db.query.stores.findMany({
-          where: and(
-            eq(s.stores.active, true),
-            eq(s.stores.featured, true)
-          ),
+          where: storeWhere,
           orderBy: desc(s.stores.updatedAt),
           columns: {
             id: true,
@@ -54,11 +85,7 @@ export const getMainFeed = cached(
           },
         }),
         db.query.offers.findMany({
-          where: and(
-            eq(s.offers.active, true),
-            eq(s.offers.featured, true),
-            eq(s.offers.offerType, "deal")
-          ),
+          where: dealsWhere,
           orderBy: desc(s.offers.updatedAt),
           columns: {
             id: true,
@@ -69,6 +96,36 @@ export const getMainFeed = cached(
             discountType: true,
             discountValue: true,
             couponCode: true,
+            offerType: true,
+            endDate: true,
+            categoryId: true,
+          },
+          with: {
+            store: {
+              columns: {
+                id: true,
+                image: true,
+                storeName: true,
+                slug: true,
+              },
+            },
+          },
+        }),
+        db.query.offers.findMany({
+          where: couponsWhere,
+          orderBy: desc(s.offers.updatedAt),
+          limit: 60,
+          columns: {
+            id: true,
+            slug: true,
+            title: true,
+            URL: true,
+            affURL: true,
+            discountType: true,
+            discountValue: true,
+            couponCode: true,
+            offerType: true,
+            endDate: true,
             categoryId: true,
           },
           with: {
@@ -83,7 +140,13 @@ export const getMainFeed = cached(
           },
         }),
       ]);
-    return { featuredStores, categories, slides, featuredOffers };
+    return {
+      featuredStores,
+      categories,
+      slides,
+      featuredDeals,
+      featuredCoupons,
+    };
   },
   ["main:feed"],
   [

@@ -5,6 +5,7 @@ import Banner from "@/components/Banner";
 import StoreCard from "@/components/StoreCard";
 import Header from "@/components/Header";
 import { getPublicStores } from "@/server/db/queries/stores";
+import { getSelectedCountry } from "@/lib/country";
 
 export const metadata: Metadata = {
   title: "CouponLuxury - Deals, Promo codes & exclusive coupons",
@@ -14,7 +15,8 @@ export const metadata: Metadata = {
 };
 
 export default async function StoresPage() {
-  const stores = await getPublicStores({ limit: 20 });
+  const country = await getSelectedCountry();
+  const stores = await getPublicStores({ limit: 20, country });
 
   return (
     <div className="bg-[#eeeeee] pb-10 font-semibold">

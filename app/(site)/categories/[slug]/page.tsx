@@ -10,11 +10,12 @@ import {
   getCategoryBySlug,
 } from "@/server/db/queries/categories";
 import { getPublicStores } from "@/server/db/queries/stores";
+import { getSelectedCountry } from "@/lib/country";
 
-async function getData(slug: string) {
+async function getData(slug: string, country: string | null) {
   const [categoryInfo, featuredStores] = await Promise.all([
-    getCategoryBySlug(slug),
-    getPublicStores({ featured: true }),
+    getCategoryBySlug(slug, country),
+    getPublicStores({ featured: true, country }),
   ]);
   if (!categoryInfo) return null;
   return { categoryInfo, featuredStores };
@@ -26,7 +27,8 @@ export async function generateMetadata(
   }
 ): Promise<Metadata> {
   const params = await props.params;
-  const data = await getData(params.slug);
+  const country = await getSelectedCountry();
+  const data = await getData(params.slug, country);
   if (!data) return {};
   const { categoryInfo } = data;
   const url = `https://www.couponluxury.com/categories/${categoryInfo.slug}`;
@@ -49,7 +51,8 @@ export default async function CategoryPage(
   }
 ) {
   const params = await props.params;
-  const data = await getData(params.slug);
+  const country = await getSelectedCountry();
+  const data = await getData(params.slug, country);
   if (!data) notFound();
   const { categoryInfo, featuredStores } = data;
 

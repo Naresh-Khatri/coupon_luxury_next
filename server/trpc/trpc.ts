@@ -34,25 +34,21 @@ const t = initTRPC.context<Context>().create({
   errorFormatter({ shape, error }) {
     const zodError =
       error.cause instanceof ZodError ? error.cause.flatten() : null;
+    const rawMessage = error.message;
+    const rawStack = isDev ? shape.data?.stack : undefined;
 
-    // In production, never leak raw error messages or stack traces to the
-    // client. Zod validation errors remain structured so forms can surface
-    // field-level hints without exposing server internals.
-    if (!isDev) {
-      return {
-        ...shape,
-        message: zodError ? "Invalid input." : safeMessage(error.code),
-        data: {
-          ...shape.data,
-          stack: undefined,
-          zodError,
-        },
-      };
-    }
-
+    // The `message` field is what clients surface in toasts, so always
+    // rewrite it to a user-safe string. Raw driver/db text and stacks are
+    // kept in `data` only for dev devtools inspection.
     return {
       ...shape,
-      data: { ...shape.data, zodError },
+      message: zodError ? "Invalid input." : safeMessage(error.code),
+      data: {
+        ...shape.data,
+        stack: rawStack,
+        rawMessage: isDev ? rawMessage : undefined,
+        zodError,
+      },
     };
   },
 });
@@ -68,11 +64,7 @@ const errorWrapper = t.middleware(async ({ next, path, type }) => {
     console.error(`[trpc] ${type} ${path} failed:`, err);
     throw new TRPCError({
       code: "INTERNAL_SERVER_ERROR",
-      message: isDev
-        ? err instanceof Error
-          ? err.message
-          : String(err)
-        : "Something went wrong. Please try again.",
+      message: "Something went wrong. Please try again.",
       cause: err,
     });
   }

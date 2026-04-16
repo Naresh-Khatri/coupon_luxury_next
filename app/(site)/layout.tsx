@@ -1,17 +1,28 @@
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
+import { getDistinctCountries } from "@/server/db/queries/countries";
+import { getNavFeatured } from "@/server/db/queries/nav";
+import { getSelectedCountry } from "@/lib/country";
 
-export default function SiteLayout({
+export default async function SiteLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const selectedCountry = await getSelectedCountry();
+  const [countries, { featuredStores, featuredCategories }] = await Promise.all(
+    [getDistinctCountries(), getNavFeatured(selectedCountry)]
+  );
+
   return (
     <>
-      <div className="fixed top-0 left-0 right-0 z-40 w-full">
-        <NavBar />
-      </div>
-      <div className="pt-[59px] lg:pt-[75px]">{children}</div>
+      <NavBar
+        countries={countries}
+        selectedCountry={selectedCountry}
+        featuredStores={featuredStores}
+        featuredCategories={featuredCategories}
+      />
+      <div className="pt-[60px] lg:pt-[76px]">{children}</div>
       <Footer />
     </>
   );
