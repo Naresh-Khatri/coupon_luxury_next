@@ -50,6 +50,13 @@
       "when": 1776402848934,
       "tag": "0006_greedy_winter_soldier",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1776430383808,
+      "tag": "0007_cool_bloodstorm",
+      "breakpoints": true
     }
   ]
 }

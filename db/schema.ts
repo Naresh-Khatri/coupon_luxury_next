@@ -74,8 +74,6 @@ export const categories = pgTable("category", {
   uid: text("uid").notNull(),
   slug: text("slug").notNull().unique(),
   categoryName: text("categoryName").notNull(),
-  image: text("image").notNull(),
-  imgAlt: text("imgAlt").notNull(),
   description: text("description"),
   pageHTML: text("pageHTML"),
   featured: boolean("featured").notNull().default(false),

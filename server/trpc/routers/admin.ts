@@ -92,8 +92,6 @@ const offerInput = z.object({
 const categoryInput = z.object({
   categoryName: z.string().min(1),
   slug: z.string().min(1),
-  image: z.string().url(),
-  imgAlt: z.string(),
   description: z.string().nullish(),
   pageHTML: z.string().nullish(),
   active: z.boolean().default(false),
@@ -451,9 +449,6 @@ export const adminRouter = router({
           where: eq(s.categories.id, input.id),
         });
         if (!existing) throw new TRPCError({ code: "NOT_FOUND" });
-        if (input.data.image && input.data.image !== existing.image) {
-          await deleteImageByUrl(existing.image);
-        }
         if (input.data.pageHTML !== undefined) {
           await deleteOrphanedImages(existing.pageHTML, input.data.pageHTML);
         }
@@ -477,10 +472,9 @@ export const adminRouter = router({
         });
         if (!existing) throw new TRPCError({ code: "NOT_FOUND" });
         await db.delete(s.categories).where(eq(s.categories.id, input));
-        await Promise.all([
-          deleteImageByUrl(existing.image),
-          ...extractImageKitUrls(existing.pageHTML).map((u) => deleteImageByUrl(u)),
-        ]);
+        await Promise.all(
+          extractImageKitUrls(existing.pageHTML).map((u) => deleteImageByUrl(u)),
+        );
         revalidate(
           CACHE_TAGS.categories,
           CACHE_TAGS.category(existing.slug),

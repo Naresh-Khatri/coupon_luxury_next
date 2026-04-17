@@ -11,8 +11,6 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { trpc } from "@/lib/trpc/client";
-import ImageKitUpload from "../_components/ImageKitUpload";
-import { resolveImage } from "../_components/uploadImage";
 import {
   PageHeader,
   SectionCard,
@@ -28,8 +26,6 @@ const CustomEditor = dynamic(() => import("@/components/CustomEditor"), {
 const schema = z.object({
   categoryName: z.string().min(1),
   slug: z.string().min(1),
-  image: z.union([z.string().url(), z.instanceof(File)]),
-  imgAlt: z.string().default(""),
   description: z.string().nullish(),
   pageHTML: z.string().nullish(),
   active: z.boolean().default(false),
@@ -55,8 +51,6 @@ export default function CategoryForm({
     defaultValues: {
       categoryName: "",
       slug: "",
-      image: "",
-      imgAlt: "",
       active: false,
       featured: false,
       ...initial,
@@ -81,25 +75,11 @@ export default function CategoryForm({
   });
 
   async function onSubmit(values: FormValues) {
-    try {
-      const auth =
-        values.image instanceof File
-          ? await utils.admin.imagekitAuth.fetch()
-          : null;
-      const image = auth
-        ? await resolveImage(values.image, auth)
-        : (values.image as string);
-      const payload = { ...values, image: image ?? "" };
-      if (id) update.mutate({ id, data: payload });
-      else create.mutate(payload);
-    } catch (err) {
-      console.error(err);
-      toast.error("Image upload failed");
-    }
+    if (id) update.mutate({ id, data: values });
+    else create.mutate(values);
   }
 
   const { register, handleSubmit, setValue, watch, control, formState } = form;
-  const image = watch("image");
   const pageHTML = watch("pageHTML");
 
   return (
@@ -110,7 +90,7 @@ export default function CategoryForm({
         description="Top-level grouping for stores and offers."
       />
 
-      <SectionCard title="Identity" description="Name, slug, and imagery.">
+      <SectionCard title="Identity" description="Name and slug.">
         <FieldGrid>
           <Field label="Category name">
             <Input {...register("categoryName")} />
@@ -119,15 +99,6 @@ export default function CategoryForm({
             <Input {...register("slug")} />
           </Field>
         </FieldGrid>
-        <Field label="Image alt text">
-          <Input {...register("imgAlt")} />
-        </Field>
-        <Field label="Image">
-          <ImageKitUpload
-            value={image || null}
-            onChange={(v) => setValue("image", v ?? "", { shouldDirty: true })}
-          />
-        </Field>
       </SectionCard>
 
       <SectionCard title="Content" description="Description and landing HTML.">

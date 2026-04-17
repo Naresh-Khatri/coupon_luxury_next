@@ -90,8 +90,6 @@ export const getMainFeed = cached(
             id: true,
             categoryName: true,
             slug: true,
-            image: true,
-            imgAlt: true,
             featured: true,
           },
           with: { offers: { columns: { id: true } } },
