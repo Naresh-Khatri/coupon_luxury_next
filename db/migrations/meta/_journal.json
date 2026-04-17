@@ -8,6 +8,41 @@
       "when": 1776365386072,
       "tag": "0000_nice_kate_bishop",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1776369476758,
+      "tag": "0001_fat_mephisto",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1776369905244,
+      "tag": "0002_rapid_robin_chapel",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1776370229449,
+      "tag": "0003_cold_jane_foster",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1776401340207,
+      "tag": "0004_wonderful_nico_minoru",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1776401886396,
+      "tag": "0005_opposite_skaar",
+      "breakpoints": true
     }
   ]
 }

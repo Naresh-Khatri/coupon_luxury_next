@@ -6,6 +6,7 @@ import {
   boolean,
   timestamp,
   uniqueIndex,
+  jsonb,
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 
@@ -115,10 +116,13 @@ export const stores = pgTable("store", {
   storeURL: text("storeURL").notNull().unique(),
   image: text("image").notNull(),
   pageHTML: text("pageHTML").notNull(),
+  howToUse: jsonb("howToUse").$type<string[]>(),
+  faqs: jsonb("faqs").$type<Array<{ q: string; a: string }>>(),
   country: text("country").notNull(),
   slug: text("slug").notNull().unique(),
   active: boolean("active").notNull().default(false),
   featured: boolean("featured").notNull().default(false),
+  storeOfTheMonth: boolean("storeOfTheMonth").notNull().default(false),
   metaTitle: text("metaTitle"),
   metaDescription: text("metaDescription"),
   metaKeywords: text("metaKeywords"),
@@ -153,6 +157,8 @@ export const offers = pgTable("offer", {
   startDate: text("startDate").notNull(),
   endDate: text("endDate").notNull(),
   country: text("country").notNull(),
+  uses: integer("uses").notNull().default(0),
+  verifiedAt: timestamp("verifiedAt", { precision: 3 }),
   active: boolean("active").notNull().default(false),
   featured: boolean("featured").notNull().default(false),
   metaTitle: text("metaTitle"),
@@ -213,6 +219,26 @@ export const subscribers = pgTable("subscriber", {
   updatedAt: timestamp("updatedAt", { precision: 3 }).notNull().defaultNow(),
 });
 
+export const offerClicks = pgTable("offer_click", {
+  id: serial("id").primaryKey(),
+  offerId: integer("offerId")
+    .notNull()
+    .references(() => offers.id, { onDelete: "cascade" }),
+  country: text("country"),
+  createdAt: timestamp("createdAt", { precision: 3 }).notNull().defaultNow(),
+});
+
+export const countries = pgTable("country", {
+  code: text("code").primaryKey(),
+  name: text("name").notNull(),
+  flagEmoji: text("flagEmoji"),
+  currency: text("currency"),
+  sortOrder: integer("sortOrder").notNull().default(0),
+  active: boolean("active").notNull().default(true),
+  createdAt: timestamp("createdAt", { precision: 3 }).notNull().defaultNow(),
+  updatedAt: timestamp("updatedAt", { precision: 3 }).notNull().defaultNow(),
+});
+
 // ---------- Relations ----------
 
 export const categoriesRelations = relations(categories, ({ many }) => ({
@@ -269,3 +295,5 @@ export type SubCategory = typeof subCategories.$inferSelect;
 export type Blog = typeof blogs.$inferSelect;
 export type Slide = typeof slides.$inferSelect;
 export type Subscriber = typeof subscribers.$inferSelect;
+export type Country = typeof countries.$inferSelect;
+export type OfferClick = typeof offerClicks.$inferSelect;

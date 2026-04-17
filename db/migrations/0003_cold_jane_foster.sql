@@ -1,0 +1,1 @@
+ALTER TABLE "offer" ADD COLUMN "verifiedAt" timestamp (3);
