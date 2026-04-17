@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { AnimatePresence, motion } from "motion/react";
 import {
   ChevronDown,
   Filter,
@@ -290,15 +291,22 @@ export default function StoreOffers({
             </p>
           </div>
         ) : (
-          <div className="flex flex-col gap-3">
-            {filtered.map((offer) => (
-              <StoreOfferRow
-                key={offer.id}
-                offer={offer}
-                storeSlug={store.slug}
-              />
-            ))}
-          </div>
+          <motion.div layout className="flex flex-col gap-3">
+            <AnimatePresence initial={false}>
+              {filtered.map((offer) => (
+                <motion.div
+                  key={offer.id}
+                  layout
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={{ duration: 0.22, ease: "easeOut" }}
+                >
+                  <StoreOfferRow offer={offer} storeSlug={store.slug} />
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </motion.div>
         )}
       </div>
     </section>
