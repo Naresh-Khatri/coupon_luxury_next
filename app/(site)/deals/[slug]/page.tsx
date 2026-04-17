@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import Banner from "@/components/Banner";
 import DealCard from "@/components/DealCard";
 import DealCTA from "./DealCTA";
+import CouponReveal from "./CouponReveal";
 import { getOfferBySlug, getPublicOffers } from "@/server/db/queries/offers";
 import { breadcrumbJsonLd, offerJsonLd, renderJsonLd, SITE_URL } from "@/lib/seo";
 
@@ -52,6 +53,7 @@ export default async function DealPage(
   if (!data) notFound();
   const { dealInfo, recommendedDeals } = data;
   const { store, affURL, title } = dealInfo;
+  const isCoupon = dealInfo.offerType === "coupon" && !!dealInfo.couponCode;
   const dealUrl = `${SITE_URL}/deals/${dealInfo.slug}`;
   const breadcrumb = breadcrumbJsonLd([
     { name: "Home", path: "/" },
@@ -86,7 +88,13 @@ export default async function DealPage(
         hidden
         dangerouslySetInnerHTML={{ __html: dealInfo.description }}
       />
-      <Banner subTitle="*No coupon code required to avail this discount" />
+      <Banner
+        subTitle={
+          isCoupon
+            ? "*Copy the code and apply at checkout"
+            : "*No coupon code required to avail this discount"
+        }
+      />
       <section className="hero-bg flex justify-center">
         <div className="grid w-screen max-w-[1200px] grid-cols-1 md:grid-cols-2 md:w-[90vw] lg:w-[80vw]">
           <div className="flex flex-col items-center justify-center">
@@ -100,7 +108,19 @@ export default async function DealPage(
               {title}
             </p>
           </div>
-          <DealCTA affURL={affURL} />
+          <div className="flex flex-col items-center justify-center px-4 py-6">
+            {isCoupon ? (
+              <CouponReveal
+                slug={dealInfo.slug}
+                couponCode={dealInfo.couponCode!}
+                storeName={store.storeName}
+                storeURL={store.storeURL}
+                verified={!!dealInfo.verifiedAt}
+              />
+            ) : (
+              <DealCTA affURL={affURL} />
+            )}
+          </div>
         </div>
       </section>
       <div className="bg-[#f5f5f5] py-10">

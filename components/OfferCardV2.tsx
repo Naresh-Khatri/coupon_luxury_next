@@ -12,8 +12,6 @@ import {
   Flame,
   ShieldCheck,
 } from "lucide-react";
-import CodeRevealingButton from "./CodeRevealingButton/CodeRevealingButton";
-import { trpc } from "@/lib/trpc/client";
 
 type OfferDetails = {
   id?: number;
@@ -52,24 +50,18 @@ export default function OfferCardV2({
   offerDetails: OfferDetails;
 }) {
   const {
-    id,
     title,
-    couponCode,
-    affURL,
     slug,
     discountType,
     discountValue,
     TnC,
-    image,
     endDate,
     offerType,
     fromPage,
-    storeName,
     uses,
     verifiedAt,
   } = offerDetails;
   const [isOpen, setIsOpen] = useState(false);
-  const trackClick = trpc.public.trackOfferClick.useMutation();
   const usesCount = uses ?? 0;
   const verified = formatVerified(verifiedAt);
 
@@ -141,20 +133,21 @@ export default function OfferCardV2({
 
           <div className="flex w-[170px] items-center justify-end">
             {offerType === "coupon" ? (
-              <CodeRevealingButton
-                code={couponCode}
-                affURL={affURL}
-                image={image}
-                storeName={storeName}
-                offerId={id}
-              />
-            ) : (
               <Link
                 href={`/deals/${slug}`}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  if (id) trackClick.mutate({ offerId: id });
-                }}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <button
+                  type="button"
+                  className="inline-flex h-9 items-center justify-center rounded-md bg-brand-900 px-7 text-white shadow-lg transition-colors hover:bg-brand-800 sm:h-12"
+                >
+                  Get Code
+                </button>
+              </Link>
+            ) : (
+              <Link
+                href={`/redeem/${slug}`}
+                onClick={(e) => e.stopPropagation()}
               >
                 <button
                   type="button"

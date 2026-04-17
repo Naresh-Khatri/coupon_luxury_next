@@ -5,19 +5,15 @@ import Link from "next/link";
 import { motion } from "motion/react";
 import {
   ArrowUpRight,
-  Copy,
-  Check,
   Clock,
   Tag,
   Flame,
   ShieldCheck,
   Share2,
+  Ticket,
 } from "lucide-react";
-import { useState } from "react";
 import { toast } from "sonner";
-import { cn } from "@/lib/utils";
 import transformPath from "@/utils/transformImagePath";
-import { trpc } from "@/lib/trpc/client";
 
 export type OfferCardData = {
   id: number | string;
@@ -64,18 +60,11 @@ function formatEnd(d?: string | null): string | null {
 }
 
 export default function OfferCard({ offer }: { offer: OfferCardData }) {
-  const [copied, setCopied] = useState(false);
   const discount = formatDiscount(offer);
   const ends = formatEnd(offer.endDate);
-  const isCoupon = offer.offerType === "coupon" && offer.couponCode;
+  const isCoupon = offer.offerType === "coupon" && !!offer.couponCode;
   const uses = offer.uses ?? 0;
   const verified = formatVerified(offer.verifiedAt);
-
-  const trackClick = trpc.public.trackOfferClick.useMutation();
-  const fireTrack = () => {
-    const id = typeof offer.id === "string" ? Number(offer.id) : offer.id;
-    if (Number.isFinite(id)) trackClick.mutate({ offerId: id as number });
-  };
 
   const shareOffer = async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -99,21 +88,6 @@ export default function OfferCard({ offer }: { offer: OfferCardData }) {
     } catch (err) {
       if ((err as Error).name === "AbortError") return;
       toast.error("Couldn't share — try copying the URL");
-    }
-  };
-
-  const copyCode = async (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (!offer.couponCode) return;
-    try {
-      await navigator.clipboard.writeText(offer.couponCode);
-      setCopied(true);
-      toast.success("Code copied to clipboard");
-      fireTrack();
-      setTimeout(() => setCopied(false), 2000);
-    } catch {
-      toast.error("Couldn't copy — please copy manually");
     }
   };
 
@@ -200,40 +174,23 @@ export default function OfferCard({ offer }: { offer: OfferCardData }) {
 
         <div className="mt-1 pt-1">
           {isCoupon ? (
-            <button
-              type="button"
-              onClick={copyCode}
-              className={cn(
-                "group/code flex w-full items-stretch overflow-hidden rounded-lg border-2 border-dashed transition-all",
-                copied
-                  ? "border-teal bg-teal/5"
-                  : "border-gold/40 bg-gold/5 hover:border-gold hover:bg-gold/10"
-              )}
-            >
-              <span className="flex flex-1 items-center justify-center px-2 py-2 font-mono text-[12px] font-bold uppercase tracking-wider text-navy">
-                {offer.couponCode}
-              </span>
-              <span
-                className={cn(
-                  "flex items-center gap-1 px-3 py-2 text-[10px] font-bold uppercase tracking-wider text-white transition-colors",
-                  copied ? "bg-teal" : "bg-gold"
-                )}
-              >
-                {copied ? (
-                  <>
-                    <Check className="size-3" /> Copied
-                  </>
-                ) : (
-                  <>
-                    <Copy className="size-3" /> Copy
-                  </>
-                )}
-              </span>
-            </button>
-          ) : (
             <Link
               href={`/deals/${offer.slug}`}
-              onClick={fireTrack}
+              className="group/code flex w-full items-stretch overflow-hidden rounded-lg border-2 border-dashed border-gold/40 bg-gold/5 transition-all hover:border-gold hover:bg-gold/10"
+            >
+              <span className="flex flex-1 items-center justify-center gap-1.5 px-2 py-2 font-mono text-[12px] font-bold uppercase tracking-wider text-navy">
+                <Ticket className="size-3.5 text-gold" />
+                {(offer.couponCode ?? "").slice(0, 3)}
+                <span className="tracking-[0.2em]">••••</span>
+              </span>
+              <span className="flex items-center gap-1 bg-gold px-3 py-2 text-[10px] font-bold uppercase tracking-wider text-white transition-colors">
+                Show Code
+                <ArrowUpRight className="size-3" />
+              </span>
+            </Link>
+          ) : (
+            <Link
+              href={`/redeem/${offer.slug}`}
               className="inline-flex w-full items-center justify-center gap-1 rounded-lg bg-navy py-2 text-[11px] font-bold uppercase tracking-wider text-white transition-all hover:bg-navy-mid hover:gap-1.5"
             >
               <Tag className="size-3" />

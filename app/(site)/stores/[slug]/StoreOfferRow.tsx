@@ -2,16 +2,12 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { toast } from "sonner";
 import {
-  Check,
   ChevronDown,
-  Copy,
   ShieldCheck,
   Users,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { trpc } from "@/lib/trpc/client";
 
 export type StoreOfferRowData = {
   id: number | string;
@@ -62,9 +58,7 @@ export default function StoreOfferRow({
   offer: StoreOfferRowData;
   storeSlug: string;
 }) {
-  const [copied, setCopied] = useState(false);
   const [expanded, setExpanded] = useState(false);
-  const [revealed, setRevealed] = useState(false);
 
   const isCoupon = offer.offerType === "coupon" && !!offer.couponCode;
   const parts = discountParts(offer);
@@ -72,27 +66,6 @@ export default function StoreOfferRow({
   const uses = offer.uses ?? 0;
   const isVerified = !!offer.verifiedAt;
   const isExclusive = !!offer.featured;
-
-  const trackClick = trpc.public.trackOfferClick.useMutation();
-  const fireTrack = () => {
-    const id = typeof offer.id === "string" ? Number(offer.id) : offer.id;
-    if (Number.isFinite(id)) trackClick.mutate({ offerId: id as number });
-  };
-
-  const handleGetCode = async () => {
-    fireTrack();
-    if (!offer.couponCode) return;
-    try {
-      await navigator.clipboard.writeText(offer.couponCode);
-      setCopied(true);
-      setRevealed(true);
-      toast.success(`Code ${offer.couponCode} copied`);
-      setTimeout(() => setCopied(false), 2500);
-    } catch {
-      setRevealed(true);
-      toast.error("Couldn't auto-copy — select the code to copy");
-    }
-  };
 
   return (
     <article
@@ -179,7 +152,7 @@ export default function StoreOfferRow({
                 </p>
               )}
               <Link
-                href={`/deals/${offer.slug}`}
+                href={isCoupon ? `/deals/${offer.slug}` : `/redeem/${offer.slug}`}
                 className="mt-2 inline-block text-[12px] font-medium text-brand-900 hover:text-brand-1000"
               >
                 View full offer details &rarr;
@@ -191,43 +164,15 @@ export default function StoreOfferRow({
         {/* CTA */}
         <div className="col-span-2 flex flex-col items-stretch gap-1.5 border-t border-gray-100 px-4 py-3 md:col-span-1 md:items-end md:justify-center md:border-l md:border-t-0 md:px-5">
           {isCoupon ? (
-            revealed ? (
-              <div className="flex items-stretch overflow-hidden rounded-md border-2 border-dashed border-gold/60 bg-gold/5">
-                <span className="flex flex-1 items-center justify-center px-3 py-2 font-mono text-[13px] font-bold uppercase tracking-wider text-navy md:min-w-[140px]">
-                  {offer.couponCode}
-                </span>
-                <button
-                  type="button"
-                  onClick={handleGetCode}
-                  className={cn(
-                    "inline-flex items-center gap-1 px-3 py-2 text-[11px] font-bold uppercase tracking-wider text-white transition-colors",
-                    copied ? "bg-emerald-500" : "bg-gold hover:bg-gold-light"
-                  )}
-                >
-                  {copied ? (
-                    <>
-                      <Check className="size-3.5" /> Copied
-                    </>
-                  ) : (
-                    <>
-                      <Copy className="size-3.5" /> Copy
-                    </>
-                  )}
-                </button>
-              </div>
-            ) : (
-              <button
-                type="button"
-                onClick={handleGetCode}
-                className="inline-flex items-center justify-center rounded-md bg-brand-900 px-6 py-2.5 text-[12px] font-bold uppercase tracking-wider text-white transition-colors hover:bg-brand-1000 md:min-w-[150px]"
-              >
-                Get Code
-              </button>
-            )
-          ) : (
             <Link
               href={`/deals/${offer.slug}`}
-              onClick={fireTrack}
+              className="inline-flex items-center justify-center rounded-md bg-brand-900 px-6 py-2.5 text-[12px] font-bold uppercase tracking-wider text-white transition-colors hover:bg-brand-1000 md:min-w-[150px]"
+            >
+              Get Code
+            </Link>
+          ) : (
+            <Link
+              href={`/redeem/${offer.slug}`}
               className="inline-flex items-center justify-center rounded-md bg-brand-900 px-6 py-2.5 text-[12px] font-bold uppercase tracking-wider text-white transition-colors hover:bg-brand-1000 md:min-w-[150px]"
             >
               Get Deal
