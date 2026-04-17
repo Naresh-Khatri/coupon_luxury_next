@@ -28,8 +28,8 @@ export default function StoreCard({
       className="h-[150px]"
     >
       <Link href={`/stores/${slug}`} className="block h-full">
-        <div className="flex h-full flex-col overflow-hidden rounded-xl border border-black/5 bg-white transition-colors hover:border-teal/25">
-          <div className="w-full flex-1 overflow-hidden">
+        <div className="flex h-full flex-col overflow-hidden rounded-xl border border-border bg-card transition-colors hover:border-gold/30">
+          <div className="w-full flex-1 overflow-hidden bg-white/95">
             <Image
               src={img}
               width={200}
@@ -38,8 +38,8 @@ export default function StoreCard({
               className="h-full w-full object-cover"
             />
           </div>
-          <div className="flex items-center justify-center bg-white px-2 py-2">
-            <p className="line-clamp-1 text-center text-[12px] font-medium text-gray-700">
+          <div className="flex items-center justify-center bg-card px-2 py-2">
+            <p className="line-clamp-1 text-center text-[12px] font-medium text-foreground/80">
               {title}
             </p>
           </div>

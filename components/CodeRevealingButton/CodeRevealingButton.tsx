@@ -87,7 +87,7 @@ export default function CodeRevealingButton({
                   <button
                     type="button"
                     onClick={handleCopy}
-                    className="inline-flex h-12 min-w-[200px] items-center justify-center gap-3 rounded-md border-2 border-dashed border-gray-400 px-6 text-base font-semibold text-brand-900 hover:border-teal hover:text-teal"
+                    className="inline-flex h-12 min-w-[200px] items-center justify-center gap-3 rounded-md border-2 border-dashed border-border px-6 text-base font-semibold text-gold hover:border-gold hover:text-gold-light"
                   >
                     <Clipboard className="size-5" />
                     {hasCopied ? "COPIED" : code}

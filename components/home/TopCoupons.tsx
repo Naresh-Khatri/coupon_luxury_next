@@ -68,9 +68,9 @@ export default function TopCoupons({
   if (!coupons.length) return null;
 
   return (
-    <section className="bg-white px-4 py-12 md:py-16">
+    <section className="bg-background px-4 py-12 md:py-16">
       <div className="mx-auto max-w-[1200px]">
-        <h2 className="mb-6 text-2xl font-bold tracking-tight text-gray-900 md:text-3xl">
+        <h2 className="mb-6 text-2xl font-bold tracking-tight text-foreground md:text-3xl">
           Today&apos;s Top Coupons &amp; Offers
         </h2>
 
@@ -82,8 +82,8 @@ export default function TopCoupons({
               onClick={() => setActive(t.id)}
               className={
                 active === t.id
-                  ? "rounded-full bg-teal px-4 py-1.5 text-[13px] font-semibold text-white shadow-sm"
-                  : "rounded-full border border-gray-200 bg-white px-4 py-1.5 text-[13px] font-medium text-gray-700 transition-colors hover:bg-gray-50"
+                  ? "rounded-full bg-gold px-4 py-1.5 text-[13px] font-semibold text-navy shadow-sm"
+                  : "rounded-full border border-border bg-muted px-4 py-1.5 text-[13px] font-medium text-foreground/80 transition-colors hover:bg-white/5"
               }
             >
               {t.name}
@@ -99,21 +99,21 @@ export default function TopCoupons({
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.25 }}
-              className="flex items-stretch overflow-hidden rounded-xl border border-gray-200 bg-white transition-all hover:-translate-y-0.5 hover:shadow-md"
+              className="flex items-stretch overflow-hidden rounded-xl border border-border bg-card transition-all hover:-translate-y-0.5 hover:shadow-md"
             >
-              <div className="flex w-[120px] shrink-0 items-center justify-center border-r border-gray-200 bg-gray-50 px-3 py-4 text-center">
-                <p className="text-[11px] font-bold uppercase leading-tight tracking-wide text-teal">
+              <div className="flex w-[120px] shrink-0 items-center justify-center border-r border-border bg-muted px-3 py-4 text-center">
+                <p className="text-[11px] font-bold uppercase leading-tight tracking-wide text-gold">
                   {discountLabel(c)}
                 </p>
               </div>
               <div className="flex flex-1 items-center gap-3 px-4 py-3">
-                <p className="line-clamp-2 flex-1 text-[14px] font-medium leading-snug text-gray-800">
+                <p className="line-clamp-2 flex-1 text-[14px] font-medium leading-snug text-foreground/90">
                   {c.title}
                 </p>
               </div>
               <Link
                 href={`/stores/${c.store.slug}`}
-                className="flex w-[140px] shrink-0 flex-col items-center justify-center gap-1.5 border-l border-gray-200 bg-white px-2 py-3 text-center transition-colors hover:bg-gray-50"
+                className="flex w-[140px] shrink-0 flex-col items-center justify-center gap-1.5 border-l border-border bg-card px-2 py-3 text-center transition-colors hover:bg-white/5"
               >
                 <Image
                   src={transformPath(c.store.image, 160)}
@@ -122,7 +122,7 @@ export default function TopCoupons({
                   height={32}
                   className="max-h-8 w-auto object-contain"
                 />
-                <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-teal">
+                <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-gold">
                   View Coupons <ArrowRight className="size-3" />
                 </span>
               </Link>

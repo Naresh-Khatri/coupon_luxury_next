@@ -46,7 +46,7 @@ export default function ActiveFilterChips({
 
   return (
     <div className="mb-5 flex flex-wrap items-center gap-1.5">
-      <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-gray-500">
+      <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
         Active:
       </span>
       {chips.map((chip) => (
@@ -54,10 +54,10 @@ export default function ActiveFilterChips({
           key={chip.key}
           type="button"
           onClick={chip.remove}
-          className="group inline-flex items-center gap-1 rounded-full border border-gold/30 bg-gold/10 px-2.5 py-1 text-[11.5px] font-medium text-navy transition-colors hover:border-gold hover:bg-gold/20"
+          className="group inline-flex items-center gap-1 rounded-full border border-gold/30 bg-gold/10 px-2.5 py-1 text-[11.5px] font-medium text-gold transition-colors hover:border-gold hover:bg-gold/20"
         >
           <span>{chip.label}</span>
-          <X className="size-3 text-gray-500 transition-colors group-hover:text-navy" />
+          <X className="size-3 text-gold/60 transition-colors group-hover:text-gold" />
         </button>
       ))}
     </div>

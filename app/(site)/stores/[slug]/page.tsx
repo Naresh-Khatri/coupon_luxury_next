@@ -109,34 +109,34 @@ export default async function StorePage(props: {
     : null;
 
   return (
-    <div className="bg-cream">
+    <div className="bg-background">
       {/* Hero */}
-      <section className="border-b border-gray-200 bg-white">
+      <section className="border-b border-border bg-card">
         <div className="mx-auto max-w-[1280px] px-4 py-6 md:px-6 md:py-8">
           <nav
             aria-label="Breadcrumb"
-            className="mb-4 flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-[0.14em] text-gray-500"
+            className="mb-4 flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground"
           >
             <Link
               href="/"
-              className="inline-flex items-center gap-1 transition-colors hover:text-brand-900"
+              className="inline-flex items-center gap-1 transition-colors hover:text-gold"
             >
               <HomeIcon className="size-3" />
               Home
             </Link>
-            <ChevronRight className="size-3 text-gray-300" />
+            <ChevronRight className="size-3 text-border" />
             <Link
               href="/stores"
-              className="transition-colors hover:text-brand-900"
+              className="transition-colors hover:text-gold"
             >
               Stores
             </Link>
-            <ChevronRight className="size-3 text-gray-300" />
-            <span className="text-navy">{storeInfo.storeName}</span>
+            <ChevronRight className="size-3 text-border" />
+            <span className="text-foreground">{storeInfo.storeName}</span>
           </nav>
 
           <div className="flex flex-col gap-5 md:flex-row md:items-center md:gap-6">
-            <div className="flex size-20 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm md:size-24">
+            <div className="flex size-20 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-border bg-white shadow-sm md:size-24">
               <Image
                 src={transformPath(storeInfo.image, 240)}
                 alt={`${storeInfo.storeName} logo`}
@@ -149,7 +149,7 @@ export default async function StorePage(props: {
 
             <div className="min-w-0 flex-1">
               <div className="flex flex-wrap items-center gap-2">
-                <h1 className="text-2xl font-bold tracking-tight text-navy md:text-3xl">
+                <h1 className="text-2xl font-bold tracking-tight text-foreground md:text-3xl">
                   {storeInfo.storeName} Coupons &amp; Offers
                 </h1>
                 {storeInfo.category?.categoryName && (
@@ -162,16 +162,16 @@ export default async function StorePage(props: {
                 )}
               </div>
 
-              <p className="mt-2 text-[13px] text-gray-600">
+              <p className="mt-2 text-[13px] text-muted-foreground">
                 Best{" "}
-                <span className="font-semibold text-navy">
+                <span className="font-semibold text-foreground">
                   {storeInfo.offers.length}
                 </span>{" "}
                 coupons &amp; offers
                 {lastValidatedLabel ? (
                   <>
                     {" "}validated on{" "}
-                    <span className="font-semibold text-navy">
+                    <span className="font-semibold text-foreground">
                       {lastValidatedLabel}
                     </span>
                   </>
@@ -183,11 +183,11 @@ export default async function StorePage(props: {
               <div className="mt-3 flex flex-wrap items-center gap-4">
                 <div className="inline-flex items-center gap-1.5">
                   <Stars value={4.5} />
-                  <span className="text-[12px] font-medium text-gray-600">
+                  <span className="text-[12px] font-medium text-muted-foreground">
                     4.5 &middot; Rate this store
                   </span>
                 </div>
-                <span className="inline-flex items-center gap-1 text-[12px] text-gray-500">
+                <span className="inline-flex items-center gap-1 text-[12px] text-muted-foreground">
                   <Pill>{couponCount} Coupons</Pill>
                   <Pill>{dealCount} Deals</Pill>
                 </span>
@@ -232,9 +232,9 @@ export default async function StorePage(props: {
         )}
 
         {storeInfo.pageHTML?.trim() && (
-          <section className="mt-12 overflow-hidden rounded-2xl border border-gray-200 bg-white">
-            <div className="border-b border-gray-100 px-6 py-4 md:px-8">
-              <h2 className="text-[14px] font-bold text-navy">
+          <section className="mt-12 overflow-hidden rounded-2xl border border-border bg-card">
+            <div className="border-b border-border px-6 py-4 md:px-8">
+              <h2 className="text-[14px] font-bold text-foreground">
                 About {storeInfo.storeName}
               </h2>
             </div>
@@ -283,7 +283,7 @@ export default async function StorePage(props: {
 
 function Pill({ children }: { children: React.ReactNode }) {
   return (
-    <span className="inline-flex items-center gap-1 rounded-full border border-gray-200 bg-white px-2.5 py-0.5 text-[11.5px] font-medium text-gray-700">
+    <span className="inline-flex items-center gap-1 rounded-full border border-border bg-muted px-2.5 py-0.5 text-[11.5px] font-medium text-foreground/80">
       {children}
     </span>
   );
@@ -302,7 +302,7 @@ function Stars({ value }: { value: number }) {
             className={
               filled
                 ? "size-3.5 fill-gold text-gold"
-                : "size-3.5 fill-gray-200 text-gray-200"
+                : "size-3.5 fill-muted text-muted"
             }
           />
         );

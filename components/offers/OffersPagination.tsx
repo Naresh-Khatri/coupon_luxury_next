@@ -38,7 +38,7 @@ export default function OffersPagination({ pageCount }: { pageCount: number }) {
         type="button"
         onClick={() => go(params.page - 1)}
         disabled={params.page <= 1}
-        className="inline-flex size-9 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-600 transition-colors hover:border-gold hover:text-gold disabled:opacity-40 disabled:hover:border-gray-200 disabled:hover:text-gray-600"
+        className="inline-flex size-9 items-center justify-center rounded-full border border-border bg-muted text-muted-foreground transition-colors hover:border-gold hover:text-gold disabled:opacity-40 disabled:hover:border-border disabled:hover:text-muted-foreground"
         aria-label="Previous page"
       >
         <ChevronLeft className="size-4" />
@@ -47,7 +47,7 @@ export default function OffersPagination({ pageCount }: { pageCount: number }) {
         p === "…" ? (
           <span
             key={`dots-${i}`}
-            className="inline-flex size-9 items-center justify-center text-sm text-gray-400"
+            className="inline-flex size-9 items-center justify-center text-sm text-muted-foreground"
           >
             …
           </span>
@@ -59,8 +59,8 @@ export default function OffersPagination({ pageCount }: { pageCount: number }) {
             className={cn(
               "inline-flex size-9 items-center justify-center rounded-full text-[13px] font-semibold transition-colors",
               p === params.page
-                ? "bg-navy text-white"
-                : "text-gray-600 hover:bg-gold/10 hover:text-navy"
+                ? "bg-gold text-navy"
+                : "text-muted-foreground hover:bg-gold/10 hover:text-gold"
             )}
           >
             {p}
@@ -71,7 +71,7 @@ export default function OffersPagination({ pageCount }: { pageCount: number }) {
         type="button"
         onClick={() => go(params.page + 1)}
         disabled={params.page >= pageCount}
-        className="inline-flex size-9 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-600 transition-colors hover:border-gold hover:text-gold disabled:opacity-40 disabled:hover:border-gray-200 disabled:hover:text-gray-600"
+        className="inline-flex size-9 items-center justify-center rounded-full border border-border bg-muted text-muted-foreground transition-colors hover:border-gold hover:text-gold disabled:opacity-40 disabled:hover:border-border disabled:hover:text-muted-foreground"
         aria-label="Next page"
       >
         <ChevronRight className="size-4" />

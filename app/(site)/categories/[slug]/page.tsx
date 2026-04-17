@@ -63,7 +63,7 @@ export default async function CategoryPage(
   ]);
 
   return (
-    <div className="bg-[#e0e0e0] pb-5">
+    <div className="bg-background pb-5">
       <Banner
         title={`${categoryInfo.categoryName} Coupons & Deals For ${getMonthAndYear()}`}
         titleAsH1
@@ -73,13 +73,13 @@ export default async function CategoryPage(
           <div className="p-4">
             <nav
               aria-label="Breadcrumb"
-              className="flex items-center gap-2 rounded-xl bg-white p-4 text-sm font-semibold text-brand-900"
+              className="flex items-center gap-2 rounded-xl bg-card border border-border p-4 text-sm font-semibold text-foreground"
             >
-              <Link href="/" className="flex items-center gap-2 hover:text-teal">
+              <Link href="/" className="flex items-center gap-2 hover:text-gold">
                 <HomeIcon className="size-4" /> Home
               </Link>
-              <ChevronRight className="size-4 text-gray-500" />
-              <Link href="/categories" className="flex items-center gap-2 hover:text-teal">
+              <ChevronRight className="size-4 text-muted-foreground" />
+              <Link href="/categories" className="flex items-center gap-2 hover:text-gold">
                 <Box className="size-4" /> Categories
               </Link>
               <ChevronRight className="size-4 text-gray-500" />
@@ -91,7 +91,7 @@ export default async function CategoryPage(
 
           <div className="grid md:grid-cols-7">
             <aside className="col-span-7 px-4 md:col-span-2">
-              <div className="rounded-xl bg-white">
+              <div className="rounded-xl bg-card border border-border overflow-hidden">
                 <Image
                   src={categoryInfo.image}
                   alt={`${categoryInfo.categoryName} - Logo`}

@@ -68,7 +68,7 @@ export default function OfferCardV2({
   return (
     <div
       onClick={() => setIsOpen((v) => !v)}
-      className="rounded-[15px] bg-white transition-all duration-100 hover:-translate-y-2 hover:scale-[1.02]"
+      className="rounded-[15px] bg-card border border-border transition-all duration-100 hover:-translate-y-2 hover:scale-[1.02]"
     >
       <div className="flex h-[160px]">
         <div className="flex h-full items-center justify-center p-3">
@@ -109,8 +109,8 @@ export default function OfferCardV2({
             <div className="mt-2 flex flex-wrap items-center gap-3">
               <div className="flex items-center gap-2 text-green-500">
                 <CheckCircle2 className="size-4" />
-                <span className="text-[13px] text-black sm:text-sm">
-                  valid Till: <span className="text-green-500">{endDate}</span>
+                <span className="text-[13px] text-foreground/80 sm:text-sm">
+                  valid Till: <span className="text-green-400">{endDate}</span>
                 </span>
               </div>
               {usesCount > 0 && (
@@ -162,7 +162,7 @@ export default function OfferCardV2({
       </div>
       <button
         type="button"
-        className="flex w-full items-center justify-between rounded-b-[15px] bg-white px-4 py-2 text-sm font-normal"
+        className="flex w-full items-center justify-between rounded-b-[15px] bg-card border-t border-border px-4 py-2 text-sm font-normal text-foreground/80"
       >
         <span className="flex items-center">
           {isOpen ? (
@@ -183,9 +183,9 @@ export default function OfferCardV2({
             transition={{ duration: 0.2 }}
             className="overflow-hidden"
           >
-            <div className="rounded-md px-10 pb-5 shadow-md">
+            <div className="rounded-md px-10 pb-5 shadow-md bg-muted">
               <div
-                className="page-html mt-4 text-black"
+                className="page-html mt-4 text-foreground/80"
                 dangerouslySetInnerHTML={{ __html: TnC }}
               />
             </div>

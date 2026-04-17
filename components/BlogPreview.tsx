@@ -32,7 +32,7 @@ export default function BlogPreview({ blog }: { blog: Blog }) {
         boxShadow: "0 20px 40px rgba(0,0,0,0.10)",
         transition: { duration: 0.22, ease: "easeOut" as const },
       }}
-      className="flex max-w-[300px] flex-col overflow-hidden rounded-2xl border border-black/5 bg-white"
+      className="flex max-w-[300px] flex-col overflow-hidden rounded-2xl border border-border bg-card"
     >
       <Link href={`/blogs/${slug}`} className="contents">
         <div className="relative w-full overflow-hidden aspect-[16/9]">
@@ -53,19 +53,19 @@ export default function BlogPreview({ blog }: { blog: Blog }) {
             </span>
           </div>
 
-          <h3 className="line-clamp-2 font-[var(--font-display)] text-lg font-bold leading-[1.25] text-gray-900">
+          <h3 className="line-clamp-2 font-[var(--font-display)] text-lg font-bold leading-[1.25] text-foreground">
             {title}
           </h3>
 
-          <p className="line-clamp-3 text-sm leading-[1.65] text-gray-500">
+          <p className="line-clamp-3 text-sm leading-[1.65] text-muted-foreground">
             {smallDescription}
           </p>
 
           <div className="mt-1 flex items-center gap-2">
-            <span className="text-sm font-semibold text-teal-dark">
+            <span className="text-sm font-semibold text-gold">
               Read article
             </span>
-            <span className="text-teal-dark">→</span>
+            <span className="text-gold">→</span>
           </div>
         </div>
       </Link>

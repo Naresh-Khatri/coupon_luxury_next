@@ -144,8 +144,8 @@ export default function CategoryFilter({
   return (
     <div className={cn(className)}>
       {topStores.length > 0 && (
-        <div className="mb-4 rounded-xl bg-white p-4">
-          <h3 className="mb-3 text-[11px] font-bold uppercase tracking-[0.18em] text-gray-500">
+        <div className="mb-4 rounded-xl bg-card border border-border p-4">
+          <h3 className="mb-3 text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
             Top stores in {categoryInfo.categoryName}
           </h3>
           <div className="grid grid-cols-4 gap-2 sm:grid-cols-6 md:grid-cols-8">
@@ -160,7 +160,7 @@ export default function CategoryFilter({
                     "flex flex-col items-center gap-1 rounded-lg border p-2 transition-all",
                     active
                       ? "border-gold bg-gold/10"
-                      : "border-gray-200 hover:border-gold/60 hover:bg-gold/5"
+                      : "border-border hover:border-gold/60 hover:bg-gold/5"
                   )}
                   title={store.storeName}
                 >
@@ -173,7 +173,7 @@ export default function CategoryFilter({
                       className="max-h-[32px] w-auto max-w-[80%] object-contain"
                     />
                   </div>
-                  <span className="line-clamp-1 text-center text-[10.5px] font-medium text-navy">
+                  <span className="line-clamp-1 text-center text-[10.5px] font-medium text-foreground/80">
                     {store.storeName}
                   </span>
                 </button>
@@ -183,10 +183,10 @@ export default function CategoryFilter({
         </div>
       )}
 
-      <div className="mb-4 rounded-xl bg-white p-4">
+      <div className="mb-4 rounded-xl bg-card border border-border p-4">
         <div className="flex flex-wrap items-center gap-2">
-          <FilterIcon className="size-4 text-gray-500" />
-          <div className="inline-flex rounded-full border border-gray-200 p-1">
+          <FilterIcon className="size-4 text-muted-foreground" />
+          <div className="inline-flex rounded-full border border-border p-1">
             {filterOptions.map((opt) => {
               const active = filterBy === opt.value;
               return (
@@ -196,7 +196,7 @@ export default function CategoryFilter({
                   onClick={() => setFilterBy(opt.value)}
                   className={cn(
                     "rounded-full px-3 py-1 text-[12.5px] font-medium transition-colors",
-                    active ? "bg-navy text-white" : "text-gray-600 hover:text-navy"
+                    active ? "bg-gold text-navy" : "text-foreground/80 hover:text-gold"
                   )}
                 >
                   {opt.label}
@@ -229,7 +229,7 @@ export default function CategoryFilter({
                     return (
                       <label
                         key={store.id}
-                        className="flex cursor-pointer items-center gap-2 rounded-md px-2 py-1.5 text-[13px] hover:bg-gray-50"
+                        className="flex cursor-pointer items-center gap-2 rounded-md px-2 py-1.5 text-[13px] hover:bg-white/5 text-foreground/80"
                       >
                         <Checkbox
                           checked={checked}
@@ -238,7 +238,7 @@ export default function CategoryFilter({
                           }
                         />
                         <span className="flex-1 truncate">{store.storeName}</span>
-                        <span className="text-[11px] text-gray-500">
+                        <span className="text-[11px] text-muted-foreground">
                           {storeCounts.get(store.id)}
                         </span>
                       </label>
@@ -274,15 +274,15 @@ export default function CategoryFilter({
                   className={cn(
                     "inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-[12px] font-medium transition-colors",
                     active
-                      ? "border-navy bg-navy text-white"
-                      : "border-gray-200 text-gray-700 hover:border-navy/50 hover:bg-navy/5"
+                      ? "border-gold bg-gold text-navy"
+                      : "border-border text-foreground/80 hover:border-gold/50 hover:bg-gold/5"
                   )}
                 >
                   {sc.subCategoryName}
                   <span
                     className={cn(
                       "text-[10.5px]",
-                      active ? "text-white/70" : "text-gray-400"
+                      active ? "text-navy/70" : "text-muted-foreground"
                     )}
                   >
                     {count}
@@ -294,9 +294,9 @@ export default function CategoryFilter({
         )}
       </div>
 
-      <p className="mb-3 text-[12.5px] text-gray-500">
+      <p className="mb-3 text-[12.5px] text-muted-foreground">
         Showing{" "}
-        <span className="font-semibold text-navy">{filteredOffers.length}</span>{" "}
+        <span className="font-semibold text-foreground">{filteredOffers.length}</span>{" "}
         of {offers.length} offers
       </p>
 
@@ -321,7 +321,7 @@ export default function CategoryFilter({
               width={400}
               height={400}
             />
-            <p className="text-center text-4xl font-extrabold text-brand-900">
+            <p className="text-center text-4xl font-extrabold text-foreground">
               No offers match your filters
             </p>
             {hasActiveFilters && (

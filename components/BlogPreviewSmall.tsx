@@ -48,7 +48,7 @@ export default function BlogPreviewSmall({ blog }: { blog: Blog }) {
           boxShadow: "0 8px 24px rgba(0,0,0,0.09)",
           transition: { duration: 0.18 },
         }}
-        className="mb-3 overflow-hidden rounded-xl border border-black/5 bg-white"
+        className="mb-3 overflow-hidden rounded-xl border border-border bg-card"
       >
         <div className="flex items-center gap-3 p-3">
           <div className="relative size-[72px] shrink-0 overflow-hidden rounded-lg">
@@ -60,7 +60,7 @@ export default function BlogPreviewSmall({ blog }: { blog: Blog }) {
             />
           </div>
           <div className="min-w-0 flex-1">
-            <h4 className="mb-1 line-clamp-2 font-[var(--font-display)] text-sm font-bold leading-[1.3] text-gray-900">
+            <h4 className="mb-1 line-clamp-2 font-[var(--font-display)] text-sm font-bold leading-[1.3] text-foreground">
               {title}
             </h4>
             <p className="text-xs font-semibold tracking-[0.5px] text-gold">

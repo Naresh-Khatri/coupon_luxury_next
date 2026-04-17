@@ -34,15 +34,15 @@ export default function DealsOfTheDay({ deals }: { deals: Deal[] }) {
   if (!limitedDeals?.length) return null;
 
   return (
-    <section className="bg-white px-4 py-12 md:py-16">
+    <section className="bg-background px-4 py-12 md:py-16">
       <div className="mx-auto max-w-[1200px]">
         <div className="mb-6 flex items-end justify-between gap-4">
-          <h2 className="text-2xl font-bold tracking-tight text-gray-900 md:text-3xl">
+          <h2 className="text-2xl font-bold tracking-tight text-foreground md:text-3xl">
             Deals of the Day
           </h2>
           <Link
             href="/deals"
-            className="text-sm font-medium text-teal hover:underline"
+            className="text-sm font-medium text-muted-foreground hover:text-gold"
           >
             View more deals →
           </Link>

@@ -97,7 +97,7 @@ export default function SubscribeBanner() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && subscribe()}
-                className="h-13 w-full rounded-xl border border-white/15 bg-white/[0.07] px-4 text-white placeholder:text-white/50 transition-all hover:border-white/30 focus:border-teal focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-teal/25"
+                className="h-13 w-full rounded-xl border border-white/15 bg-white/[0.07] px-4 text-white placeholder:text-white/50 transition-all hover:border-white/30 focus:border-gold focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-gold/25"
                 style={{ height: 52 }}
               />
             </div>
@@ -107,12 +107,9 @@ export default function SubscribeBanner() {
               whileHover={{ y: -2 }}
               whileTap={{ scale: 0.97 }}
               onClick={subscribe}
-              className="inline-flex shrink-0 items-center justify-center rounded-xl px-7 text-sm font-semibold tracking-[0.8px] text-white shadow-xl transition-all"
+              className="inline-flex shrink-0 items-center justify-center rounded-xl bg-gold px-7 text-sm font-semibold tracking-[0.8px] text-navy shadow-xl transition-all hover:bg-gold-light"
               style={{
                 height: 52,
-                background:
-                  "linear-gradient(135deg, #0092c0 0%, #0072a0 100%)",
-                boxShadow: "0 8px 24px rgba(0,114,160,0.4)",
               }}
             >
               SUBSCRIBE

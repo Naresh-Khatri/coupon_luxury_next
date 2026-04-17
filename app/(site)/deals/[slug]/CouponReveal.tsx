@@ -35,8 +35,8 @@ export default function CouponReveal({
   };
 
   return (
-    <div className="mx-auto w-full max-w-2xl rounded-2xl border border-emerald-300/60 bg-white p-6 shadow-sm md:p-8">
-      <p className="text-sm text-gray-600">Use this coupon code at checkout:</p>
+    <div className="mx-auto w-full max-w-2xl rounded-2xl border border-emerald-500/30 bg-card p-6 shadow-sm md:p-8">
+      <p className="text-sm text-muted-foreground">Use this coupon code at checkout:</p>
 
       <div
         className={cn(
@@ -44,7 +44,7 @@ export default function CouponReveal({
           copied ? "border-teal bg-teal/5" : "border-gold/50 bg-gold/5"
         )}
       >
-        <span className="flex flex-1 items-center justify-center px-4 py-6 font-mono text-3xl font-extrabold tracking-wider text-navy md:text-4xl">
+        <span className="flex flex-1 items-center justify-center px-4 py-6 font-mono text-3xl font-extrabold tracking-wider text-foreground md:text-4xl">
           {couponCode}
         </span>
         <button
@@ -70,7 +70,7 @@ export default function CouponReveal({
       <div className="mt-6 flex flex-col items-center gap-3 text-center">
         <Link
           href={`/redeem/${slug}`}
-          className="inline-flex items-center gap-1.5 text-base font-semibold text-brand-900 underline-offset-4 hover:underline"
+          className="inline-flex items-center gap-1.5 text-base font-semibold text-gold underline-offset-4 hover:underline"
         >
           Go To {storeName}
           <ArrowUpRight className="size-4" />

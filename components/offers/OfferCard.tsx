@@ -98,7 +98,7 @@ export default function OfferCard({ offer }: { offer: OfferCardData }) {
       viewport={{ once: true, margin: "-40px" }}
       transition={{ duration: 0.35, ease: "easeOut" as const }}
       whileHover={{ y: -4 }}
-      className="group relative flex flex-col overflow-hidden rounded-2xl border border-gray-200/80 bg-white shadow-sm transition-shadow hover:shadow-xl hover:shadow-black/5"
+      className="group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-shadow hover:shadow-xl hover:shadow-black/20"
     >
       {/* Discount ribbon */}
       {discount && (
@@ -113,14 +113,14 @@ export default function OfferCard({ offer }: { offer: OfferCardData }) {
         type="button"
         onClick={shareOffer}
         aria-label="Share offer"
-        className="absolute left-3 top-3 z-10 flex size-7 items-center justify-center rounded-full bg-white/90 text-gray-500 opacity-0 shadow-sm backdrop-blur transition-all hover:bg-white hover:text-navy group-hover:opacity-100"
+        className="absolute left-3 top-3 z-10 flex size-7 items-center justify-center rounded-full bg-card/90 text-muted-foreground opacity-0 shadow-sm backdrop-blur transition-all hover:bg-card hover:text-foreground group-hover:opacity-100"
       >
         <Share2 className="size-3.5" />
       </button>
 
       <Link
         href={`/stores/${offer.store.slug}`}
-        className="flex h-[140px] items-center justify-center overflow-hidden border-b border-gray-100 bg-gradient-to-br from-gray-50 to-gray-100/60 transition-colors group-hover:from-white group-hover:to-cream"
+        className="flex h-[140px] items-center justify-center overflow-hidden border-b border-border bg-white/95 transition-colors"
       >
         <Image
           src={transformPath(offer.store.image, 320)}
@@ -134,13 +134,13 @@ export default function OfferCard({ offer }: { offer: OfferCardData }) {
       <div className="flex flex-1 flex-col gap-2 p-4">
         <Link
           href={`/stores/${offer.store.slug}`}
-          className="flex items-center gap-1 text-[10px] font-bold uppercase tracking-[0.14em] text-brand-900 transition-colors hover:text-brand-1000"
+          className="flex items-center gap-1 text-[10px] font-bold uppercase tracking-[0.14em] text-muted-foreground transition-colors hover:text-gold"
         >
           {offer.store.storeName}
         </Link>
 
         <Link href={`/deals/${offer.slug}`} className="group/title">
-          <h3 className="line-clamp-2 min-h-[2.4em] text-[13.5px] font-semibold leading-snug text-gray-900 transition-colors group-hover/title:text-brand-900 lg:text-[14.5px]">
+          <h3 className="line-clamp-2 min-h-[2.4em] text-[13.5px] font-semibold leading-snug text-foreground transition-colors group-hover/title:text-gold lg:text-[14.5px]">
             {offer.title}
           </h3>
         </Link>
@@ -154,7 +154,7 @@ export default function OfferCard({ offer }: { offer: OfferCardData }) {
 
         <div className="mt-auto flex items-center justify-between gap-2">
           {ends ? (
-            <div className="flex items-center gap-1 text-[11px] text-gray-500">
+            <div className="flex items-center gap-1 text-[11px] text-muted-foreground">
               <Clock className="size-3" />
               <span>{ends}</span>
             </div>
@@ -162,7 +162,7 @@ export default function OfferCard({ offer }: { offer: OfferCardData }) {
             <span />
           )}
           {uses > 0 && (
-            <div className="flex items-center gap-1 rounded-full bg-gold/10 px-2 py-0.5 text-[10px] font-semibold text-navy">
+            <div className="flex items-center gap-1 rounded-full bg-gold/10 px-2 py-0.5 text-[10px] font-semibold text-gold">
               <Flame className="size-3 text-gold" />
               <span>
                 Used {uses.toLocaleString()}
@@ -178,12 +178,12 @@ export default function OfferCard({ offer }: { offer: OfferCardData }) {
               href={`/deals/${offer.slug}`}
               className="group/code flex w-full items-stretch overflow-hidden rounded-lg border-2 border-dashed border-gold/40 bg-gold/5 transition-all hover:border-gold hover:bg-gold/10"
             >
-              <span className="flex flex-1 items-center justify-center gap-1.5 px-2 py-2 font-mono text-[12px] font-bold uppercase tracking-wider text-navy">
+              <span className="flex flex-1 items-center justify-center gap-1.5 px-2 py-2 font-mono text-[12px] font-bold uppercase tracking-wider text-foreground">
                 <Ticket className="size-3.5 text-gold" />
                 {(offer.couponCode ?? "").slice(0, 3)}
                 <span className="tracking-[0.2em]">••••</span>
               </span>
-              <span className="flex items-center gap-1 bg-gold px-3 py-2 text-[10px] font-bold uppercase tracking-wider text-white transition-colors">
+              <span className="flex items-center gap-1 bg-gold px-3 py-2 text-[10px] font-bold uppercase tracking-wider text-navy transition-colors">
                 Show Code
                 <ArrowUpRight className="size-3" />
               </span>
@@ -191,7 +191,7 @@ export default function OfferCard({ offer }: { offer: OfferCardData }) {
           ) : (
             <Link
               href={`/redeem/${offer.slug}`}
-              className="inline-flex w-full items-center justify-center gap-1 rounded-lg bg-navy py-2 text-[11px] font-bold uppercase tracking-wider text-white transition-all hover:bg-navy-mid hover:gap-1.5"
+              className="inline-flex w-full items-center justify-center gap-1 rounded-lg bg-muted py-2 text-[11px] font-bold uppercase tracking-wider text-foreground transition-all hover:bg-white/5 hover:gap-1.5"
             >
               <Tag className="size-3" />
               View deal

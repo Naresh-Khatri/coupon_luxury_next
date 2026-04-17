@@ -35,15 +35,15 @@ export default function PopularStores({
   if (!stores.length) return null;
 
   return (
-    <section className="bg-gray-50 px-4 py-12 md:py-16">
+    <section className="bg-muted px-4 py-12 md:py-16">
       <div className="mx-auto max-w-[1200px]">
         <div className="mb-8 flex items-end justify-between gap-4">
-          <h2 className="text-2xl font-bold tracking-tight text-gray-900 md:text-3xl">
+          <h2 className="text-2xl font-bold tracking-tight text-foreground md:text-3xl">
             Popular Stores
           </h2>
           <Link
             href="/stores"
-            className="text-sm font-medium text-teal hover:underline"
+            className="text-sm font-medium text-muted-foreground hover:text-gold"
           >
             View all stores →
           </Link>
@@ -60,9 +60,9 @@ export default function PopularStores({
             <motion.div key={store.id} variants={itemVariants}>
               <Link
                 href={`/stores/${store.slug}`}
-                className="group flex h-[110px] flex-col items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white p-3 transition-all hover:-translate-y-0.5 hover:border-gray-300 hover:shadow-md"
+                className="group flex h-[110px] flex-col items-center justify-center gap-2 rounded-xl border border-border bg-card p-3 transition-all hover:-translate-y-0.5 hover:border-gold/40 hover:shadow-md"
               >
-                <div className="relative flex h-12 w-full items-center justify-center overflow-hidden">
+                <div className="relative flex h-12 w-full items-center justify-center overflow-hidden bg-white/95 rounded-md">
                   <Image
                     src={transformPath(store.image, 200)}
                     alt={`${store.storeName} logo`}
@@ -71,7 +71,7 @@ export default function PopularStores({
                     className="max-h-12 w-auto object-contain"
                   />
                 </div>
-                <p className="line-clamp-1 text-center text-[13px] font-medium text-gray-700 group-hover:text-gray-900">
+                <p className="line-clamp-1 text-center text-[13px] font-medium text-foreground/80 group-hover:text-foreground">
                   {store.storeName}
                 </p>
               </Link>

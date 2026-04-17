@@ -14,8 +14,8 @@ export default async function RedeemPage(props: {
   if (!offer) notFound();
 
   return (
-    <main className="flex min-h-screen flex-col bg-[#f5f5f7]">
-      <header className="flex items-center justify-center border-b border-gray-200 bg-white py-4">
+    <main className="flex min-h-screen flex-col bg-[#0a0a0b]">
+      <header className="flex items-center justify-center border-b border-white/8 bg-[#111114] py-4">
         <Link href="/" aria-label="CouponLuxury home">
           <Image
             src="https://ik.imagekit.io/couponluxury/tr:w-160/logo_13BHLbKp9"

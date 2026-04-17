@@ -70,10 +70,10 @@ export default function StoreOfferRow({
   return (
     <article
       className={cn(
-        "group relative overflow-hidden rounded-xl border bg-white transition-colors",
+        "group relative overflow-hidden rounded-xl border bg-card transition-colors",
         isExclusive
           ? "border-emerald-400/70 ring-1 ring-emerald-300/50"
-          : "border-gray-200 hover:border-gold/60"
+          : "border-border hover:border-gold/60"
       )}
     >
       {isExclusive && (
@@ -86,20 +86,20 @@ export default function StoreOfferRow({
         {/* Discount badge */}
         <div
           className={cn(
-            "flex flex-col items-center justify-center gap-0.5 border-r border-dashed border-gray-200 px-2 py-5 text-center",
-            isExclusive ? "bg-emerald-50" : "bg-gold/5"
+            "flex flex-col items-center justify-center gap-0.5 border-r border-dashed border-white/15 px-2 py-5 text-center",
+            isExclusive ? "bg-emerald-950/30" : "bg-gold/5"
           )}
         >
           {parts.prefix && (
-            <span className="text-[9.5px] font-semibold uppercase tracking-[0.14em] text-gray-500">
+            <span className="text-[9.5px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
               {parts.prefix}
             </span>
           )}
-          <span className="text-xl font-extrabold leading-none text-navy md:text-2xl">
+          <span className="text-xl font-extrabold leading-none text-gold md:text-2xl">
             {parts.value}
           </span>
           {parts.suffix && (
-            <span className="text-[9.5px] font-semibold uppercase tracking-[0.14em] text-gray-500">
+            <span className="text-[9.5px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
               {parts.suffix}
             </span>
           )}
@@ -107,15 +107,15 @@ export default function StoreOfferRow({
 
         {/* Content */}
         <div className="flex min-w-0 flex-col justify-center gap-1.5 px-4 py-4 md:py-5">
-          <h3 className="text-[14.5px] font-semibold leading-snug text-navy md:text-[15.5px]">
+          <h3 className="text-[14.5px] font-semibold leading-snug text-foreground md:text-[15.5px]">
             {offer.title}
           </h3>
 
-          <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-[11.5px] text-gray-500">
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-[11.5px] text-muted-foreground">
             <button
               type="button"
               onClick={() => setExpanded((v) => !v)}
-              className="inline-flex items-center gap-1 font-medium text-brand-900 hover:text-brand-1000"
+              className="inline-flex items-center gap-1 font-medium text-gold hover:text-gold-light"
               aria-expanded={expanded}
             >
               Show Details
@@ -143,17 +143,17 @@ export default function StoreOfferRow({
           </div>
 
           {expanded && (
-            <div className="mt-2 rounded-md border border-gray-100 bg-gray-50/60 px-3 py-2 text-[12.5px] leading-relaxed text-gray-700">
+            <div className="mt-2 rounded-md border border-border bg-muted px-3 py-2 text-[12.5px] leading-relaxed text-foreground/80">
               {offer.description ? (
                 <p className="whitespace-pre-line">{offer.description}</p>
               ) : (
-                <p className="text-gray-500">
+                <p className="text-muted-foreground">
                   Click the button to activate this offer at checkout.
                 </p>
               )}
               <Link
                 href={isCoupon ? `/deals/${offer.slug}` : `/redeem/${offer.slug}`}
-                className="mt-2 inline-block text-[12px] font-medium text-brand-900 hover:text-brand-1000"
+                className="mt-2 inline-block text-[12px] font-medium text-gold hover:text-gold-light"
               >
                 View full offer details &rarr;
               </Link>
@@ -162,30 +162,30 @@ export default function StoreOfferRow({
         </div>
 
         {/* CTA */}
-        <div className="col-span-2 flex flex-col items-stretch gap-1.5 border-t border-gray-100 px-4 py-3 md:col-span-1 md:items-end md:justify-center md:border-l md:border-t-0 md:px-5">
+        <div className="col-span-2 flex flex-col items-stretch gap-1.5 border-t border-border px-4 py-3 md:col-span-1 md:items-end md:justify-center md:border-l md:border-t-0 md:px-5">
           {isCoupon ? (
             <Link
               href={`/deals/${offer.slug}`}
-              className="inline-flex items-center justify-center rounded-md bg-brand-900 px-6 py-2.5 text-[12px] font-bold uppercase tracking-wider text-white transition-colors hover:bg-brand-1000 md:min-w-[150px]"
+              className="inline-flex items-center justify-center rounded-md bg-gold px-6 py-2.5 text-[12px] font-bold uppercase tracking-wider text-navy transition-colors hover:bg-gold-light md:min-w-[150px]"
             >
               Get Code
             </Link>
           ) : (
             <Link
               href={`/redeem/${offer.slug}`}
-              className="inline-flex items-center justify-center rounded-md bg-brand-900 px-6 py-2.5 text-[12px] font-bold uppercase tracking-wider text-white transition-colors hover:bg-brand-1000 md:min-w-[150px]"
+              className="inline-flex items-center justify-center rounded-md bg-gold px-6 py-2.5 text-[12px] font-bold uppercase tracking-wider text-navy transition-colors hover:bg-gold-light md:min-w-[150px]"
             >
               Get Deal
             </Link>
           )}
           {ends && (
-            <span className="text-center text-[11px] text-gray-500 md:text-right">
+            <span className="text-center text-[11px] text-muted-foreground md:text-right">
               {ends}
             </span>
           )}
           <Link
             href={`/deals/${offer.slug}`}
-            className="hidden text-[11px] text-gray-500 underline-offset-2 hover:text-brand-900 hover:underline md:block md:text-right"
+            className="hidden text-[11px] text-muted-foreground underline-offset-2 hover:text-gold hover:underline md:block md:text-right"
           >
             More details
           </Link>

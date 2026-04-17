@@ -5,8 +5,8 @@ type Store = { id: string | number; slug: string; storeName: string; image: stri
 
 export default function RecommendedStores({ stores }: { stores: Store[] }) {
   return (
-    <div className="rounded-xl bg-white p-4 font-semibold">
-      <h3 className="text-2xl text-black">Popular Stores</h3>
+    <div className="rounded-xl bg-card border border-border p-4 font-semibold">
+      <h3 className="text-2xl text-foreground">Popular Stores</h3>
       <div className="grid grid-cols-2 gap-5 p-5">
         {stores.map((store) => (
           <Link key={store.id} href={`/stores/${store.slug}`}>

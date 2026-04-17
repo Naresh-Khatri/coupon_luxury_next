@@ -36,13 +36,13 @@ const socialLinks = [
 
 export default function ContactPage() {
   return (
-    <div className="min-h-screen w-screen bg-[#ebf8ff] pb-10 pt-24 md:pt-36">
+    <div className="min-h-screen w-screen bg-background pb-10 pt-24 md:pt-36">
       <div className="mx-auto flex h-full w-full max-w-[1240px] flex-col items-center justify-center">
         <div className="mb-10 -mt-20">
-          <h1 className="py-3 text-4xl font-extrabold leading-none text-brand-900 md:text-5xl">
+          <h1 className="py-3 text-4xl font-extrabold leading-none text-foreground md:text-5xl">
             Contact Us
           </h1>
-          <div className="font-extrabold text-brand-900">
+          <div className="font-extrabold text-gold">
             <Link href="mailto:contact@couponluxury.com">
               contact@couponluxury.com
             </Link>
@@ -54,7 +54,7 @@ export default function ContactPage() {
                 href={s.href}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex size-12 items-center justify-center rounded-md bg-white shadow"
+                className="inline-flex size-12 items-center justify-center rounded-md bg-card border border-border shadow"
               >
                 <s.Icon className="size-8" color={s.color} />
               </a>

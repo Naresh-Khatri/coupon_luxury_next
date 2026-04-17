@@ -81,7 +81,7 @@ export default async function BlogPage(
       <ReadingProgress />
       <div className="mx-auto mb-16 max-w-[1200px] px-4 md:px-6">
         <div className="mt-6 grid w-full gap-8 md:mt-10 lg:grid-cols-[1fr_340px] lg:gap-10">
-          <article className="overflow-hidden rounded-2xl border border-black/5 bg-white shadow-sm">
+          <article className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
             <div className="relative aspect-[16/9] w-full">
               <Image
                 src={coverImg ?? "/placeholder.svg"}
@@ -101,11 +101,11 @@ export default async function BlogPage(
                 </span>
               </div>
 
-              <h1 className="mb-6 font-[var(--font-display)] text-3xl font-bold leading-[1.1] text-gray-900 md:text-4xl lg:text-5xl">
+              <h1 className="mb-6 font-[var(--font-display)] text-3xl font-bold leading-[1.1] text-foreground md:text-4xl lg:text-5xl">
                 {title}
               </h1>
 
-              <hr className="mb-6 border-gray-100" />
+              <hr className="mb-6 border-border" />
 
               <div
                 className="page-html"
@@ -117,7 +117,7 @@ export default async function BlogPage(
           <aside className="lg:sticky lg:top-[88px]">
             <div className="mb-5 flex items-center gap-3 px-1">
               <span className="h-6 w-[3px] rounded-full bg-gold" />
-              <h3 className="text-lg font-bold tracking-[0.3px] text-gray-900">
+              <h3 className="text-lg font-bold tracking-[0.3px] text-foreground">
                 More Articles
               </h3>
             </div>

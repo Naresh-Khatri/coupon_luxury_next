@@ -35,7 +35,7 @@ export default function DealCard({
         transition: { duration: 0.22, ease: "easeOut" as const },
       }}
       whileTap={{ scale: 0.97, transition: { duration: 0.1 } }}
-      className="flex h-[200px] w-[160px] flex-col items-center justify-between overflow-hidden rounded-2xl border border-black/5 bg-white shadow-md lg:h-[248px] lg:w-[196px]"
+      className="flex h-[200px] w-[160px] flex-col items-center justify-between overflow-hidden rounded-2xl border border-border bg-card shadow-md lg:h-[248px] lg:w-[196px]"
     >
       <Link href={`/stores/${storeSlug}`} className="w-full">
         <div className="w-full overflow-hidden">
@@ -50,7 +50,7 @@ export default function DealCard({
         </div>
       </Link>
 
-      <p className="line-clamp-2 px-2 text-center text-[13px] font-medium leading-[1.4] text-gray-700 lg:text-[15px]">
+      <p className="line-clamp-2 px-2 text-center text-[13px] font-medium leading-[1.4] text-foreground/90 lg:text-[15px]">
         {title}
       </p>
 

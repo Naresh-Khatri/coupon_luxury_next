@@ -9,9 +9,9 @@ export default function StoreHowToUse({
 }) {
   if (!steps.length) return null;
   return (
-    <section className="overflow-hidden rounded-2xl border border-gray-200 bg-white">
-      <div className="border-b border-gray-100 px-6 py-4 md:px-8">
-        <h2 className="text-[11px] font-bold uppercase tracking-[0.18em] text-gray-500">
+    <section className="overflow-hidden rounded-2xl border border-border bg-card">
+      <div className="border-b border-border px-6 py-4 md:px-8">
+        <h2 className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
           How to use {storeName} coupons
         </h2>
       </div>
@@ -21,7 +21,7 @@ export default function StoreHowToUse({
             <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-gold/15 text-[12px] font-bold text-navy">
               {i + 1}
             </span>
-            <p className="pt-0.5 text-[14px] leading-relaxed text-gray-700">
+            <p className="pt-0.5 text-[14px] leading-relaxed text-foreground/80">
               {step}
             </p>
           </li>

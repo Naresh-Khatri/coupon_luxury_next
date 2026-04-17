@@ -56,11 +56,11 @@ export default function OfferCard({ offerDetails }: { offerDetails: OfferDetails
         boxShadow: "0 8px 32px rgba(0,0,0,0.10)",
         transition: { duration: 0.2 },
       }}
-      className="h-fit cursor-pointer rounded-2xl border border-black/5 bg-white p-5"
+      className="h-fit cursor-pointer rounded-2xl border border-border bg-card p-5"
     >
-      <p className="mb-2 text-right text-xs font-medium text-gray-500">
+      <p className="mb-2 text-right text-xs font-medium text-muted-foreground">
         Valid till:{" "}
-        <span className="font-semibold text-green-500">{endDate}</span>
+        <span className="font-semibold text-green-400">{endDate}</span>
       </p>
 
       <div className="md:grid md:grid-cols-3">
@@ -146,7 +146,7 @@ export default function OfferCard({ offerDetails }: { offerDetails: OfferDetails
 
       <button
         type="button"
-        className="mt-2 flex h-9 w-full items-center justify-between rounded-lg border border-black/5 bg-white px-4 text-[13px] font-normal text-gray-600 hover:bg-gray-50"
+        className="mt-2 flex h-9 w-full items-center justify-between rounded-lg border border-border bg-card px-4 text-[13px] font-normal text-muted-foreground hover:bg-muted"
       >
         <span className="flex items-center gap-2">
           <motion.span
@@ -172,7 +172,7 @@ export default function OfferCard({ offerDetails }: { offerDetails: OfferDetails
           >
             <div className="mt-3 pb-2 px-5">
               <div
-                className="page-html text-sm text-gray-700"
+                className="page-html text-sm text-foreground/80"
                 dangerouslySetInnerHTML={{ __html: TnC }}
               />
             </div>

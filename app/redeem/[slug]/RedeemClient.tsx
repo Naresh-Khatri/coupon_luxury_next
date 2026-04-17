@@ -50,7 +50,7 @@ export default function RedeemClient({
 
   return (
     <section className="flex flex-1 items-center justify-center px-4 py-12">
-      <div className="w-full max-w-xl rounded-2xl bg-white p-8 shadow-sm md:p-12">
+      <div className="w-full max-w-xl rounded-2xl bg-[#111114] border border-white/8 p-8 shadow-sm md:p-12">
         {isCoupon ? (
           <div className="flex flex-col items-center gap-6 text-center">
             <div className="flex items-center gap-2 text-emerald-600">
@@ -59,13 +59,13 @@ export default function RedeemClient({
                 {copied ? "Code Successfully Copied!" : "Copying code…"}
               </span>
             </div>
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-white/60">
               Paste this code at checkout &amp; carry on shopping
             </p>
-            <div className="w-full rounded-lg border-2 border-dashed border-emerald-400/60 bg-emerald-50/40 px-6 py-5 text-center font-mono text-2xl font-bold tracking-wider text-navy">
+            <div className="w-full rounded-lg border-2 border-dashed border-gold/50 bg-gold/5 px-6 py-5 text-center font-mono text-2xl font-bold tracking-wider text-white">
               {couponCode}
             </div>
-            <div className="my-2 w-full border-t border-gray-200" />
+            <div className="my-2 w-full border-t border-white/8" />
             <Opening storeName={storeName} affURL={affURL} />
           </div>
         ) : (
@@ -77,7 +77,7 @@ export default function RedeemClient({
           <button
             type="button"
             onClick={() => history.back()}
-            className="text-sm text-gray-500 underline-offset-4 hover:text-gray-900 hover:underline"
+            className="text-sm text-white/40 underline-offset-4 hover:text-white hover:underline"
           >
             Go Back
           </button>
@@ -98,7 +98,7 @@ function Opening({
 }) {
   return (
     <div className="flex flex-col items-center gap-3">
-      <div className="flex items-center gap-3 text-brand-900">
+      <div className="flex items-center gap-3 text-gold">
         <Loader2 className={large ? "size-7 animate-spin" : "size-5 animate-spin"} />
         <span className={large ? "text-xl font-semibold" : "text-base font-medium"}>
           Opening {storeName}…
@@ -106,7 +106,7 @@ function Opening({
       </div>
       <a
         href={affURL}
-        className="text-sm font-semibold text-brand-900 underline-offset-4 hover:underline"
+        className="text-sm font-semibold text-gold underline-offset-4 hover:underline"
       >
         Continue to store
       </a>

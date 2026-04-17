@@ -118,28 +118,28 @@ export default function StoreOffers({
     <section className="grid gap-6 lg:grid-cols-[240px_1fr]">
       {/* Filter rail */}
       <aside className="lg:sticky lg:top-24 lg:self-start">
-        <div className="overflow-hidden rounded-xl border border-gray-200 bg-white">
+        <div className="overflow-hidden rounded-xl border border-border bg-card">
           <button
             type="button"
             onClick={() => setRailOpen((v) => !v)}
             aria-expanded={railOpen}
             aria-controls="store-filter-body"
-            className="flex w-full items-center justify-between gap-2 border-b border-gray-100 px-4 py-3 text-left lg:pointer-events-none lg:cursor-default"
+            className="flex w-full items-center justify-between gap-2 border-b border-border px-4 py-3 text-left lg:pointer-events-none lg:cursor-default"
           >
             <span className="inline-flex items-center gap-2">
-              <Filter className="size-4 text-gray-500" />
-              <span className="text-[11px] font-bold uppercase tracking-[0.16em] text-gray-500">
+              <Filter className="size-4 text-muted-foreground" />
+              <span className="text-[11px] font-bold uppercase tracking-[0.16em] text-muted-foreground">
                 Filters
               </span>
               {activeFilterCount > 0 && (
-                <span className="inline-flex size-5 items-center justify-center rounded-full bg-gold/20 text-[10.5px] font-bold text-navy lg:hidden">
+                <span className="inline-flex size-5 items-center justify-center rounded-full bg-gold/20 text-[10.5px] font-bold text-gold lg:hidden">
                   {activeFilterCount}
                 </span>
               )}
             </span>
             <ChevronDown
               className={cn(
-                "size-4 text-gray-500 transition-transform lg:hidden",
+                "size-4 text-muted-foreground transition-transform lg:hidden",
                 railOpen && "rotate-180"
               )}
             />
@@ -153,7 +153,7 @@ export default function StoreOffers({
             )}
           >
             <div className="px-4 py-4">
-            <h3 className="text-[10.5px] font-bold uppercase tracking-[0.14em] text-gray-500">
+            <h3 className="text-[10.5px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
               Categories
             </h3>
             <div className="mt-2 flex flex-col">
@@ -167,22 +167,22 @@ export default function StoreOffers({
                     className={cn(
                       "flex items-center justify-between rounded-md px-2.5 py-1.5 text-[13px] transition-colors",
                       active
-                        ? "bg-gold/15 font-semibold text-navy"
-                        : "text-gray-600 hover:bg-gray-50"
+                        ? "bg-gold/15 font-semibold text-gold"
+                        : "text-foreground/80 hover:bg-white/5"
                     )}
                   >
                     <span>{t.label}</span>
-                    <span className="text-[11px] text-gray-400">{t.count}</span>
+                    <span className="text-[11px] text-muted-foreground">{t.count}</span>
                   </button>
                 );
               })}
             </div>
           </div>
 
-          <div className="border-t border-gray-100 px-4 py-4">
+          <div className="border-t border-border px-4 py-4">
             <div className="flex items-center gap-1.5">
-              <SlidersHorizontal className="size-3.5 text-gray-500" />
-              <h3 className="text-[10.5px] font-bold uppercase tracking-[0.14em] text-gray-500">
+              <SlidersHorizontal className="size-3.5 text-muted-foreground" />
+              <h3 className="text-[10.5px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
                 Sort by
               </h3>
             </div>
@@ -193,8 +193,8 @@ export default function StoreOffers({
                   className={cn(
                     "flex cursor-pointer items-center gap-2 rounded-md px-2 py-1.5 text-[13px]",
                     sort === s.id
-                      ? "bg-gold/10 font-semibold text-navy"
-                      : "text-gray-600 hover:bg-gray-50"
+                      ? "bg-gold/10 font-semibold text-gold"
+                      : "text-foreground/80 hover:bg-white/5"
                   )}
                 >
                   <input
@@ -210,8 +210,8 @@ export default function StoreOffers({
             </div>
           </div>
 
-          <div className="border-t border-gray-100 px-4 py-4">
-            <h3 className="text-[10.5px] font-bold uppercase tracking-[0.14em] text-gray-500">
+          <div className="border-t border-border px-4 py-4">
+            <h3 className="text-[10.5px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
               Coupons info
             </h3>
             <div className="mt-2 flex flex-col gap-1">
@@ -253,15 +253,15 @@ export default function StoreOffers({
                   className={cn(
                     "inline-flex items-center gap-1.5 rounded-full border px-4 py-1.5 text-[12.5px] font-medium transition-colors",
                     active
-                      ? "border-navy bg-navy text-white"
-                      : "border-gray-200 bg-white text-gray-600 hover:border-gold/60 hover:text-navy"
+                      ? "border-gold bg-gold text-navy"
+                      : "border-border bg-muted text-foreground/80 hover:border-gold/60 hover:text-gold"
                   )}
                 >
                   {t.label}
                   <span
                     className={cn(
                       "text-[11px]",
-                      active ? "text-white/70" : "text-gray-400"
+                      active ? "text-navy/70" : "text-muted-foreground"
                     )}
                   >
                     {t.count}
@@ -270,23 +270,23 @@ export default function StoreOffers({
               );
             })}
           </div>
-          <p className="text-[12px] text-gray-500">
+          <p className="text-[12px] text-muted-foreground">
             Showing{" "}
-            <span className="font-semibold text-navy">{filtered.length}</span>{" "}
+            <span className="font-semibold text-foreground">{filtered.length}</span>{" "}
             {type === "all" ? "offers" : type}
             {store.storeName ? ` from ${store.storeName}` : ""}
           </p>
         </div>
 
         {filtered.length === 0 ? (
-          <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-gray-300 bg-white py-16 text-center">
+          <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-border bg-card py-16 text-center">
             <div className="mb-3 flex size-12 items-center justify-center rounded-full bg-gold/10">
               <SearchIcon className="size-5 text-gold" />
             </div>
-            <h3 className="text-base font-bold text-navy">
+            <h3 className="text-base font-bold text-foreground">
               No matching offers
             </h3>
-            <p className="mt-1 max-w-[320px] text-sm text-gray-500">
+            <p className="mt-1 max-w-[320px] text-sm text-muted-foreground">
               Try clearing a filter or switching to another category.
             </p>
           </div>
@@ -328,7 +328,7 @@ function CheckRow({
     <label
       className={cn(
         "flex cursor-pointer items-center justify-between gap-2 rounded-md px-2 py-1.5 text-[13px] transition-colors",
-        checked ? "bg-gold/10 font-semibold text-navy" : "text-gray-600 hover:bg-gray-50"
+        checked ? "bg-gold/10 font-semibold text-gold" : "text-foreground/80 hover:bg-white/5"
       )}
     >
       <span className="inline-flex items-center gap-2">
@@ -340,7 +340,7 @@ function CheckRow({
         />
         {label}
       </span>
-      <span className="text-[11px] text-gray-400">{count}</span>
+      <span className="text-[11px] text-muted-foreground">{count}</span>
     </label>
   );
 }

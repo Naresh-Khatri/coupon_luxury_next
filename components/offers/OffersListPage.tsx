@@ -66,7 +66,7 @@ export default async function OffersListPage({
   }));
 
   return (
-    <div className="bg-cream">
+    <div className="bg-background">
       {/* Hero */}
       <section className="banner-bg relative overflow-hidden">
         <div className="relative mx-auto max-w-[1280px] px-4 py-12 md:px-6 md:py-16">
@@ -100,7 +100,7 @@ export default async function OffersListPage({
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-[260px_1fr]">
           {/* Desktop sidebar */}
           <div className="hidden lg:block">
-            <div className="sticky top-[84px] rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
+            <div className="sticky top-[84px] rounded-xl border border-border bg-card p-5 shadow-sm">
               <OffersFilters
                 categories={categoryOptions}
                 showHasCode={config.showHasCode}
@@ -141,12 +141,12 @@ export default async function OffersListPage({
 
 function EmptyState({ itemLabel }: { itemLabel: string }) {
   return (
-    <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-gray-300 bg-white py-20 text-center">
+    <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-border bg-card py-20 text-center">
       <div className="mb-4 flex size-14 items-center justify-center rounded-full bg-gold/10">
         <SearchIcon className="size-6 text-gold" />
       </div>
-      <h3 className="text-lg font-bold text-navy">No {itemLabel}s match</h3>
-      <p className="mt-1 max-w-[320px] text-sm text-gray-500">
+      <h3 className="text-lg font-bold text-foreground">No {itemLabel}s match</h3>
+      <p className="mt-1 max-w-[320px] text-sm text-muted-foreground">
         Try removing a filter or broadening your search to see more results.
       </p>
     </div>

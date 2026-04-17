@@ -137,13 +137,13 @@ export default function GlobalSearch({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
         showCloseButton={false}
-        className="top-[8%] max-w-[720px] translate-y-0 gap-0 overflow-hidden border border-gray-200 p-0"
+        className="top-[8%] max-w-[720px] translate-y-0 gap-0 overflow-hidden border border-border bg-card p-0"
       >
         <DialogTitle className="sr-only">Search</DialogTitle>
 
         {/* Input */}
-        <div className="flex items-center gap-3 border-b border-gray-100 px-5 py-4">
-          <Search className="size-4 shrink-0 text-gray-400" />
+        <div className="flex items-center gap-3 border-b border-border px-5 py-4">
+          <Search className="size-4 shrink-0 text-muted-foreground" />
           <input
             ref={inputRef}
             value={q}
@@ -155,13 +155,13 @@ export default function GlobalSearch({
               }
             }}
             placeholder="Search for stores, coupons & offers..."
-            className="flex-1 bg-transparent text-[15px] text-navy outline-none placeholder:text-gray-400"
+            className="flex-1 bg-transparent text-[15px] text-foreground outline-none placeholder:text-muted-foreground"
           />
           {q.length > 0 && (
             <button
               type="button"
               onClick={() => setQ("")}
-              className="rounded-full p-1 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-700"
+              className="rounded-full p-1 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
               aria-label="Clear"
             >
               <X className="size-3.5" />
@@ -170,7 +170,7 @@ export default function GlobalSearch({
           <button
             type="button"
             onClick={() => onOpenChange(false)}
-            className="ml-1 hidden rounded border border-gray-200 px-1.5 py-0.5 text-[10px] font-medium text-gray-500 sm:inline-block"
+            className="ml-1 hidden rounded border border-border px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground sm:inline-block"
           >
             esc
           </button>
@@ -183,13 +183,13 @@ export default function GlobalSearch({
               {recents.length > 0 && (
                 <section>
                   <div className="mb-2 flex items-center justify-between">
-                    <h3 className="text-[11px] font-bold uppercase tracking-[0.14em] text-gray-500">
+                    <h3 className="text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
                       Recent searches
                     </h3>
                     <button
                       type="button"
                       onClick={clearRecents}
-                      className="text-[11px] text-gray-400 transition-colors hover:text-gray-700"
+                      className="text-[11px] text-muted-foreground transition-colors hover:text-foreground"
                     >
                       Clear
                     </button>
@@ -198,7 +198,7 @@ export default function GlobalSearch({
                 </section>
               )}
               <section>
-                <h3 className="mb-2 text-[11px] font-bold uppercase tracking-[0.14em] text-gray-500">
+                <h3 className="mb-2 text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
                   Popular searches
                 </h3>
                 <Chips items={trending} onSelect={setQ} />
@@ -211,10 +211,10 @@ export default function GlobalSearch({
             <div className="flex flex-col gap-3 py-2">
               {[0, 1, 2, 3].map((i) => (
                 <div key={i} className="flex items-center gap-3">
-                  <div className="size-10 shrink-0 animate-pulse rounded-md bg-gray-100" />
+                  <div className="size-10 shrink-0 animate-pulse rounded-md bg-muted" />
                   <div className="flex-1 space-y-2">
-                    <div className="h-3 w-2/5 animate-pulse rounded bg-gray-100" />
-                    <div className="h-2.5 w-1/4 animate-pulse rounded bg-gray-100" />
+                    <div className="h-3 w-2/5 animate-pulse rounded bg-muted" />
+                    <div className="h-2.5 w-1/4 animate-pulse rounded bg-muted" />
                   </div>
                 </div>
               ))}
@@ -224,11 +224,11 @@ export default function GlobalSearch({
           {/* No results */}
           {isEmpty && (
             <div className="flex flex-col items-center justify-center gap-1 py-14 text-center">
-              <p className="text-[15px] text-navy">
+              <p className="text-[15px] text-foreground">
                 No results for{" "}
                 <span className="font-semibold">&ldquo;{debouncedQ}&rdquo;</span>
               </p>
-              <p className="max-w-[320px] text-[13px] text-gray-500">
+              <p className="max-w-[320px] text-[13px] text-muted-foreground">
                 Try another brand, category, or a broader term.
               </p>
             </div>
@@ -318,7 +318,7 @@ function Chips({
           key={t}
           type="button"
           onClick={() => onSelect(t)}
-          className="rounded-full border border-gray-200 bg-white px-3 py-1 text-[12.5px] text-gray-700 transition-colors hover:border-gold hover:text-navy"
+          className="rounded-full border border-border bg-muted px-3 py-1 text-[12.5px] text-foreground transition-colors hover:border-gold hover:text-gold"
         >
           {t}
         </button>
@@ -345,13 +345,13 @@ function ResultGroup({
   return (
     <section>
       <div className="mb-1.5 flex items-center justify-between">
-        <h3 className="text-[11px] font-bold uppercase tracking-[0.14em] text-gray-500">
+        <h3 className="text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
           &ldquo;{term}&rdquo; in {label}{" "}
-          <span className="text-gray-400">({count})</span>
+          <span className="text-muted-foreground/60">({count})</span>
         </h3>
         <Link
           href={viewAllHref}
-          className="inline-flex items-center gap-1 text-[11px] font-medium text-gold transition-colors hover:text-navy"
+          className="inline-flex items-center gap-1 text-[11px] font-medium text-gold transition-colors hover:text-gold-light"
         >
           {viewAllLabel}
           <ArrowRight className="size-3" />
@@ -381,10 +381,10 @@ function ResultRow({
         type="button"
         onClick={onClick}
         className={cn(
-          "flex w-full items-center gap-3 rounded-md px-2 py-2 text-left transition-colors hover:bg-gray-50"
+          "flex w-full items-center gap-3 rounded-md px-2 py-2 text-left transition-colors hover:bg-white/5"
         )}
       >
-        <div className="relative flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-md border border-gray-200 bg-white">
+        <div className="relative flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-md border border-border bg-white">
           <Image
             src={transformPath(image, 120)}
             alt=""
@@ -394,16 +394,16 @@ function ResultRow({
           />
         </div>
         <div className="flex min-w-0 flex-1 flex-col">
-          <span className="line-clamp-1 text-[14px] font-medium text-navy">
+          <span className="line-clamp-1 text-[14px] font-medium text-foreground">
             {title}
           </span>
           {(subtitle || meta) && (
-            <span className="flex items-center gap-2 text-[12px] text-gray-500">
+            <span className="flex items-center gap-2 text-[12px] text-muted-foreground">
               {subtitle && <span>{subtitle}</span>}
               {meta && (
                 <>
-                  {subtitle && <span className="text-gray-300">·</span>}
-                  <span className="font-semibold text-teal">{meta}</span>
+                  {subtitle && <span className="text-muted-foreground/40">·</span>}
+                  <span className="font-semibold text-gold">{meta}</span>
                 </>
               )}
             </span>

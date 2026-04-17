@@ -54,8 +54,8 @@ export default function OffersToolbar({
   return (
     <div className="flex flex-col gap-3 pb-4 lg:flex-row lg:items-center lg:justify-between">
       <div className="flex items-center gap-3">
-        <p className="text-[13px] text-gray-600">
-          <span className="font-bold text-navy">{total.toLocaleString()}</span>{" "}
+        <p className="text-[13px] text-muted-foreground">
+          <span className="font-bold text-foreground">{total.toLocaleString()}</span>{" "}
           {itemLabel}
           {total === 1 ? "" : "s"} found
         </p>
@@ -67,13 +67,13 @@ export default function OffersToolbar({
           onSubmit={submitQ}
           className="relative hidden max-w-[260px] flex-1 items-center sm:flex"
         >
-          <SearchIcon className="absolute left-3 size-4 text-gray-400" />
+          <SearchIcon className="absolute left-3 size-4 text-muted-foreground" />
           <Input
             value={qLocal}
             onChange={(e) => setQLocal(e.target.value)}
             onBlur={submitQ}
             placeholder={`Filter ${itemLabel}s…`}
-            className="h-9 rounded-full border-gray-200 bg-white pl-9 pr-8 text-[13px] focus-visible:ring-gold/40 focus-visible:border-gold/50"
+            className="h-9 rounded-full border-border bg-muted pl-9 pr-8 text-[13px] focus-visible:ring-gold/40 focus-visible:border-gold/50"
           />
           {qLocal && (
             <button
@@ -82,7 +82,7 @@ export default function OffersToolbar({
                 setQLocal("");
                 update({ q: "" });
               }}
-              className="absolute right-2 rounded-full p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-700"
+              className="absolute right-2 rounded-full p-1 text-muted-foreground hover:bg-white/5 hover:text-foreground"
               aria-label="Clear filter"
             >
               <X className="size-3.5" />
@@ -96,7 +96,7 @@ export default function OffersToolbar({
         >
           <SelectTrigger
             className={cn(
-              "h-9 min-w-[160px] rounded-full border-gray-200 bg-white text-[13px]"
+              "h-9 min-w-[160px] rounded-full border-border bg-muted text-[13px]"
             )}
           >
             <SelectValue />
@@ -117,7 +117,7 @@ export default function OffersToolbar({
           <SheetTrigger asChild>
             <Button
               variant="outline"
-              className="h-9 rounded-full border-gray-200 bg-white text-[13px] font-medium text-navy lg:hidden"
+              className="h-9 rounded-full border-border bg-muted text-[13px] font-medium text-foreground lg:hidden"
             >
               <SlidersHorizontal className="size-3.5" />
               Filters
@@ -129,7 +129,7 @@ export default function OffersToolbar({
             </Button>
           </SheetTrigger>
           <SheetContent side="left" className="w-[90vw] max-w-[340px] p-6">
-            <SheetTitle className="mb-4 text-base font-bold uppercase tracking-[0.14em] text-navy">
+            <SheetTitle className="mb-4 text-base font-bold uppercase tracking-[0.14em] text-foreground">
               Filter {itemLabel}s
             </SheetTitle>
             <OffersFilters
