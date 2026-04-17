@@ -14,6 +14,7 @@ import {
   LogOut,
   ChevronsUpDown,
   Sparkles,
+  Flag,
 } from "lucide-react";
 import {
   Sidebar,
@@ -53,6 +54,7 @@ const sections: NavSection[] = [
       { href: "/admin/offers", label: "Offers", icon: Tag },
       { href: "/admin/categories", label: "Categories", icon: Box },
       { href: "/admin/subcategories", label: "Subcategories", icon: Boxes },
+      { href: "/admin/countries", label: "Countries", icon: Flag },
     ],
   },
   {

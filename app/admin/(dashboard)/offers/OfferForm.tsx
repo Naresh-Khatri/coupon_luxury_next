@@ -71,6 +71,7 @@ export default function OfferForm({
   const { data: stores = [] } = trpc.admin.stores.list.useQuery();
   const { data: cats = [] } = trpc.admin.categories.list.useQuery();
   const { data: subs = [] } = trpc.admin.subCategories.list.useQuery();
+  const { data: countries = [] } = trpc.admin.countries.list.useQuery();
 
   const form = useForm<FormValues>({
     resolver: zodResolver(schema) as any,
@@ -204,7 +205,28 @@ export default function OfferForm({
             <Input type="date" {...register("endDate")} />
           </Field>
           <Field label="Country">
-            <Input {...register("country")} />
+            <Controller
+              control={control}
+              name="country"
+              render={({ field }) => (
+                <Select
+                  value={field.value ?? ""}
+                  onValueChange={field.onChange}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select country" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {countries.map((c) => (
+                      <SelectItem key={c.code} value={c.code}>
+                        {c.flagEmoji ? `${c.flagEmoji} ` : ""}
+                        {c.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
+            />
           </Field>
         </FieldGrid>
       </SectionCard>

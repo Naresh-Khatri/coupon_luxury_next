@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { Plus, Text, Hash, ToggleLeft, Tag, Store, Ticket } from "lucide-react";
+import { Plus, Text, Hash, ToggleLeft, Tag, Store, Ticket, ShieldCheck } from "lucide-react";
 import type { ColumnDef } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -32,6 +32,7 @@ type Row = {
   storeId: number;
   active: boolean;
   featured: boolean;
+  verifiedAt: string | Date | null;
   store?: { id: number; storeName: string; slug: string } | null;
 };
 
@@ -61,6 +62,13 @@ export default function OffersAdminPage() {
       utils.admin.offers.table.invalidate();
     },
     onError: () => toast.error("Delete failed"),
+  });
+  const verify = trpc.admin.offers.verify.useMutation({
+    onSuccess: () => {
+      toast.success("Marked verified");
+      utils.admin.offers.table.invalidate();
+    },
+    onError: (e) => toast.error(e.message),
   });
 
   const storeOptions = React.useMemo(
@@ -201,20 +209,61 @@ export default function OffersAdminPage() {
         enableColumnFilter: true,
       },
       {
+        id: "verifiedAt",
+        accessorKey: "verifiedAt",
+        header: ({ column }) => (
+          <DataTableColumnHeader column={column} label="Verified" />
+        ),
+        cell: ({ row }) => {
+          const v = row.original.verifiedAt;
+          if (!v) return <span className="text-muted-foreground">—</span>;
+          const d = new Date(v);
+          const days = Math.floor(
+            (Date.now() - d.getTime()) / (1000 * 60 * 60 * 24)
+          );
+          return (
+            <span
+              className={
+                days <= 7
+                  ? "text-xs text-emerald-600"
+                  : days <= 30
+                    ? "text-xs text-amber-600"
+                    : "text-xs text-muted-foreground"
+              }
+              title={d.toLocaleString()}
+            >
+              {days === 0 ? "today" : `${days}d ago`}
+            </span>
+          );
+        },
+        size: 100,
+      },
+      {
         id: "actions",
         cell: ({ row }) => (
-          <RowActions
-            editHref={`/admin/offers/${row.original.id}`}
-            onDelete={() => del.mutate(row.original.id)}
-            deleting={del.isPending}
-          />
+          <div className="flex items-center justify-end gap-1">
+            <Button
+              variant="ghost"
+              size="sm"
+              disabled={verify.isPending}
+              onClick={() => verify.mutate(row.original.id)}
+              title="Mark as verified today"
+            >
+              <ShieldCheck className="size-4" />
+            </Button>
+            <RowActions
+              editHref={`/admin/offers/${row.original.id}`}
+              onDelete={() => del.mutate(row.original.id)}
+              deleting={del.isPending}
+            />
+          </div>
         ),
-        size: 80,
+        size: 120,
         enableSorting: false,
         enableHiding: false,
       },
     ],
-    [storeOptions, del],
+    [storeOptions, del, verify],
   );
 
   const { table } = useDataTable<Row>({

@@ -1,11 +1,12 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useForm, Controller } from "react-hook-form";
+import { useForm, Controller, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { Plus, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -38,11 +39,18 @@ const schema = z.object({
   storeURL: z.string().url(),
   image: z.union([z.string().url(), z.instanceof(File)]),
   pageHTML: z.string().default(""),
+  howToUse: z
+    .array(z.object({ value: z.string() }))
+    .default([]),
+  faqs: z
+    .array(z.object({ q: z.string(), a: z.string() }))
+    .default([]),
   country: z.string().default("global"),
   categoryId: z.number().int(),
   subCategoryId: z.number().int(),
   active: z.boolean().default(false),
   featured: z.boolean().default(false),
+  storeOfTheMonth: z.boolean().default(false),
   metaTitle: z.string().nullish(),
   metaDescription: z.string().nullish(),
   metaKeywords: z.string().nullish(),
@@ -62,6 +70,7 @@ export default function StoreForm({
   const { data: categories = [] } = trpc.admin.categories.list.useQuery();
   const { data: subCategories = [] } =
     trpc.admin.subCategories.list.useQuery();
+  const { data: countries = [] } = trpc.admin.countries.list.useQuery();
 
   const form = useForm<FormValues>({
     resolver: zodResolver(schema) as any,
@@ -71,12 +80,18 @@ export default function StoreForm({
       storeURL: "",
       image: "",
       pageHTML: "",
+      howToUse: [],
+      faqs: [],
       country: "global",
       active: false,
       featured: false,
+      storeOfTheMonth: false,
       ...initial,
     } as FormValues,
   });
+
+  const stepsField = useFieldArray({ control: form.control, name: "howToUse" });
+  const faqsField = useFieldArray({ control: form.control, name: "faqs" });
 
   const create = trpc.admin.stores.create.useMutation({
     onSuccess: () => {
@@ -104,7 +119,18 @@ export default function StoreForm({
       const image = auth
         ? await resolveImage(values.image, auth)
         : (values.image as string);
-      const payload = { ...values, image: image ?? "" };
+      const howToUse = (values.howToUse ?? [])
+        .map((s) => s.value.trim())
+        .filter(Boolean);
+      const faqs = (values.faqs ?? [])
+        .map((f) => ({ q: f.q.trim(), a: f.a.trim() }))
+        .filter((f) => f.q && f.a);
+      const payload = {
+        ...values,
+        image: image ?? "",
+        howToUse: howToUse.length ? howToUse : null,
+        faqs: faqs.length ? faqs : null,
+      };
       if (storeId) update.mutate({ id: storeId, data: payload });
       else create.mutate(payload);
     } catch (err) {
@@ -141,7 +167,28 @@ export default function StoreForm({
             <Input {...register("storeURL")} placeholder="https://..." />
           </Field>
           <Field label="Country">
-            <Input {...register("country")} />
+            <Controller
+              control={control}
+              name="country"
+              render={({ field }) => (
+                <Select
+                  value={field.value ?? ""}
+                  onValueChange={field.onChange}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select country" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {countries.map((c) => (
+                      <SelectItem key={c.code} value={c.code}>
+                        {c.flagEmoji ? `${c.flagEmoji} ` : ""}
+                        {c.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
+            />
           </Field>
         </FieldGrid>
         <Field label="Logo">
@@ -224,6 +271,88 @@ export default function StoreForm({
         </Field>
       </SectionCard>
 
+      <SectionCard
+        title="How to use"
+        description="Step-by-step instructions shown on the store page."
+      >
+        <div className="space-y-3">
+          {stepsField.fields.map((f, i) => (
+            <div key={f.id} className="flex items-start gap-2">
+              <span className="mt-2 w-6 shrink-0 text-center text-sm font-semibold text-muted-foreground">
+                {i + 1}.
+              </span>
+              <Input
+                placeholder="Describe one step…"
+                {...register(`howToUse.${i}.value` as const)}
+              />
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                onClick={() => stepsField.remove(i)}
+                title="Remove step"
+              >
+                <Trash2 className="size-4" />
+              </Button>
+            </div>
+          ))}
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={() => stepsField.append({ value: "" })}
+          >
+            <Plus className="size-4" /> Add step
+          </Button>
+        </div>
+      </SectionCard>
+
+      <SectionCard
+        title="FAQs"
+        description="Question/answer pairs rendered as an accordion plus JSON-LD."
+      >
+        <div className="space-y-4">
+          {faqsField.fields.map((f, i) => (
+            <div
+              key={f.id}
+              className="space-y-2 rounded-md border border-border p-3"
+            >
+              <div className="flex items-center justify-between">
+                <span className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                  FAQ {i + 1}
+                </span>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => faqsField.remove(i)}
+                  title="Remove FAQ"
+                >
+                  <Trash2 className="size-4" />
+                </Button>
+              </div>
+              <Input
+                placeholder="Question"
+                {...register(`faqs.${i}.q` as const)}
+              />
+              <Textarea
+                className="min-h-[80px]"
+                placeholder="Answer"
+                {...register(`faqs.${i}.a` as const)}
+              />
+            </div>
+          ))}
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={() => faqsField.append({ q: "", a: "" })}
+          >
+            <Plus className="size-4" /> Add FAQ
+          </Button>
+        </div>
+      </SectionCard>
+
       <SectionCard title="SEO" description="Search engine metadata.">
         <FieldGrid>
           <Field label="Meta title">
@@ -263,6 +392,19 @@ export default function StoreForm({
                   onCheckedChange={field.onChange}
                 />
                 Featured
+              </label>
+            )}
+          />
+          <Controller
+            control={control}
+            name="storeOfTheMonth"
+            render={({ field }) => (
+              <label className="flex items-center gap-2 text-sm">
+                <Switch
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+                Store of the month
               </label>
             )}
           />
