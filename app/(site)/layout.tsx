@@ -15,7 +15,7 @@ export default async function SiteLayout({
   );
 
   return (
-    <>
+    <div className="site-dark bg-background text-foreground min-h-screen">
       <NavBar
         countries={countries}
         selectedCountry={selectedCountry}
@@ -24,6 +24,6 @@ export default async function SiteLayout({
       />
       <div className="pt-[60px] lg:pt-[76px]">{children}</div>
       <Footer />
-    </>
+    </div>
   );
 }

@@ -40,38 +40,41 @@
     --sidebar-ring: oklch(0.705 0.015 286.067);
 }
 
-.dark {
-    --background: oklch(0.141 0.005 285.823);
-    --foreground: oklch(0.985 0 0);
-    --card: oklch(0.21 0.006 285.885);
-    --card-foreground: oklch(0.985 0 0);
-    --popover: oklch(0.21 0.006 285.885);
-    --popover-foreground: oklch(0.985 0 0);
-    --primary: oklch(0.92 0.004 286.32);
-    --primary-foreground: oklch(0.21 0.006 285.885);
-    --secondary: oklch(0.274 0.006 286.033);
-    --secondary-foreground: oklch(0.985 0 0);
-    --muted: oklch(0.274 0.006 286.033);
-    --muted-foreground: oklch(0.705 0.015 286.067);
-    --accent: oklch(0.92 0.004 286.32);
-    --accent-foreground: oklch(0.21 0.006 285.885);
+.dark,
+.site-dark {
+    /* CRED-style near-black surfaces */
+    --background: #0a0a0b;
+    --foreground: #f4f2ee;
+    --card: #111114;
+    --card-foreground: #f4f2ee;
+    --popover: #141418;
+    --popover-foreground: #f4f2ee;
+    /* Gold is the primary accent everywhere */
+    --primary: #c49a3c;
+    --primary-foreground: #0a0a0b;
+    --secondary: #17171b;
+    --secondary-foreground: #f4f2ee;
+    --muted: #17171b;
+    --muted-foreground: #8a8a93;
+    --accent: #c49a3c;
+    --accent-foreground: #0a0a0b;
     --destructive: oklch(0.704 0.191 22.216);
-    --border: oklch(1 0 0 / 10%);
-    --input: oklch(1 0 0 / 15%);
-    --ring: oklch(0.552 0.016 285.938);
-    --chart-1: oklch(0.871 0.006 286.286);
-    --chart-2: oklch(0.552 0.016 285.938);
-    --chart-3: oklch(0.442 0.017 285.786);
-    --chart-4: oklch(0.37 0.013 285.805);
-    --chart-5: oklch(0.274 0.006 286.033);
-    --sidebar: oklch(0.21 0.006 285.885);
-    --sidebar-foreground: oklch(0.985 0 0);
-    --sidebar-primary: oklch(0.488 0.243 264.376);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.274 0.006 286.033);
-    --sidebar-accent-foreground: oklch(0.985 0 0);
-    --sidebar-border: oklch(1 0 0 / 10%);
-    --sidebar-ring: oklch(0.552 0.016 285.938);
+    --border: rgba(255, 255, 255, 0.08);
+    --input: rgba(255, 255, 255, 0.1);
+    --ring: #c49a3c;
+    --chart-1: #c49a3c;
+    --chart-2: #e8c56a;
+    --chart-3: #8a8a93;
+    --chart-4: #4a4a52;
+    --chart-5: #2a2a30;
+    --sidebar: #0a0a0b;
+    --sidebar-foreground: #f4f2ee;
+    --sidebar-primary: #c49a3c;
+    --sidebar-primary-foreground: #0a0a0b;
+    --sidebar-accent: #17171b;
+    --sidebar-accent-foreground: #f4f2ee;
+    --sidebar-border: rgba(255, 255, 255, 0.08);
+    --sidebar-ring: #c49a3c;
 }
 
 @theme inline {
@@ -131,21 +134,34 @@
     --color-brand-1000: #005a80;
 }
 
-/* Decorative backgrounds */
+/* Decorative backgrounds — dark + gold */
 .hero-bg {
-    background-color: var(--color-cream);
-    background-image: radial-gradient(circle, #d4b896 1px, transparent 1px);
-    background-size: 28px 28px;
+    background-color: #0a0a0b;
+    background-image:
+        radial-gradient(
+            ellipse at 20% 10%,
+            rgba(196, 154, 60, 0.12) 0%,
+            transparent 55%
+        ),
+        radial-gradient(
+            ellipse at 85% 90%,
+            rgba(196, 154, 60, 0.06) 0%,
+            transparent 55%
+        ),
+        radial-gradient(
+            circle,
+            rgba(255, 255, 255, 0.035) 1px,
+            transparent 1px
+        );
+    background-size:
+        auto,
+        auto,
+        28px 28px;
 }
 
 .banner-bg {
     width: 100%;
-    background: linear-gradient(
-        135deg,
-        var(--color-navy) 0%,
-        var(--color-navy-mid) 50%,
-        #1a3a5c 100%
-    );
+    background: linear-gradient(135deg, #0a0a0b 0%, #111114 50%, #0a0a0b 100%);
     position: relative;
 }
 .banner-bg::after {
@@ -155,19 +171,19 @@
     background-image:
         radial-gradient(
             ellipse at 30% 50%,
-            rgba(0, 146, 192, 0.15) 0%,
+            rgba(196, 154, 60, 0.18) 0%,
             transparent 60%
         ),
         radial-gradient(
             ellipse at 70% 50%,
-            rgba(196, 154, 60, 0.08) 0%,
+            rgba(232, 197, 106, 0.08) 0%,
             transparent 60%
         );
     pointer-events: none;
 }
 
 .subscribe-banner-bg {
-    background: linear-gradient(135deg, #0d1b2a 0%, #0a2540 50%, #0d1b2a 100%);
+    background: linear-gradient(135deg, #0a0a0b 0%, #141016 50%, #0a0a0b 100%);
     position: relative;
     overflow: hidden;
 }
@@ -178,12 +194,12 @@
     background-image:
         radial-gradient(
             ellipse at 20% 50%,
-            rgba(0, 146, 192, 0.2) 0%,
+            rgba(196, 154, 60, 0.22) 0%,
             transparent 50%
         ),
         radial-gradient(
             ellipse at 80% 50%,
-            rgba(196, 154, 60, 0.12) 0%,
+            rgba(232, 197, 106, 0.1) 0%,
             transparent 50%
         );
     pointer-events: none;
@@ -193,17 +209,17 @@
     position: absolute;
     inset: 0;
     background-image:
-        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
     background-size: 60px 60px;
     pointer-events: none;
 }
 
 .ham-background {
-    background-color: var(--color-navy);
+    background-color: #0a0a0b;
     background-image:
-        linear-gradient(rgba(0, 146, 192, 0.06) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 146, 192, 0.06) 1px, transparent 1px);
+        linear-gradient(rgba(196, 154, 60, 0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(196, 154, 60, 0.06) 1px, transparent 1px);
     background-size: 40px 40px;
 }
 
