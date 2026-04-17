@@ -163,13 +163,19 @@ const mobileItemVariants = {
   }),
 };
 
+type CountryOption = {
+  code: string;
+  name: string;
+  flagEmoji: string | null;
+};
+
 export default function NavBar({
   countries = [],
   selectedCountry = null,
   featuredStores = [],
   featuredCategories = [],
 }: {
-  countries?: string[];
+  countries?: CountryOption[];
   selectedCountry?: string | null;
   featuredStores?: FeaturedStore[];
   featuredCategories?: FeaturedCategory[];

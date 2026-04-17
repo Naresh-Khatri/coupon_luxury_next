@@ -9,7 +9,17 @@ type StoreOffer = OfferCardData & { offerType: string };
 
 type Store = { storeName: string; slug: string; image: string };
 
-type Tab = "all" | "coupons" | "deals";
+type Tab = "all" | "fresh" | "coupons" | "deals";
+
+const FRESH_WINDOW_DAYS = 14;
+
+function isFresh(o: StoreOffer): boolean {
+  if (!o.verifiedAt) return false;
+  const d = o.verifiedAt instanceof Date ? o.verifiedAt : new Date(o.verifiedAt);
+  if (Number.isNaN(d.getTime())) return false;
+  const days = Math.floor((Date.now() - d.getTime()) / (1000 * 60 * 60 * 24));
+  return days <= FRESH_WINDOW_DAYS;
+}
 
 export default function StoreOffers({
   offers,
@@ -20,17 +30,25 @@ export default function StoreOffers({
 }) {
   const [tab, setTab] = useState<Tab>("all");
 
-  const { coupons, deals } = useMemo(() => {
+  const { coupons, deals, fresh } = useMemo(() => {
     const coupons = offers.filter((o) => o.offerType === "coupon");
     const deals = offers.filter((o) => o.offerType !== "coupon");
-    return { coupons, deals };
+    const fresh = offers.filter(isFresh);
+    return { coupons, deals, fresh };
   }, [offers]);
 
   const filtered =
-    tab === "coupons" ? coupons : tab === "deals" ? deals : offers;
+    tab === "coupons"
+      ? coupons
+      : tab === "deals"
+        ? deals
+        : tab === "fresh"
+          ? fresh
+          : offers;
 
   const tabs: Array<{ id: Tab; label: string; count: number }> = [
     { id: "all", label: "All", count: offers.length },
+    { id: "fresh", label: "Fresh", count: fresh.length },
     { id: "coupons", label: "Coupons", count: coupons.length },
     { id: "deals", label: "Deals", count: deals.length },
   ];

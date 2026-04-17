@@ -11,11 +11,17 @@ import {
 import { cn } from "@/lib/utils";
 import { setCountryAction } from "@/app/actions/country";
 
+type CountryOption = {
+  code: string;
+  name: string;
+  flagEmoji: string | null;
+};
+
 export default function CountrySelector({
   countries,
   selected,
 }: {
-  countries: string[];
+  countries: CountryOption[];
   selected: string | null;
 }) {
   const [pending, start] = useTransition();
@@ -28,6 +34,8 @@ export default function CountrySelector({
 
   if (countries.length === 0) return null;
 
+  const current = countries.find((c) => c.code === selected) ?? null;
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
@@ -36,8 +44,12 @@ export default function CountrySelector({
           pending && "opacity-60"
         )}
       >
-        <Globe className="size-4 text-white/70" />
-        <span className="max-w-[80px] truncate">{selected ?? "All"}</span>
+        {current?.flagEmoji ? (
+          <span className="text-base leading-none">{current.flagEmoji}</span>
+        ) : (
+          <Globe className="size-4 text-white/70" />
+        )}
+        <span className="max-w-[80px] truncate">{current?.name ?? "All"}</span>
         <ChevronDown className="size-3.5 text-white/60" />
       </DropdownMenuTrigger>
       <DropdownMenuContent
@@ -48,17 +60,27 @@ export default function CountrySelector({
           className="flex items-center justify-between gap-6 text-sm"
           onSelect={() => pick(null)}
         >
-          <span>All countries</span>
+          <span className="flex items-center gap-2">
+            <Globe className="size-4 text-muted-foreground" />
+            All countries
+          </span>
           {selected === null && <Check className="size-4 text-teal" />}
         </DropdownMenuItem>
         {countries.map((c) => (
           <DropdownMenuItem
-            key={c}
+            key={c.code}
             className="flex items-center justify-between gap-6 text-sm"
-            onSelect={() => pick(c)}
+            onSelect={() => pick(c.code)}
           >
-            <span>{c}</span>
-            {selected === c && <Check className="size-4 text-teal" />}
+            <span className="flex items-center gap-2">
+              {c.flagEmoji ? (
+                <span className="text-base leading-none">{c.flagEmoji}</span>
+              ) : (
+                <span className="inline-block size-4" />
+              )}
+              {c.name}
+            </span>
+            {selected === c.code && <Check className="size-4 text-teal" />}
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>

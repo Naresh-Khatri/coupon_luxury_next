@@ -17,22 +17,26 @@ import {
 } from "@/components/ui/tooltip";
 import Confetti from "../Confetti";
 import styles from "./CodeRevealingButton.module.css";
+import { trpc } from "@/lib/trpc/client";
 
 export default function CodeRevealingButton({
   code,
   affURL,
   storeName,
   image,
+  offerId,
 }: {
   code: string;
   affURL: string;
   storeName: string;
   image: string;
+  offerId?: number;
 }) {
   const [open, setOpen] = useState(false);
   const [hasCopied, setHasCopied] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
   const truncateCode = code ? "***" + code.slice(-4) : "";
+  const trackClick = trpc.public.trackOfferClick.useMutation();
 
   const handleCopy = async () => {
     try {
@@ -42,6 +46,7 @@ export default function CodeRevealingButton({
       toast.success("Copied", {
         description: `Opening ${storeName} in new tab...`,
       });
+      if (offerId) trackClick.mutate({ offerId });
       setTimeout(() => {
         window.open(affURL, "_blank");
         setShowConfetti(false);

@@ -2,12 +2,14 @@ import Link from "next/link";
 import { ChevronRight, Home as HomeIcon, Search as SearchIcon } from "lucide-react";
 import { getOffersList } from "@/server/db/queries/offers";
 import { getPublicCategories } from "@/server/db/queries/categories";
+import { getTopStoresForOffers } from "@/server/db/queries/stores";
 import { getSelectedCountry } from "@/lib/country";
 import OfferCard from "./OfferCard";
 import OffersFilters from "./OffersFilters";
 import OffersToolbar from "./OffersToolbar";
 import ActiveFilterChips from "./ActiveFilterChips";
 import OffersPagination from "./OffersPagination";
+import TopStoresStrip from "./TopStoresStrip";
 import { parseOffersParams } from "./search-params";
 
 export type OffersListPageConfig = {
@@ -33,7 +35,14 @@ export default async function OffersListPage({
   const perPage = config.perPage ?? 24;
   const itemLabel = config.itemLabel ?? config.offerType ?? "offer";
 
-  const categoriesRaw = await getPublicCategories();
+  const [categoriesRaw, topStores] = await Promise.all([
+    getPublicCategories(),
+    getTopStoresForOffers({
+      offerType: config.offerType,
+      country,
+      limit: 10,
+    }),
+  ]);
   const slugToId = new Map(categoriesRaw.map((c) => [c.slug, c.id]));
   const selectedCatIds = params.categories
     .map((slug) => slugToId.get(slug))
@@ -109,6 +118,8 @@ export default async function OffersListPage({
             />
 
             <ActiveFilterChips categories={categoryOptions} />
+
+            <TopStoresStrip stores={topStores} itemLabel={itemLabel} />
 
             {final.items.length === 0 ? (
               <EmptyState itemLabel={itemLabel} />

@@ -8,19 +8,33 @@ import {
   Home as HomeIcon,
   Ticket,
   Tag,
+  ShieldCheck,
 } from "lucide-react";
 import RecommendedStores from "@/components/RecommendedStores";
 import StoreOffers from "./StoreOffers";
-import { getStoreBySlug, getPublicStores } from "@/server/db/queries/stores";
+import StoreHowToUse from "./StoreHowToUse";
+import StoreFaqs from "./StoreFaqs";
+import SimilarStores from "./SimilarStores";
+import {
+  getStoreBySlug,
+  getPublicStores,
+  getSimilarStores,
+} from "@/server/db/queries/stores";
 import transformPath from "@/utils/transformImagePath";
 
 async function getData(slug: string) {
-  const [storeInfo, featuredStores] = await Promise.all([
-    getStoreBySlug(slug),
-    getPublicStores({ featured: true, limit: 8 }),
-  ]);
+  const storeInfo = await getStoreBySlug(slug);
   if (!storeInfo) return null;
-  return { storeInfo, featuredStores };
+  const [featuredStores, similarStores] = await Promise.all([
+    getPublicStores({ featured: true, limit: 8 }),
+    getSimilarStores({
+      categoryId: storeInfo.categoryId,
+      excludeId: storeInfo.id,
+      country: storeInfo.country,
+      limit: 8,
+    }),
+  ]);
+  return { storeInfo, featuredStores, similarStores };
 }
 
 export async function generateMetadata(props: {
@@ -63,12 +77,39 @@ export default async function StorePage(props: {
   const params = await props.params;
   const data = await getData(params.slug);
   if (!data) notFound();
-  const { storeInfo, featuredStores } = data;
+  const { storeInfo, featuredStores, similarStores } = data;
+  const howToUse = storeInfo.howToUse ?? [];
+  const faqs = storeInfo.faqs ?? [];
+  const faqJsonLd = faqs.length
+    ? {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: faqs.map((f) => ({
+          "@type": "Question",
+          name: f.q,
+          acceptedAnswer: { "@type": "Answer", text: f.a },
+        })),
+      }
+    : null;
 
   const couponCount = storeInfo.offers.filter(
     (o) => o.offerType === "coupon"
   ).length;
   const dealCount = storeInfo.offers.length - couponCount;
+
+  const lastVerifiedAt = storeInfo.offers.reduce<Date | null>((acc, o) => {
+    if (!o.verifiedAt) return acc;
+    const d = o.verifiedAt instanceof Date ? o.verifiedAt : new Date(o.verifiedAt);
+    if (Number.isNaN(d.getTime())) return acc;
+    return !acc || d > acc ? d : acc;
+  }, null);
+  const lastValidatedLabel = lastVerifiedAt
+    ? lastVerifiedAt.toLocaleDateString("en", {
+        month: "long",
+        day: "numeric",
+        year: "numeric",
+      })
+    : null;
 
   return (
     <div className="bg-cream">
@@ -123,6 +164,15 @@ export default async function StorePage(props: {
               </h1>
               <p className="mt-1 text-[13px] text-white/60">
                 Updated for {monthYear()}
+                {lastValidatedLabel && (
+                  <>
+                    {" · "}
+                    <span className="inline-flex items-center gap-1 text-emerald-300">
+                      <ShieldCheck className="size-3.5" />
+                      Last validated on {lastValidatedLabel}
+                    </span>
+                  </>
+                )}
               </p>
 
               <div className="mt-4 flex flex-wrap items-center gap-2">
@@ -156,6 +206,12 @@ export default async function StorePage(props: {
           }}
         />
 
+        {howToUse.length > 0 && (
+          <div className="mt-12">
+            <StoreHowToUse steps={howToUse} storeName={storeInfo.storeName} />
+          </div>
+        )}
+
         {/* About */}
         {storeInfo.pageHTML?.trim() && (
           <section className="mt-12 overflow-hidden rounded-2xl border border-gray-200 bg-white">
@@ -171,6 +227,21 @@ export default async function StorePage(props: {
           </section>
         )}
 
+        {faqs.length > 0 && (
+          <div className="mt-12">
+            <StoreFaqs faqs={faqs} storeName={storeInfo.storeName} />
+          </div>
+        )}
+
+        {similarStores.length > 0 && (
+          <div className="mt-12">
+            <SimilarStores
+              stores={similarStores}
+              categoryName={storeInfo.category?.categoryName}
+            />
+          </div>
+        )}
+
         {/* Recommended */}
         {featuredStores.length > 0 && (
           <div className="mt-12">
@@ -178,6 +249,13 @@ export default async function StorePage(props: {
           </div>
         )}
       </div>
+
+      {faqJsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+        />
+      )}
     </div>
   );
 }

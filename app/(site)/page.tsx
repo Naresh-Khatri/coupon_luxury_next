@@ -4,6 +4,8 @@ import TopCoupons from "@/components/home/TopCoupons";
 import DealsOfTheDay from "@/components/home/DealsOfTheDay";
 import PopularCategoriesList from "@/components/home/PopularCategoriesList";
 import SubscribeBanner from "@/components/home/SubscribeBanner";
+import StoreOfTheMonth from "@/components/home/StoreOfTheMonth";
+import EditorsPicks from "@/components/home/EditorsPicks";
 import { getMainFeed } from "@/server/db/queries/main";
 import { getSelectedCountry } from "@/lib/country";
 
@@ -15,6 +17,8 @@ export default async function Home() {
     featuredDeals,
     featuredCoupons,
     categories,
+    storeOfTheMonth,
+    editorsPicks,
   } = await getMainFeed(country);
 
   return (
@@ -30,7 +34,9 @@ export default async function Home() {
         </div>
       </section>
 
+      {storeOfTheMonth && <StoreOfTheMonth store={storeOfTheMonth} />}
       <PopularStores featuredStores={featuredStores} />
+      <EditorsPicks offers={editorsPicks} />
       <TopCoupons coupons={featuredCoupons} categories={categories} />
       <DealsOfTheDay deals={featuredDeals} />
       <PopularCategoriesList categories={categories} />

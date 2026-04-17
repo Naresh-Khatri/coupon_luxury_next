@@ -4,10 +4,19 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "motion/react";
-import { ChevronDown, ChevronUp, Info, CheckCircle2 } from "lucide-react";
+import {
+  ChevronDown,
+  ChevronUp,
+  Info,
+  CheckCircle2,
+  Flame,
+  ShieldCheck,
+} from "lucide-react";
 import CodeRevealingButton from "./CodeRevealingButton/CodeRevealingButton";
+import { trpc } from "@/lib/trpc/client";
 
 type OfferDetails = {
+  id?: number;
   title: string;
   couponCode: string;
   affURL: string;
@@ -21,8 +30,21 @@ type OfferDetails = {
   offerType: "coupon" | "deal";
   fromPage?: "stores" | "categories";
   storeName: string;
+  uses?: number | null;
+  verifiedAt?: Date | string | null;
   store?: { slug: string; image: string };
 };
+
+function formatVerified(v?: Date | string | null): string | null {
+  if (!v) return null;
+  const d = v instanceof Date ? v : new Date(v);
+  if (Number.isNaN(d.getTime())) return null;
+  const days = Math.floor((Date.now() - d.getTime()) / (1000 * 60 * 60 * 24));
+  if (days <= 0) return "Verified today";
+  if (days === 1) return "Verified yesterday";
+  if (days <= 7) return `Verified ${days}d ago`;
+  return `Verified ${d.toLocaleDateString("en", { month: "short", day: "numeric" })}`;
+}
 
 export default function OfferCardV2({
   offerDetails,
@@ -30,6 +52,7 @@ export default function OfferCardV2({
   offerDetails: OfferDetails;
 }) {
   const {
+    id,
     title,
     couponCode,
     affURL,
@@ -42,8 +65,13 @@ export default function OfferCardV2({
     offerType,
     fromPage,
     storeName,
+    uses,
+    verifiedAt,
   } = offerDetails;
   const [isOpen, setIsOpen] = useState(false);
+  const trackClick = trpc.public.trackOfferClick.useMutation();
+  const usesCount = uses ?? 0;
+  const verified = formatVerified(verifiedAt);
 
   return (
     <div
@@ -86,11 +114,28 @@ export default function OfferCardV2({
             <p className="line-clamp-2 text-base font-semibold leading-[1.4] sm:text-[1.375rem]">
               {title}
             </p>
-            <div className="mt-2 flex items-center gap-2 text-green-500">
-              <CheckCircle2 className="size-4" />
-              <span className="text-[13px] text-black sm:text-sm">
-                valid Till: <span className="text-green-500">{endDate}</span>
-              </span>
+            <div className="mt-2 flex flex-wrap items-center gap-3">
+              <div className="flex items-center gap-2 text-green-500">
+                <CheckCircle2 className="size-4" />
+                <span className="text-[13px] text-black sm:text-sm">
+                  valid Till: <span className="text-green-500">{endDate}</span>
+                </span>
+              </div>
+              {usesCount > 0 && (
+                <div className="flex items-center gap-1 rounded-full bg-gold/10 px-2 py-0.5 text-[11px] font-semibold text-navy">
+                  <Flame className="size-3 text-gold" />
+                  <span>
+                    Used {usesCount.toLocaleString()}
+                    {usesCount >= 1000 ? "+" : ""}
+                  </span>
+                </div>
+              )}
+              {verified && (
+                <div className="flex items-center gap-1 text-[11px] font-medium text-emerald-600">
+                  <ShieldCheck className="size-3.5" />
+                  <span>{verified}</span>
+                </div>
+              )}
             </div>
           </div>
 
@@ -101,9 +146,16 @@ export default function OfferCardV2({
                 affURL={affURL}
                 image={image}
                 storeName={storeName}
+                offerId={id}
               />
             ) : (
-              <Link href={`/deals/${slug}`} onClick={(e) => e.stopPropagation()}>
+              <Link
+                href={`/deals/${slug}`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (id) trackClick.mutate({ offerId: id });
+                }}
+              >
                 <button
                   type="button"
                   className="inline-flex h-9 items-center justify-center rounded-md bg-brand-900 px-7 text-white shadow-lg transition-colors hover:bg-brand-800 sm:h-12"

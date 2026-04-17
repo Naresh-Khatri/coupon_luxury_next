@@ -1,6 +1,6 @@
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
-import { getDistinctCountries } from "@/server/db/queries/countries";
+import { getActiveCountries } from "@/server/db/queries/countries";
 import { getNavFeatured } from "@/server/db/queries/nav";
 import { getSelectedCountry } from "@/lib/country";
 
@@ -11,7 +11,7 @@ export default async function SiteLayout({
 }) {
   const selectedCountry = await getSelectedCountry();
   const [countries, { featuredStores, featuredCategories }] = await Promise.all(
-    [getDistinctCountries(), getNavFeatured(selectedCountry)]
+    [getActiveCountries(), getNavFeatured(selectedCountry)]
   );
 
   return (
