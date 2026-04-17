@@ -1,6 +1,5 @@
 const nextConfig = {
   reactStrictMode: true,
-  swcMinify: true,
   images: {
     remotePatterns: [
       {
@@ -9,9 +8,6 @@ const nextConfig = {
         port: "",
       },
     ],
-  },
-  env: {
-    domain: "https://apiv2.couponluxury.com",
   },
 };
 

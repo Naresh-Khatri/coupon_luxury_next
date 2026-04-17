@@ -1,22 +1,24 @@
 .btn {
   position: relative;
   cursor: pointer;
-  border: 2px dashed rgba(136, 136, 136, 0.658);
+  border: 2px dashed rgba(196, 154, 60, 0.5);
+  color: rgba(255,255,255,0.7);
   font-weight: bold;
   border-radius: 5px;
   outline: none;
   width: 200px;
   padding: 10px;
   text-align: right;
+  background: transparent;
 }
 .btn::after {
   content: "Show code";
-  background: #0072a0;
+  background: #c49a3c;
   position: absolute;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: aliceblue;
+  color: #0d1b2a;
   font-size: 20px;
   font-weight: 600;
   border-radius: 5px;
@@ -29,7 +31,7 @@
 .btn:hover::after {
   width: 80%;
   transition: all 0.3s ease-out;
-  background: #0f51ad;
+  background: #d4af37;
 }
 
 @media screen and (max-width: 768px) {

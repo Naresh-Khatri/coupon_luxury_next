@@ -1,0 +1,1 @@
+ALTER TABLE "store" ADD COLUMN "storeOfTheMonth" boolean DEFAULT false NOT NULL;
