@@ -223,6 +223,45 @@
     background-size: 40px 40px;
 }
 
+/* Subtle nudge shimmer — a gold highlight band slides across every few seconds */
+@keyframes cta-shimmer {
+    0% {
+        transform: translateX(-120%) skewX(-20deg);
+    }
+    35%,
+    100% {
+        transform: translateX(220%) skewX(-20deg);
+    }
+}
+.cta-shimmer {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+}
+.cta-shimmer::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(232, 197, 106, 0) 30%,
+        rgba(232, 197, 106, 0.45) 50%,
+        rgba(232, 197, 106, 0) 70%,
+        transparent 100%
+    );
+    transform: translateX(-120%) skewX(-20deg);
+    animation: cta-shimmer 3.6s ease-in-out infinite;
+    mix-blend-mode: screen;
+}
+@media (prefers-reduced-motion: reduce) {
+    .cta-shimmer::after {
+        animation: none;
+        opacity: 0;
+    }
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

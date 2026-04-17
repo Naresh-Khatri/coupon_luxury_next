@@ -30,7 +30,7 @@ type Deal = {
 };
 
 export default function DealsOfTheDay({ deals }: { deals: Deal[] }) {
-  const limitedDeals = deals?.slice(0, 10);
+  const limitedDeals = deals?.slice(0, 9);
   if (!limitedDeals?.length) return null;
 
   return (
@@ -53,7 +53,7 @@ export default function DealsOfTheDay({ deals }: { deals: Deal[] }) {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-60px" }}
-          className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:gap-5 lg:grid-cols-5"
+          className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:gap-4 lg:grid-cols-3"
         >
           {limitedDeals.map((deal) => (
             <motion.div key={deal.id} variants={itemVariants}>
