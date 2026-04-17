@@ -114,6 +114,7 @@ const blogInput = z.object({
   title: z.string().min(1),
   slug: z.string().min(1),
   storeId: optionalId(),
+  categoryId: optionalId(),
   imgAlt: z.string().nullish(),
   coverImg: optionalUrl(),
   thumbnailImg: optionalUrl(),

@@ -177,6 +177,9 @@ export const blogs = pgTable("blog", {
   storeId: integer("storeId").references(() => stores.id, {
     onDelete: "cascade",
   }),
+  categoryId: integer("categoryId").references(() => categories.id, {
+    onDelete: "set null",
+  }),
   imgAlt: text("imgAlt"),
   coverImg: text("coverImg"),
   thumbnailImg: text("thumbnailImg"),
@@ -286,6 +289,10 @@ export const offersRelations = relations(offers, ({ one }) => ({
 
 export const blogsRelations = relations(blogs, ({ one }) => ({
   store: one(stores, { fields: [blogs.storeId], references: [stores.id] }),
+  category: one(categories, {
+    fields: [blogs.categoryId],
+    references: [categories.id],
+  }),
 }));
 
 export type Store = typeof stores.$inferSelect;

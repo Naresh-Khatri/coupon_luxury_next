@@ -38,6 +38,7 @@ const schema = z.object({
   smallDescription: z.string(),
   fullDescription: z.string(),
   storeId: z.number().int().nullish(),
+  categoryId: z.number().int().nullish(),
   coverImg: z.union([z.string().url(), z.instanceof(File)]).nullish(),
   thumbnailImg: z.union([z.string().url(), z.instanceof(File)]).nullish(),
   imgAlt: z.string().nullish(),
@@ -61,6 +62,7 @@ export default function BlogForm({
   const router = useRouter();
   const utils = trpc.useUtils();
   const { data: stores = [] } = trpc.admin.stores.list.useQuery();
+  const { data: categories = [] } = trpc.admin.categories.list.useQuery();
   const form = useForm<FormValues>({
     resolver: zodResolver(schema) as any,
     defaultValues: {
@@ -109,6 +111,12 @@ export default function BlogForm({
           v.storeId == null || Number.isNaN(v.storeId) || v.storeId === 0
             ? null
             : v.storeId,
+        categoryId:
+          v.categoryId == null ||
+          Number.isNaN(v.categoryId) ||
+          v.categoryId === 0
+            ? null
+            : v.categoryId,
         coverImg: coverImg || null,
         thumbnailImg: thumbnailImg || null,
       };
@@ -143,6 +151,32 @@ export default function BlogForm({
           </Field>
           <Field label="Image alt text">
             <Input {...register("imgAlt")} />
+          </Field>
+          <Field label="Category (optional)">
+            <Controller
+              control={control}
+              name="categoryId"
+              render={({ field }) => (
+                <Select
+                  value={field.value ? String(field.value) : "none"}
+                  onValueChange={(v) =>
+                    field.onChange(v === "none" ? null : Number(v))
+                  }
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="No category" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="none">No category</SelectItem>
+                    {categories.map((c) => (
+                      <SelectItem key={c.id} value={String(c.id)}>
+                        {c.categoryName}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
+            />
           </Field>
           <Field label="Store (optional)">
             <Controller

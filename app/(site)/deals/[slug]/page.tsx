@@ -5,6 +5,7 @@ import Banner from "@/components/Banner";
 import DealCard from "@/components/DealCard";
 import DealCTA from "./DealCTA";
 import { getOfferBySlug, getPublicOffers } from "@/server/db/queries/offers";
+import { breadcrumbJsonLd, offerJsonLd, renderJsonLd, SITE_URL } from "@/lib/seo";
 
 async function getData(slug: string) {
   const dealInfo = await getOfferBySlug(slug);
@@ -51,6 +52,33 @@ export default async function DealPage(
   if (!data) notFound();
   const { dealInfo, recommendedDeals } = data;
   const { store, affURL, title } = dealInfo;
+  const dealUrl = `${SITE_URL}/deals/${dealInfo.slug}`;
+  const breadcrumb = breadcrumbJsonLd([
+    { name: "Home", path: "/" },
+    { name: "Deals", path: "/deals" },
+    { name: store.storeName, path: `/stores/${store.slug}` },
+    { name: dealInfo.title, path: `/deals/${dealInfo.slug}` },
+  ]);
+  const offerLd = offerJsonLd({
+    name: dealInfo.title,
+    description: dealInfo.metaDescription ?? null,
+    url: dealUrl,
+    priceSpecification:
+      dealInfo.discountValue != null
+        ? {
+            discount: dealInfo.discountValue,
+            discountType:
+              dealInfo.discountType === "percentage" ? "percentage" : "flat",
+          }
+        : undefined,
+    validFrom: dealInfo.startDate,
+    validThrough: dealInfo.endDate,
+    seller: {
+      name: store.storeName,
+      url: store.storeURL ?? undefined,
+      logo: store.image,
+    },
+  });
 
   return (
     <>
@@ -99,6 +127,14 @@ export default async function DealPage(
           </div>
         </div>
       </div>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: renderJsonLd(breadcrumb) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: renderJsonLd(offerLd) }}
+      />
     </>
   );
 }

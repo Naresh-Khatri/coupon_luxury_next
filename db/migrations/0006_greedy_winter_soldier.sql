@@ -1,0 +1,2 @@
+ALTER TABLE "blog" ADD COLUMN "categoryId" integer;--> statement-breakpoint
+ALTER TABLE "blog" ADD CONSTRAINT "blog_categoryId_category_id_fk" FOREIGN KEY ("categoryId") REFERENCES "public"."category"("id") ON DELETE set null ON UPDATE no action;

@@ -11,6 +11,7 @@ import {
 } from "@/server/db/queries/categories";
 import { getPublicStores } from "@/server/db/queries/stores";
 import { getSelectedCountry } from "@/lib/country";
+import { breadcrumbJsonLd, renderJsonLd } from "@/lib/seo";
 
 async function getData(slug: string, country: string | null) {
   const [categoryInfo, featuredStores] = await Promise.all([
@@ -55,6 +56,11 @@ export default async function CategoryPage(
   const data = await getData(params.slug, country);
   if (!data) notFound();
   const { categoryInfo, featuredStores } = data;
+  const breadcrumb = breadcrumbJsonLd([
+    { name: "Home", path: "/" },
+    { name: "Categories", path: "/categories" },
+    { name: categoryInfo.categoryName, path: `/categories/${categoryInfo.slug}` },
+  ]);
 
   return (
     <div className="bg-[#e0e0e0] pb-5">
@@ -106,6 +112,10 @@ export default async function CategoryPage(
           </div>
         </div>
       </div>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: renderJsonLd(breadcrumb) }}
+      />
     </div>
   );
 }

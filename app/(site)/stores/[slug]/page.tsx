@@ -21,6 +21,7 @@ import {
   getSimilarStores,
 } from "@/server/db/queries/stores";
 import transformPath from "@/utils/transformImagePath";
+import { breadcrumbJsonLd, renderJsonLd } from "@/lib/seo";
 
 async function getData(slug: string) {
   const storeInfo = await getStoreBySlug(slug);
@@ -91,6 +92,11 @@ export default async function StorePage(props: {
         })),
       }
     : null;
+  const breadcrumb = breadcrumbJsonLd([
+    { name: "Home", path: "/" },
+    { name: "Stores", path: "/stores" },
+    { name: storeInfo.storeName, path: `/stores/${storeInfo.slug}` },
+  ]);
 
   const couponCount = storeInfo.offers.filter(
     (o) => o.offerType === "coupon"
@@ -250,10 +256,14 @@ export default async function StorePage(props: {
         )}
       </div>
 
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: renderJsonLd(breadcrumb) }}
+      />
       {faqJsonLd && (
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+          dangerouslySetInnerHTML={{ __html: renderJsonLd(faqJsonLd) }}
         />
       )}
     </div>

@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import BlogPreviewSmall from "@/components/BlogPreviewSmall";
 import ReadingProgress from "./ReadingProgress";
 import { getBlogBySlug, getPublicBlogs } from "@/server/db/queries/blogs";
+import { breadcrumbJsonLd, renderJsonLd } from "@/lib/seo";
 
 const months = [
   "January",
@@ -69,6 +70,11 @@ export default async function BlogPage(
   if (!data) notFound();
   const { blogData, allBlogs } = data;
   const { title, coverImg, fullDescription, imgAlt, createdAt } = blogData;
+  const breadcrumb = breadcrumbJsonLd([
+    { name: "Home", path: "/" },
+    { name: "Blogs", path: "/blogs" },
+    { name: title, path: `/blogs/${blogData.slug}` },
+  ]);
 
   return (
     <>
@@ -123,6 +129,10 @@ export default async function BlogPage(
           </aside>
         </div>
       </div>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: renderJsonLd(breadcrumb) }}
+      />
     </>
   );
 }

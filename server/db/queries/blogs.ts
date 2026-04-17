@@ -1,17 +1,21 @@
 import { db, s } from "@/db";
-import { desc, eq, sql } from "drizzle-orm";
+import { and, desc, eq, sql } from "drizzle-orm";
 import { cached, CACHE_TAGS } from "../cache";
 
 export const getPublicBlogs = cached(
-  async (limit: number = 50) =>
-    db.query.blogs.findMany({
-      where: eq(s.blogs.active, true),
+  async (limit: number = 50, categoryId?: number | null) => {
+    const conds = [eq(s.blogs.active, true)];
+    if (categoryId) conds.push(eq(s.blogs.categoryId, categoryId));
+    return db.query.blogs.findMany({
+      where: and(...conds),
       limit,
       orderBy: desc(s.blogs.updatedAt),
       with: {
         store: { columns: { id: true, storeName: true, slug: true } },
+        category: { columns: { id: true, categoryName: true, slug: true } },
       },
-    }),
+    });
+  },
   ["blogs:public"],
   [CACHE_TAGS.blogs]
 );
@@ -23,6 +27,7 @@ export const getBlogBySlug = (slug: string) =>
         where: eq(s.blogs.slug, slug),
         with: {
           store: { columns: { id: true, storeName: true, slug: true } },
+          category: { columns: { id: true, categoryName: true, slug: true } },
         },
       }),
     ["blog:slug", slug],
