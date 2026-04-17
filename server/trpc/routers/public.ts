@@ -8,6 +8,9 @@ import {
 import { searchOffersByTitle } from "@/server/db/queries/offers";
 import { addSubscriber } from "@/server/db/queries/misc";
 import { revalidate, CACHE_TAGS } from "@/server/db/cache";
+import { db, s } from "@/db";
+import { eq, sql } from "drizzle-orm";
+import { getSelectedCountry } from "@/lib/country";
 
 export const publicRouter = router({
   searchStores: publicProcedure
@@ -60,6 +63,23 @@ export const publicRouter = router({
         .optional()
     )
     .query(({ input }) => getPublicStores(input ?? {})),
+
+  trackOfferClick: publicProcedure
+    .input(z.object({ offerId: z.number().int().positive() }))
+    .mutation(async ({ input }) => {
+      const country = await getSelectedCountry();
+      await Promise.all([
+        db.insert(s.offerClicks).values({
+          offerId: input.offerId,
+          country: country ?? null,
+        }),
+        db
+          .update(s.offers)
+          .set({ uses: sql`${s.offers.uses} + 1` })
+          .where(eq(s.offers.id, input.offerId)),
+      ]);
+      return { ok: true };
+    }),
 
   subscribe: publicProcedure
     .input(z.object({ email: z.string().email() }))

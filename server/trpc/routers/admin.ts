@@ -24,6 +24,7 @@ import {
 import { getAllBlogs, getBlogCount } from "@/server/db/queries/blogs";
 import { getAllSlides, getAllSubscribers } from "@/server/db/queries/misc";
 import { getStoreCount } from "@/server/db/queries/stores";
+import { getAllCountries } from "@/server/db/queries/countries";
 
 // Optional URL that also accepts "" (coerced to null) so forms don't have to
 // scrub empty inputs before submitting.
@@ -52,11 +53,16 @@ const storeInput = z.object({
   storeURL: z.string().url(),
   image: z.string().url(),
   pageHTML: z.string(),
+  howToUse: z.array(z.string().min(1)).nullish(),
+  faqs: z
+    .array(z.object({ q: z.string().min(1), a: z.string().min(1) }))
+    .nullish(),
   country: z.string().min(1),
   categoryId: z.number().int(),
   subCategoryId: z.number().int(),
   active: z.boolean().default(false),
   featured: z.boolean().default(false),
+  storeOfTheMonth: z.boolean().default(false),
   ...metaFields,
 });
 
@@ -117,6 +123,19 @@ const blogInput = z.object({
   active: z.boolean().default(false),
   featured: z.boolean().default(false),
   ...metaFields,
+});
+
+const countryInput = z.object({
+  code: z
+    .string()
+    .min(2)
+    .max(16)
+    .regex(/^[a-z0-9-]+$/, "lowercase letters, digits and dashes only"),
+  name: z.string().min(1),
+  flagEmoji: z.string().nullish(),
+  currency: z.string().nullish(),
+  sortOrder: z.number().int().default(0),
+  active: z.boolean().default(true),
 });
 
 const slideInput = z.object({
@@ -345,6 +364,38 @@ export const adminRouter = router({
           CACHE_TAGS.main
         );
         return { ok: true };
+      }),
+    verify: adminProcedure
+      .input(z.number().int())
+      .mutation(async ({ input }) => {
+        const existing = await db.query.offers.findFirst({
+          where: eq(s.offers.id, input),
+        });
+        if (!existing) throw new TRPCError({ code: "NOT_FOUND" });
+        const now = new Date();
+        const [row] = await db
+          .update(s.offers)
+          .set({ verifiedAt: now, updatedAt: now })
+          .where(eq(s.offers.id, input))
+          .returning();
+        revalidate(
+          CACHE_TAGS.offers,
+          CACHE_TAGS.offer(existing.slug),
+          CACHE_TAGS.store(existing.storeId ? `${existing.storeId}` : "_"),
+          CACHE_TAGS.main
+        );
+        return row;
+      }),
+    verifyAllForStore: adminProcedure
+      .input(z.number().int())
+      .mutation(async ({ input }) => {
+        const now = new Date();
+        await db
+          .update(s.offers)
+          .set({ verifiedAt: now, updatedAt: now })
+          .where(eq(s.offers.storeId, input));
+        revalidate(CACHE_TAGS.offers, CACHE_TAGS.stores, CACHE_TAGS.main);
+        return { ok: true, verifiedAt: now };
       }),
   }),
 
@@ -699,6 +750,64 @@ export const adminRouter = router({
           )
         );
         revalidate(CACHE_TAGS.slides, CACHE_TAGS.main);
+        return { ok: true };
+      }),
+  }),
+
+  // ---------- Countries ----------
+  countries: router({
+    list: adminProcedure.query(() => getAllCountries()),
+    byCode: adminProcedure
+      .input(z.string())
+      .query(({ input }) =>
+        db.query.countries.findFirst({ where: eq(s.countries.code, input) })
+      ),
+    create: adminProcedure
+      .input(countryInput)
+      .mutation(async ({ input }) => {
+        const [row] = await db
+          .insert(s.countries)
+          .values(input)
+          .returning();
+        revalidate(CACHE_TAGS.countries);
+        return row;
+      }),
+    update: adminProcedure
+      .input(
+        z.object({ code: z.string(), data: countryInput.partial() })
+      )
+      .mutation(async ({ input }) => {
+        const existing = await db.query.countries.findFirst({
+          where: eq(s.countries.code, input.code),
+        });
+        if (!existing) throw new TRPCError({ code: "NOT_FOUND" });
+        const [row] = await db
+          .update(s.countries)
+          .set({ ...input.data, updatedAt: new Date() })
+          .where(eq(s.countries.code, input.code))
+          .returning();
+        revalidate(CACHE_TAGS.countries, CACHE_TAGS.stores, CACHE_TAGS.offers);
+        return row;
+      }),
+    delete: adminProcedure
+      .input(z.string())
+      .mutation(async ({ input }) => {
+        const [inUseStore] = await db
+          .select({ count: sql<number>`count(*)::int` })
+          .from(s.stores)
+          .where(eq(s.stores.country, input));
+        const [inUseOffer] = await db
+          .select({ count: sql<number>`count(*)::int` })
+          .from(s.offers)
+          .where(eq(s.offers.country, input));
+        if ((inUseStore?.count ?? 0) + (inUseOffer?.count ?? 0) > 0) {
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: "Country is still referenced by stores or offers.",
+          });
+        }
+        await db.delete(s.countries).where(eq(s.countries.code, input));
+        revalidate(CACHE_TAGS.countries);
         return { ok: true };
       }),
   }),

@@ -1,18 +1,26 @@
 import { db, s } from "@/db";
-import { eq } from "drizzle-orm";
+import { asc, eq } from "drizzle-orm";
 import { cached, CACHE_TAGS } from "../cache";
 
-export const getDistinctCountries = cached(
+export const getActiveCountries = cached(
   async () => {
-    const rows = await db
-      .selectDistinct({ country: s.stores.country })
-      .from(s.stores)
-      .where(eq(s.stores.active, true));
-    return rows
-      .map((r) => r.country)
-      .filter((c): c is string => Boolean(c && c.trim()))
-      .sort((a, b) => a.localeCompare(b));
+    return db
+      .select({
+        code: s.countries.code,
+        name: s.countries.name,
+        flagEmoji: s.countries.flagEmoji,
+      })
+      .from(s.countries)
+      .where(eq(s.countries.active, true))
+      .orderBy(asc(s.countries.sortOrder), asc(s.countries.name));
   },
-  ["countries:distinct"],
-  [CACHE_TAGS.stores]
+  ["countries:active"],
+  [CACHE_TAGS.countries]
 );
+
+export async function getAllCountries() {
+  return db
+    .select()
+    .from(s.countries)
+    .orderBy(asc(s.countries.sortOrder), asc(s.countries.name));
+}

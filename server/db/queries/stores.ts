@@ -1,5 +1,5 @@
 import { db, s } from "@/db";
-import { and, asc, desc, eq, ilike, sql } from "drizzle-orm";
+import { and, asc, desc, eq, ilike, ne, sql } from "drizzle-orm";
 import { cached, CACHE_TAGS } from "../cache";
 
 const publicStoreCols = {
@@ -58,6 +58,81 @@ export const getStoreBySlug = (slug: string) =>
       }),
     ["store:slug", slug],
     [CACHE_TAGS.stores, CACHE_TAGS.store(slug)]
+  )();
+
+export const getSimilarStores = (opts: {
+  categoryId: number;
+  excludeId: number;
+  country?: string | null;
+  limit?: number;
+}) =>
+  cached(
+    async () => {
+      const limit = opts.limit ?? 8;
+      const conds = [
+        eq(s.stores.active, true),
+        eq(s.stores.categoryId, opts.categoryId),
+        ne(s.stores.id, opts.excludeId),
+      ];
+      if (opts.country) conds.push(eq(s.stores.country, opts.country));
+      return db.query.stores.findMany({
+        where: and(...conds),
+        limit,
+        orderBy: [desc(s.stores.featured), asc(s.stores.storeName)],
+        columns: {
+          id: true,
+          storeName: true,
+          slug: true,
+          image: true,
+        },
+      });
+    },
+    [
+      "stores:similar",
+      String(opts.categoryId),
+      String(opts.excludeId),
+      opts.country ?? "any",
+      String(opts.limit ?? 8),
+    ],
+    [CACHE_TAGS.stores]
+  )();
+
+export const getTopStoresForOffers = (opts: {
+  offerType?: "deal" | "coupon";
+  country?: string | null;
+  limit?: number;
+}) =>
+  cached(
+    async () => {
+      const limit = opts.limit ?? 10;
+      const conds = [eq(s.offers.active, true)];
+      if (opts.offerType) conds.push(eq(s.offers.offerType, opts.offerType));
+      if (opts.country) conds.push(eq(s.offers.country, opts.country));
+      return db
+        .select({
+          id: s.stores.id,
+          storeName: s.stores.storeName,
+          slug: s.stores.slug,
+          image: s.stores.image,
+          offerCount: sql<number>`count(${s.offers.id})::int`,
+        })
+        .from(s.stores)
+        .innerJoin(s.offers, eq(s.offers.storeId, s.stores.id))
+        .where(and(eq(s.stores.active, true), ...conds))
+        .groupBy(s.stores.id)
+        .orderBy(
+          desc(sql`count(${s.offers.id})`),
+          asc(s.stores.storeName)
+        )
+        .limit(limit);
+    },
+    [
+      "stores:top",
+      opts.offerType ?? "any",
+      opts.country ?? "any",
+      String(opts.limit ?? 10),
+    ],
+    [CACHE_TAGS.stores, CACHE_TAGS.offers]
   )();
 
 export async function getAllStores() {

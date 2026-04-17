@@ -12,6 +12,7 @@ export const CACHE_TAGS = {
   blog: (slug: string) => `blog:${slug}`,
   slides: "slides",
   subscribers: "subscribers",
+  countries: "countries",
   main: "main",
   sitemap: "sitemap",
 } as const;

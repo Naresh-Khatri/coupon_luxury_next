@@ -111,6 +111,8 @@ export const getOffersList = cached(
           offerType: true,
           endDate: true,
           categoryId: true,
+          uses: true,
+          verifiedAt: true,
         },
         with: {
           store: {
