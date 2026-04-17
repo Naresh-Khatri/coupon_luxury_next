@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { Copy, Check, ArrowUpRight, ShieldCheck } from "lucide-react";
+import { Copy, Check, ArrowUpRight } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 
@@ -18,7 +18,6 @@ export default function CouponReveal({
   slug,
   couponCode,
   storeName,
-  storeURL,
   verified,
 }: Props) {
   const [copied, setCopied] = useState(false);
@@ -35,24 +34,31 @@ export default function CouponReveal({
   };
 
   return (
-    <div className="mx-auto w-full max-w-2xl rounded-2xl border border-emerald-500/30 bg-card p-6 shadow-sm md:p-8">
-      <p className="text-sm text-muted-foreground">Use this coupon code at checkout:</p>
+    <div className="w-full space-y-5">
+      <p className="text-center text-[11px] font-bold uppercase tracking-[0.22em] text-gold/80">
+        Use this coupon code at checkout
+      </p>
 
-      <div
+      <button
+        type="button"
+        onClick={copy}
+        aria-label="Copy coupon code"
         className={cn(
-          "mt-4 flex items-stretch overflow-hidden rounded-lg border-2 border-dashed transition-all",
-          copied ? "border-teal bg-teal/5" : "border-gold/50 bg-gold/5"
+          "group relative flex w-full items-stretch overflow-hidden rounded-xl border-2 border-dashed transition-all",
+          copied
+            ? "border-emerald-400/60 bg-emerald-400/5"
+            : "border-gold/50 bg-gold/5 hover:border-gold hover:bg-gold/10"
         )}
       >
-        <span className="flex flex-1 items-center justify-center px-4 py-6 font-mono text-3xl font-extrabold tracking-wider text-foreground md:text-4xl">
+        <span className="flex flex-1 items-center justify-center px-4 py-7 font-mono text-2xl font-bold tracking-[0.12em] text-foreground md:text-3xl">
           {couponCode}
         </span>
-        <button
-          type="button"
-          onClick={copy}
+        <span
           className={cn(
-            "flex items-center gap-2 px-6 text-sm font-bold uppercase tracking-wider text-white transition-colors",
-            copied ? "bg-teal" : "bg-gold hover:bg-gold-light"
+            "flex shrink-0 items-center gap-2 px-6 text-[11px] font-bold uppercase tracking-[0.18em] transition-colors",
+            copied
+              ? "bg-emerald-400/90 text-navy"
+              : "bg-gold text-navy group-hover:bg-gold-light"
           )}
         >
           {copied ? (
@@ -61,25 +67,28 @@ export default function CouponReveal({
             </>
           ) : (
             <>
-              <Copy className="size-4" /> Copy Code
+              <Copy className="size-4" /> Copy
+              <br className="md:hidden" /> code
             </>
           )}
-        </button>
-      </div>
+        </span>
+      </button>
 
-      <div className="mt-6 flex flex-col items-center gap-3 text-center">
+      <div className="flex flex-col items-center gap-2">
         <Link
           href={`/redeem/${slug}`}
-          className="inline-flex items-center gap-1.5 text-base font-semibold text-gold underline-offset-4 hover:underline"
+          className="group inline-flex items-center gap-1.5 text-sm font-semibold text-gold underline-offset-4 hover:text-gold-light hover:underline"
         >
-          Go To {storeName}
-          <ArrowUpRight className="size-4" />
+          Go to {storeName}
+          <ArrowUpRight className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
         </Link>
-        {storeURL ? null : null}
         {verified && (
-          <div className="flex items-center gap-1.5 text-sm text-emerald-600">
-            <ShieldCheck className="size-4" />
-            <span>Verified</span>
+          <div className="flex items-center gap-3 text-[11px] font-medium uppercase tracking-[0.16em] text-muted-foreground">
+            <span className="inline-flex items-center gap-1">
+              <span className="size-1.5 rounded-full bg-emerald-400" /> Verified
+            </span>
+            <span className="text-border">•</span>
+            <span>All users</span>
           </div>
         )}
       </div>

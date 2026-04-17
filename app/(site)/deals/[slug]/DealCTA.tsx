@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { ArrowUpRight } from "lucide-react";
 import { toast } from "sonner";
 import Confetti from "@/components/Confetti";
 
@@ -17,18 +18,18 @@ export default function DealCTA({ affURL }: { affURL: string }) {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center">
+    <div className="flex w-full flex-col items-center gap-4">
       {clicked && <Confetti />}
       <button
         type="button"
         onClick={handleClick}
-        className="mb-5 inline-flex h-[63px] w-[156px] items-center justify-center rounded-md bg-brand-900 px-5 text-xl font-semibold text-white shadow-xl transition-colors hover:bg-brand-800"
-        style={{ boxShadow: "0px 10px 33px -3px rgba(42, 129, 251, 0.5)" }}
+        className="group inline-flex items-center justify-center gap-2 rounded-md bg-gold px-10 py-4 text-sm font-bold uppercase tracking-[0.2em] text-navy shadow-[0_12px_40px_-12px_rgba(196,154,60,0.6)] transition-all hover:bg-gold-light hover:shadow-[0_16px_48px_-12px_rgba(232,197,106,0.7)]"
       >
-        GET DEAL
+        Activate Deal
+        <ArrowUpRight className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
       </button>
       {clicked && (
-        <p className="text-sm"> Deal applied in new tab!</p>
+        <p className="text-xs text-muted-foreground">Redirecting to store…</p>
       )}
     </div>
   );
