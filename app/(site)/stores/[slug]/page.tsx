@@ -4,17 +4,16 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
   ChevronRight,
-  ExternalLink,
   Home as HomeIcon,
-  Ticket,
-  Tag,
   ShieldCheck,
+  Star,
 } from "lucide-react";
 import RecommendedStores from "@/components/RecommendedStores";
 import StoreOffers from "./StoreOffers";
 import StoreHowToUse from "./StoreHowToUse";
 import StoreFaqs from "./StoreFaqs";
 import SimilarStores from "./SimilarStores";
+import StoreCodesSummary from "./StoreCodesSummary";
 import {
   getStoreBySlug,
   getPublicStores,
@@ -62,14 +61,6 @@ export async function generateMetadata(props: {
 function monthYear() {
   const d = new Date();
   return `${d.toLocaleString("default", { month: "long" })} ${d.getFullYear()}`;
-}
-
-function hostFromUrl(url: string): string {
-  try {
-    return new URL(url).host.replace(/^www\./, "");
-  } catch {
-    return url;
-  }
 }
 
 export default async function StorePage(props: {
@@ -120,80 +111,91 @@ export default async function StorePage(props: {
   return (
     <div className="bg-cream">
       {/* Hero */}
-      <section className="banner-bg relative overflow-hidden">
-        <div className="relative mx-auto max-w-[1280px] px-4 py-10 md:px-6 md:py-14">
+      <section className="border-b border-gray-200 bg-white">
+        <div className="mx-auto max-w-[1280px] px-4 py-6 md:px-6 md:py-8">
           <nav
             aria-label="Breadcrumb"
-            className="mb-6 flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-[0.14em] text-white/70"
+            className="mb-4 flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-[0.14em] text-gray-500"
           >
             <Link
               href="/"
-              className="inline-flex items-center gap-1 transition-colors hover:text-gold"
+              className="inline-flex items-center gap-1 transition-colors hover:text-brand-900"
             >
               <HomeIcon className="size-3" />
               Home
             </Link>
-            <ChevronRight className="size-3 text-white/40" />
+            <ChevronRight className="size-3 text-gray-300" />
             <Link
               href="/stores"
-              className="transition-colors hover:text-gold"
+              className="transition-colors hover:text-brand-900"
             >
               Stores
             </Link>
-            <ChevronRight className="size-3 text-white/40" />
-            <span className="text-gold">{storeInfo.storeName}</span>
+            <ChevronRight className="size-3 text-gray-300" />
+            <span className="text-navy">{storeInfo.storeName}</span>
           </nav>
 
-          <div className="flex flex-col gap-6 md:flex-row md:items-center md:gap-8">
-            <div className="flex size-24 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-white/15 bg-white shadow-xl md:size-28">
+          <div className="flex flex-col gap-5 md:flex-row md:items-center md:gap-6">
+            <div className="flex size-20 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm md:size-24">
               <Image
                 src={transformPath(storeInfo.image, 240)}
                 alt={`${storeInfo.storeName} logo`}
                 width={120}
                 height={120}
                 priority
-                className="max-h-[72px] w-auto max-w-[80%] object-contain md:max-h-[80px]"
+                className="max-h-[64px] w-auto max-w-[80%] object-contain md:max-h-[72px]"
               />
             </div>
 
             <div className="min-w-0 flex-1">
-              {storeInfo.category?.categoryName && (
-                <Link
-                  href={`/categories/${storeInfo.category.slug}`}
-                  className="inline-flex items-center gap-1 rounded-full border border-gold/40 bg-gold/10 px-2.5 py-0.5 text-[10.5px] font-medium uppercase tracking-[0.16em] text-gold transition-colors hover:bg-gold/20"
-                >
-                  {storeInfo.category.categoryName}
-                </Link>
-              )}
-              <h1 className="mt-2 text-3xl font-bold tracking-tight text-white md:text-4xl">
-                {storeInfo.storeName} Coupons & Deals
-              </h1>
-              <p className="mt-1 text-[13px] text-white/60">
-                Updated for {monthYear()}
-                {lastValidatedLabel && (
+              <div className="flex flex-wrap items-center gap-2">
+                <h1 className="text-2xl font-bold tracking-tight text-navy md:text-3xl">
+                  {storeInfo.storeName} Coupons &amp; Offers
+                </h1>
+                {storeInfo.category?.categoryName && (
+                  <Link
+                    href={`/categories/${storeInfo.category.slug}`}
+                    className="inline-flex items-center gap-1 rounded-full border border-gold/40 bg-gold/10 px-2.5 py-0.5 text-[10.5px] font-medium uppercase tracking-[0.14em] text-navy transition-colors hover:bg-gold/20"
+                  >
+                    {storeInfo.category.categoryName}
+                  </Link>
+                )}
+              </div>
+
+              <p className="mt-2 text-[13px] text-gray-600">
+                Best{" "}
+                <span className="font-semibold text-navy">
+                  {storeInfo.offers.length}
+                </span>{" "}
+                coupons &amp; offers
+                {lastValidatedLabel ? (
                   <>
-                    {" · "}
-                    <span className="inline-flex items-center gap-1 text-emerald-300">
-                      <ShieldCheck className="size-3.5" />
-                      Last validated on {lastValidatedLabel}
+                    {" "}validated on{" "}
+                    <span className="font-semibold text-navy">
+                      {lastValidatedLabel}
                     </span>
                   </>
+                ) : (
+                  <> for {monthYear()}</>
                 )}
               </p>
 
-              <div className="mt-4 flex flex-wrap items-center gap-2">
-                <Stat icon={<Ticket className="size-3.5" />} label="Coupons" value={couponCount} />
-                <Stat icon={<Tag className="size-3.5" />} label="Deals" value={dealCount} />
-                {storeInfo.storeURL && (
-                  <a
-                    href={storeInfo.storeURL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 rounded-full bg-gold px-3.5 py-1 text-[12px] font-semibold text-navy transition-colors hover:bg-gold-light"
-                  >
-                    Visit {hostFromUrl(storeInfo.storeURL)}
-                    <ExternalLink className="size-3" />
-                  </a>
+              <div className="mt-3 flex flex-wrap items-center gap-4">
+                <div className="inline-flex items-center gap-1.5">
+                  <Stars value={4.5} />
+                  <span className="text-[12px] font-medium text-gray-600">
+                    4.5 &middot; Rate this store
+                  </span>
+                </div>
+                <span className="inline-flex items-center gap-1 text-[12px] text-gray-500">
+                  <Pill>{couponCount} Coupons</Pill>
+                  <Pill>{dealCount} Deals</Pill>
+                </span>
+                {lastValidatedLabel && (
+                  <span className="inline-flex items-center gap-1 text-[11.5px] font-medium text-emerald-600">
+                    <ShieldCheck className="size-3.5" />
+                    Verified today
+                  </span>
                 )}
               </div>
             </div>
@@ -201,10 +203,12 @@ export default async function StorePage(props: {
         </div>
       </section>
 
-      {/* Offers */}
+      {/* Body */}
       <div className="mx-auto max-w-[1280px] px-4 py-8 md:px-6">
         <StoreOffers
-          offers={storeInfo.offers as React.ComponentProps<typeof StoreOffers>["offers"]}
+          offers={
+            storeInfo.offers as React.ComponentProps<typeof StoreOffers>["offers"]
+          }
           store={{
             storeName: storeInfo.storeName,
             slug: storeInfo.slug,
@@ -212,17 +216,25 @@ export default async function StorePage(props: {
           }}
         />
 
+        {storeInfo.offers.length > 0 && (
+          <div className="mt-12">
+            <StoreCodesSummary
+              offers={storeInfo.offers}
+              storeName={storeInfo.storeName}
+            />
+          </div>
+        )}
+
         {howToUse.length > 0 && (
           <div className="mt-12">
             <StoreHowToUse steps={howToUse} storeName={storeInfo.storeName} />
           </div>
         )}
 
-        {/* About */}
         {storeInfo.pageHTML?.trim() && (
           <section className="mt-12 overflow-hidden rounded-2xl border border-gray-200 bg-white">
             <div className="border-b border-gray-100 px-6 py-4 md:px-8">
-              <h2 className="text-[11px] font-bold uppercase tracking-[0.18em] text-gray-500">
+              <h2 className="text-[14px] font-bold text-navy">
                 About {storeInfo.storeName}
               </h2>
             </div>
@@ -248,7 +260,6 @@ export default async function StorePage(props: {
           </div>
         )}
 
-        {/* Recommended */}
         {featuredStores.length > 0 && (
           <div className="mt-12">
             <RecommendedStores stores={featuredStores} />
@@ -270,20 +281,32 @@ export default async function StorePage(props: {
   );
 }
 
-function Stat({
-  icon,
-  label,
-  value,
-}: {
-  icon: React.ReactNode;
-  label: string;
-  value: number;
-}) {
+function Pill({ children }: { children: React.ReactNode }) {
   return (
-    <span className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/5 px-3 py-1 text-[12px] text-white/80 backdrop-blur-sm">
-      <span className="text-gold">{icon}</span>
-      <span className="font-semibold text-white">{value}</span>
-      <span className="text-white/60">{label}</span>
+    <span className="inline-flex items-center gap-1 rounded-full border border-gray-200 bg-white px-2.5 py-0.5 text-[11.5px] font-medium text-gray-700">
+      {children}
+    </span>
+  );
+}
+
+function Stars({ value }: { value: number }) {
+  const full = Math.floor(value);
+  const half = value - full >= 0.5;
+  return (
+    <span className="inline-flex items-center">
+      {Array.from({ length: 5 }).map((_, i) => {
+        const filled = i < full || (i === full && half);
+        return (
+          <Star
+            key={i}
+            className={
+              filled
+                ? "size-3.5 fill-gold text-gold"
+                : "size-3.5 fill-gray-200 text-gray-200"
+            }
+          />
+        );
+      })}
     </span>
   );
 }

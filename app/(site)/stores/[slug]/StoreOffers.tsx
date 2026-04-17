@@ -1,15 +1,21 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Search as SearchIcon } from "lucide-react";
-import OfferCard, { type OfferCardData } from "@/components/offers/OfferCard";
+import {
+  ChevronDown,
+  Filter,
+  Search as SearchIcon,
+  SlidersHorizontal,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
+import StoreOfferRow, { type StoreOfferRowData } from "./StoreOfferRow";
 
-type StoreOffer = OfferCardData & { offerType: string };
+type StoreOffer = StoreOfferRowData & { offerType: string };
 
 type Store = { storeName: string; slug: string; image: string };
 
-type Tab = "all" | "fresh" | "coupons" | "deals";
+type TypeFilter = "all" | "coupons" | "deals";
+type Sort = "recommended" | "newest" | "popular" | "expiring";
 
 const FRESH_WINDOW_DAYS = 14;
 
@@ -21,6 +27,19 @@ function isFresh(o: StoreOffer): boolean {
   return days <= FRESH_WINDOW_DAYS;
 }
 
+function endTime(d?: string | null): number {
+  if (!d) return Number.POSITIVE_INFINITY;
+  const t = new Date(d).getTime();
+  return Number.isFinite(t) ? t : Number.POSITIVE_INFINITY;
+}
+
+function verifiedTime(v?: Date | string | null): number {
+  if (!v) return 0;
+  const d = v instanceof Date ? v : new Date(v);
+  const t = d.getTime();
+  return Number.isFinite(t) ? t : 0;
+}
+
 export default function StoreOffers({
   offers,
   store,
@@ -28,97 +47,292 @@ export default function StoreOffers({
   offers: StoreOffer[];
   store: Store;
 }) {
-  const [tab, setTab] = useState<Tab>("all");
+  const [type, setType] = useState<TypeFilter>("all");
+  const [sort, setSort] = useState<Sort>("recommended");
+  const [verifiedOnly, setVerifiedOnly] = useState(false);
+  const [exclusiveOnly, setExclusiveOnly] = useState(false);
+  const [freshOnly, setFreshOnly] = useState(false);
+  const [railOpen, setRailOpen] = useState(false);
 
-  const { coupons, deals, fresh } = useMemo(() => {
-    const coupons = offers.filter((o) => o.offerType === "coupon");
-    const deals = offers.filter((o) => o.offerType !== "coupon");
-    const fresh = offers.filter(isFresh);
-    return { coupons, deals, fresh };
+  const activeFilterCount =
+    (type !== "all" ? 1 : 0) +
+    (sort !== "recommended" ? 1 : 0) +
+    (verifiedOnly ? 1 : 0) +
+    (exclusiveOnly ? 1 : 0) +
+    (freshOnly ? 1 : 0);
+
+  const counts = useMemo(() => {
+    const coupons = offers.filter((o) => o.offerType === "coupon").length;
+    const deals = offers.length - coupons;
+    const verified = offers.filter((o) => !!o.verifiedAt).length;
+    const exclusive = offers.filter((o) => !!o.featured).length;
+    const fresh = offers.filter(isFresh).length;
+    return { all: offers.length, coupons, deals, verified, exclusive, fresh };
   }, [offers]);
 
-  const filtered =
-    tab === "coupons"
-      ? coupons
-      : tab === "deals"
-        ? deals
-        : tab === "fresh"
-          ? fresh
-          : offers;
+  const filtered = useMemo(() => {
+    let list = offers.slice();
+    if (type === "coupons") list = list.filter((o) => o.offerType === "coupon");
+    else if (type === "deals")
+      list = list.filter((o) => o.offerType !== "coupon");
+    if (verifiedOnly) list = list.filter((o) => !!o.verifiedAt);
+    if (exclusiveOnly) list = list.filter((o) => !!o.featured);
+    if (freshOnly) list = list.filter(isFresh);
 
-  const tabs: Array<{ id: Tab; label: string; count: number }> = [
-    { id: "all", label: "All", count: offers.length },
-    { id: "fresh", label: "Fresh", count: fresh.length },
-    { id: "coupons", label: "Coupons", count: coupons.length },
-    { id: "deals", label: "Deals", count: deals.length },
+    switch (sort) {
+      case "newest":
+        list.sort((a, b) => verifiedTime(b.verifiedAt) - verifiedTime(a.verifiedAt));
+        break;
+      case "popular":
+        list.sort((a, b) => (b.uses ?? 0) - (a.uses ?? 0));
+        break;
+      case "expiring":
+        list.sort((a, b) => endTime(a.endDate) - endTime(b.endDate));
+        break;
+      default:
+        list.sort((a, b) => {
+          const af = a.featured ? 1 : 0;
+          const bf = b.featured ? 1 : 0;
+          if (bf !== af) return bf - af;
+          return verifiedTime(b.verifiedAt) - verifiedTime(a.verifiedAt);
+        });
+    }
+    return list;
+  }, [offers, type, sort, verifiedOnly, exclusiveOnly, freshOnly]);
+
+  const typeTabs: Array<{ id: TypeFilter; label: string; count: number }> = [
+    { id: "all", label: "All", count: counts.all },
+    { id: "coupons", label: "Coupons", count: counts.coupons },
+    { id: "deals", label: "Deals", count: counts.deals },
+  ];
+
+  const sortOptions: Array<{ id: Sort; label: string }> = [
+    { id: "recommended", label: "Recommended" },
+    { id: "newest", label: "Newly added" },
+    { id: "popular", label: "Most used" },
+    { id: "expiring", label: "Expiring soon" },
   ];
 
   return (
-    <section className="flex flex-col gap-5">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div
-          role="tablist"
-          aria-label="Filter offers"
-          className="inline-flex rounded-full border border-gray-200 bg-white p-1 shadow-sm"
-        >
-          {tabs.map((t) => {
-            const active = tab === t.id;
-            return (
-              <button
-                key={t.id}
-                role="tab"
-                aria-selected={active}
-                type="button"
-                onClick={() => setTab(t.id)}
-                className={cn(
-                  "inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 text-[13px] font-medium transition-colors",
-                  active
-                    ? "bg-navy text-white"
-                    : "text-gray-600 hover:text-navy"
-                )}
-              >
-                {t.label}
-                <span
+    <section className="grid gap-6 lg:grid-cols-[240px_1fr]">
+      {/* Filter rail */}
+      <aside className="lg:sticky lg:top-24 lg:self-start">
+        <div className="overflow-hidden rounded-xl border border-gray-200 bg-white">
+          <button
+            type="button"
+            onClick={() => setRailOpen((v) => !v)}
+            aria-expanded={railOpen}
+            aria-controls="store-filter-body"
+            className="flex w-full items-center justify-between gap-2 border-b border-gray-100 px-4 py-3 text-left lg:pointer-events-none lg:cursor-default"
+          >
+            <span className="inline-flex items-center gap-2">
+              <Filter className="size-4 text-gray-500" />
+              <span className="text-[11px] font-bold uppercase tracking-[0.16em] text-gray-500">
+                Filters
+              </span>
+              {activeFilterCount > 0 && (
+                <span className="inline-flex size-5 items-center justify-center rounded-full bg-gold/20 text-[10.5px] font-bold text-navy lg:hidden">
+                  {activeFilterCount}
+                </span>
+              )}
+            </span>
+            <ChevronDown
+              className={cn(
+                "size-4 text-gray-500 transition-transform lg:hidden",
+                railOpen && "rotate-180"
+              )}
+            />
+          </button>
+
+          <div
+            id="store-filter-body"
+            className={cn(
+              "lg:block",
+              railOpen ? "block" : "hidden"
+            )}
+          >
+            <div className="px-4 py-4">
+            <h3 className="text-[10.5px] font-bold uppercase tracking-[0.14em] text-gray-500">
+              Categories
+            </h3>
+            <div className="mt-2 flex flex-col">
+              {typeTabs.map((t) => {
+                const active = type === t.id;
+                return (
+                  <button
+                    key={t.id}
+                    type="button"
+                    onClick={() => setType(t.id)}
+                    className={cn(
+                      "flex items-center justify-between rounded-md px-2.5 py-1.5 text-[13px] transition-colors",
+                      active
+                        ? "bg-gold/15 font-semibold text-navy"
+                        : "text-gray-600 hover:bg-gray-50"
+                    )}
+                  >
+                    <span>{t.label}</span>
+                    <span className="text-[11px] text-gray-400">{t.count}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="border-t border-gray-100 px-4 py-4">
+            <div className="flex items-center gap-1.5">
+              <SlidersHorizontal className="size-3.5 text-gray-500" />
+              <h3 className="text-[10.5px] font-bold uppercase tracking-[0.14em] text-gray-500">
+                Sort by
+              </h3>
+            </div>
+            <div className="mt-2 flex flex-col gap-1">
+              {sortOptions.map((s) => (
+                <label
+                  key={s.id}
                   className={cn(
-                    "text-[11px]",
-                    active ? "text-white/70" : "text-gray-400"
+                    "flex cursor-pointer items-center gap-2 rounded-md px-2 py-1.5 text-[13px]",
+                    sort === s.id
+                      ? "bg-gold/10 font-semibold text-navy"
+                      : "text-gray-600 hover:bg-gray-50"
                   )}
                 >
-                  {t.count}
-                </span>
-              </button>
-            );
-          })}
-        </div>
-        <p className="text-[12.5px] text-gray-500">
-          Showing{" "}
-          <span className="font-semibold text-navy">{filtered.length}</span>{" "}
-          {tab === "all" ? "offers" : tab}
-        </p>
-      </div>
-
-      {filtered.length === 0 ? (
-        <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-gray-300 bg-white py-16 text-center">
-          <div className="mb-3 flex size-12 items-center justify-center rounded-full bg-gold/10">
-            <SearchIcon className="size-5 text-gold" />
+                  <input
+                    type="radio"
+                    name="sort"
+                    className="accent-gold"
+                    checked={sort === s.id}
+                    onChange={() => setSort(s.id)}
+                  />
+                  {s.label}
+                </label>
+              ))}
+            </div>
           </div>
-          <h3 className="text-base font-bold text-navy">
-            No {tab === "all" ? "offers" : tab} right now
-          </h3>
-          <p className="mt-1 max-w-[320px] text-sm text-gray-500">
-            Check back soon — fresh savings drop often.
+
+          <div className="border-t border-gray-100 px-4 py-4">
+            <h3 className="text-[10.5px] font-bold uppercase tracking-[0.14em] text-gray-500">
+              Coupons info
+            </h3>
+            <div className="mt-2 flex flex-col gap-1">
+              <CheckRow
+                label="Verified"
+                count={counts.verified}
+                checked={verifiedOnly}
+                onChange={setVerifiedOnly}
+              />
+              <CheckRow
+                label="Exclusive"
+                count={counts.exclusive}
+                checked={exclusiveOnly}
+                onChange={setExclusiveOnly}
+              />
+              <CheckRow
+                label={`Fresh (${FRESH_WINDOW_DAYS}d)`}
+                count={counts.fresh}
+                checked={freshOnly}
+                onChange={setFreshOnly}
+              />
+            </div>
+          </div>
+          </div>
+        </div>
+      </aside>
+
+      {/* Offers list */}
+      <div className="flex flex-col gap-4">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div className="flex flex-wrap items-center gap-1.5">
+            {typeTabs.map((t) => {
+              const active = type === t.id;
+              return (
+                <button
+                  key={t.id}
+                  type="button"
+                  onClick={() => setType(t.id)}
+                  className={cn(
+                    "inline-flex items-center gap-1.5 rounded-full border px-4 py-1.5 text-[12.5px] font-medium transition-colors",
+                    active
+                      ? "border-navy bg-navy text-white"
+                      : "border-gray-200 bg-white text-gray-600 hover:border-gold/60 hover:text-navy"
+                  )}
+                >
+                  {t.label}
+                  <span
+                    className={cn(
+                      "text-[11px]",
+                      active ? "text-white/70" : "text-gray-400"
+                    )}
+                  >
+                    {t.count}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+          <p className="text-[12px] text-gray-500">
+            Showing{" "}
+            <span className="font-semibold text-navy">{filtered.length}</span>{" "}
+            {type === "all" ? "offers" : type}
+            {store.storeName ? ` from ${store.storeName}` : ""}
           </p>
         </div>
-      ) : (
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:gap-4 lg:grid-cols-3">
-          {filtered.map((offer) => (
-            <OfferCard
-              key={offer.id}
-              offer={{ ...offer, store }}
-            />
-          ))}
-        </div>
-      )}
+
+        {filtered.length === 0 ? (
+          <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-gray-300 bg-white py-16 text-center">
+            <div className="mb-3 flex size-12 items-center justify-center rounded-full bg-gold/10">
+              <SearchIcon className="size-5 text-gold" />
+            </div>
+            <h3 className="text-base font-bold text-navy">
+              No matching offers
+            </h3>
+            <p className="mt-1 max-w-[320px] text-sm text-gray-500">
+              Try clearing a filter or switching to another category.
+            </p>
+          </div>
+        ) : (
+          <div className="flex flex-col gap-3">
+            {filtered.map((offer) => (
+              <StoreOfferRow
+                key={offer.id}
+                offer={offer}
+                storeSlug={store.slug}
+              />
+            ))}
+          </div>
+        )}
+      </div>
     </section>
+  );
+}
+
+function CheckRow({
+  label,
+  count,
+  checked,
+  onChange,
+}: {
+  label: string;
+  count: number;
+  checked: boolean;
+  onChange: (v: boolean) => void;
+}) {
+  return (
+    <label
+      className={cn(
+        "flex cursor-pointer items-center justify-between gap-2 rounded-md px-2 py-1.5 text-[13px] transition-colors",
+        checked ? "bg-gold/10 font-semibold text-navy" : "text-gray-600 hover:bg-gray-50"
+      )}
+    >
+      <span className="inline-flex items-center gap-2">
+        <input
+          type="checkbox"
+          className="accent-gold"
+          checked={checked}
+          onChange={(e) => onChange(e.target.checked)}
+        />
+        {label}
+      </span>
+      <span className="text-[11px] text-gray-400">{count}</span>
+    </label>
   );
 }
