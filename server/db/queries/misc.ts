@@ -10,6 +10,9 @@ export const getActiveSlides = cached(
       columns: {
         id: true,
         title: true,
+        description: true,
+        ctaLabel: true,
+        ctaLink: true,
         imgURL: true,
         imgAlt: true,
         link: true,

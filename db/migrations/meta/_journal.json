@@ -71,6 +71,13 @@
       "when": 1777872711262,
       "tag": "0009_rapid_goblin_queen",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1777874575531,
+      "tag": "0010_melted_newton_destine",
+      "breakpoints": true
     }
   ]
 }

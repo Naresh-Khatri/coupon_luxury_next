@@ -147,6 +147,9 @@ const countryInput = z.object({
 
 const slideInput = z.object({
   title: z.string().min(1),
+  description: z.string().nullish(),
+  ctaLabel: z.string().nullish(),
+  ctaLink: z.string().nullish(),
   order: z.number().int().optional(),
   link: z.string(),
   imgURL: z.string().url(),
