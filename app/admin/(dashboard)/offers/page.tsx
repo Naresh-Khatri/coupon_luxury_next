@@ -2,10 +2,30 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { Plus, Text, Hash, ToggleLeft, Tag, Store, Ticket, ShieldCheck } from "lucide-react";
+import { useQueryState } from "nuqs";
+import { Check, Plus, PlusCircle, Text, Hash, ToggleLeft, Tag, Store, Ticket, ShieldCheck, XCircle } from "lucide-react";
 import type { ColumnDef } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandSeparator,
+} from "@/components/ui/command";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Separator } from "@/components/ui/separator";
+import { cn } from "@/lib/utils";
+import { generateId } from "@/lib/id";
+import { getFiltersStateParser } from "@/lib/parsers";
+import type { ExtendedColumnFilter } from "@/types/data-table";
 import { trpc } from "@/lib/trpc/client";
 import { toast } from "sonner";
 import { PageHeader } from "../_components/FormKit";
@@ -28,7 +48,6 @@ type Row = {
   discountType: string;
   discountValue: number;
   couponCode: string | null;
-  country: string;
   storeId: number;
   active: boolean;
   featured: boolean;
@@ -41,12 +60,153 @@ const COL_IDS = [
   "slug",
   "offerType",
   "couponCode",
-  "country",
   "storeId",
   "discountValue",
   "active",
   "featured",
 ];
+
+type StoreOption = { label: string; value: string };
+
+function StoreFilter({ options }: { options: StoreOption[] }) {
+  const [filters, setFilters] = useQueryState(
+    "filters",
+    getFiltersStateParser<Row>(COL_IDS)
+      .withDefault([])
+      .withOptions({ clearOnDefault: true, shallow: true }),
+  );
+  const [, setPage] = useQueryState("page");
+  const [open, setOpen] = React.useState(false);
+
+  const current = filters.find((f) => f.id === "storeId");
+  const selected = React.useMemo(() => {
+    const v = current?.value;
+    return new Set(Array.isArray(v) ? v : v ? [v] : []);
+  }, [current]);
+
+  const apply = (next: Set<string>) => {
+    const others = filters.filter((f) => f.id !== "storeId");
+    const arr = Array.from(next);
+    const updated: ExtendedColumnFilter<Row>[] = arr.length
+      ? [
+          ...others,
+          {
+            id: "storeId",
+            value: arr,
+            variant: "multiSelect",
+            operator: "inArray",
+            filterId: current?.filterId ?? generateId({ length: 8 }),
+          },
+        ]
+      : others;
+    void setPage(null);
+    void setFilters(updated);
+  };
+
+  const toggle = (val: string) => {
+    const next = new Set(selected);
+    if (next.has(val)) next.delete(val);
+    else next.add(val);
+    apply(next);
+  };
+
+  const reset = (e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    apply(new Set());
+  };
+
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <Button variant="outline" size="sm" className="border-dashed font-normal">
+          {selected.size > 0 ? (
+            <div
+              role="button"
+              aria-label="Clear store filter"
+              tabIndex={0}
+              className="rounded-sm opacity-70 transition-opacity hover:opacity-100"
+              onClick={reset}
+            >
+              <XCircle />
+            </div>
+          ) : (
+            <PlusCircle />
+          )}
+          Store
+          {selected.size > 0 && (
+            <>
+              <Separator
+                orientation="vertical"
+                className="mx-0.5 data-[orientation=vertical]:h-4"
+              />
+              <Badge variant="secondary" className="rounded-sm px-1 font-normal lg:hidden">
+                {selected.size}
+              </Badge>
+              <div className="hidden items-center gap-1 lg:flex">
+                {selected.size > 2 ? (
+                  <Badge variant="secondary" className="rounded-sm px-1 font-normal">
+                    {selected.size} selected
+                  </Badge>
+                ) : (
+                  options
+                    .filter((o) => selected.has(o.value))
+                    .map((o) => (
+                      <Badge
+                        key={o.value}
+                        variant="secondary"
+                        className="rounded-sm px-1 font-normal"
+                      >
+                        {o.label}
+                      </Badge>
+                    ))
+                )}
+              </div>
+            </>
+          )}
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-56 p-0" align="start">
+        <Command>
+          <CommandInput placeholder="Search stores…" />
+          <CommandList className="max-h-full">
+            <CommandEmpty>No stores found.</CommandEmpty>
+            <CommandGroup className="max-h-[300px] scroll-py-1 overflow-y-auto overflow-x-hidden">
+              {options.map((o) => {
+                const isSelected = selected.has(o.value);
+                return (
+                  <CommandItem key={o.value} onSelect={() => toggle(o.value)}>
+                    <div
+                      className={cn(
+                        "flex size-4 items-center justify-center rounded-sm border border-primary",
+                        isSelected ? "bg-primary" : "opacity-50 [&_svg]:invisible",
+                      )}
+                    >
+                      <Check />
+                    </div>
+                    <span className="truncate">{o.label}</span>
+                  </CommandItem>
+                );
+              })}
+            </CommandGroup>
+            {selected.size > 0 && (
+              <>
+                <CommandSeparator />
+                <CommandGroup>
+                  <CommandItem
+                    onSelect={() => reset()}
+                    className="justify-center text-center"
+                  >
+                    Clear filter
+                  </CommandItem>
+                </CommandGroup>
+              </>
+            )}
+          </CommandList>
+        </Command>
+      </PopoverContent>
+    </Popover>
+  );
+}
 
 export default function OffersAdminPage() {
   const qs = useTableQuery(COL_IDS);
@@ -161,16 +321,6 @@ export default function OffersAdminPage() {
             <span className="text-muted-foreground">—</span>
           ),
         meta: { label: "Code", variant: "text", icon: Ticket },
-        enableColumnFilter: true,
-      },
-      {
-        id: "country",
-        accessorKey: "country",
-        header: ({ column }) => (
-          <DataTableColumnHeader column={column} label="Country" />
-        ),
-        cell: ({ row }) => row.original.country,
-        meta: { label: "Country", variant: "text", icon: Text },
         enableColumnFilter: true,
       },
       {
@@ -294,9 +444,10 @@ export default function OffersAdminPage() {
       ) : (
         <DataTable table={table}>
           <DataTableAdvancedToolbar table={table}>
+            <StoreFilter options={storeOptions} />
             <DataTableFilterList table={table} />
             <DataTableSortList table={table} />
-            <TableSearch placeholder="Search title, slug, code, country…" loading={isFetching} />
+            <TableSearch placeholder="Search title, slug, code…" loading={isFetching} />
           </DataTableAdvancedToolbar>
         </DataTable>
       )}
