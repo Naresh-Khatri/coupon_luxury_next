@@ -6,7 +6,6 @@ import { Splide, SplideSlide } from "@splidejs/react-splide";
 import { imageKitLoader } from "@/utils/imageKitLoader";
 
 import "@splidejs/react-splide/css";
-import "@splidejs/splide/css/skyblue";
 
 type Slide = { id: string | number; link: string; imgURL: string; imgAlt: string };
 
@@ -17,47 +16,47 @@ export default function MainCarousel({ slides }: { slides: Slide[] }) {
     autoplay: true,
     speed: 1000,
     perMove: 1,
-    rewind: true,
     perPage: 2,
+    gap: "1.5rem",
+    pagination: true,
+    arrows: true,
     breakpoints: {
-      1100: {},
-      480: {
+      768: {
         perPage: 1,
+        gap: "1rem",
         arrows: false,
-        width: "100%",
-        pagination: false,
       },
     },
   };
 
   return (
-    <div>
-      <Splide aria-label="Offer slides" options={options} className="carousel-container">
-        {slides.map((slide, index) => (
-          <SplideSlide key={slide.id}>
-            <Link
-              href={slide.link}
-              target="_blank"
-              className="flex w-full justify-center"
-            >
-              <div className="w-full transition-transform duration-200 hover:scale-[1.03]">
-                <Image
-                  style={{ aspectRatio: "5/4" }}
-                  className="carousel__img"
-                  width={420}
-                  height={360}
-                  loader={imageKitLoader}
-                  src={slide.imgURL}
-                  alt={slide.imgAlt}
-                  sizes="(min-width: 1200px) 50vw, (min-width: 768px) 100vw, 33vw"
-                  quality={75}
-                  priority={index <= 1}
-                />
-              </div>
-            </Link>
-          </SplideSlide>
-        ))}
-      </Splide>
-    </div>
+    <Splide
+      aria-label="Offer slides"
+      options={options}
+      className="main-carousel"
+    >
+      {slides.map((slide, index) => (
+        <SplideSlide key={slide.id}>
+          <Link
+            href={slide.link}
+            target="_blank"
+            className="group block overflow-hidden rounded-2xl ring-1 ring-white/5 shadow-[0_10px_40px_-12px_rgba(0,0,0,0.6)]"
+          >
+            <div className="relative aspect-[16/9] w-full overflow-hidden">
+              <Image
+                fill
+                loader={imageKitLoader}
+                src={slide.imgURL}
+                alt={slide.imgAlt}
+                sizes="(min-width: 1024px) 50vw, 100vw"
+                quality={80}
+                priority={index <= 1}
+                className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]"
+              />
+            </div>
+          </Link>
+        </SplideSlide>
+      ))}
+    </Splide>
   );
 }

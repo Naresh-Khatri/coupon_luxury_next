@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Crown, Ticket, Tag } from "lucide-react";
+import { ArrowRight, Crown, Tag, Ticket } from "lucide-react";
 import transformPath from "@/utils/transformImagePath";
 
 type Props = {
@@ -20,59 +20,71 @@ export default function StoreOfTheMonth({ store }: Props) {
   const dealCount = store.offers.length - couponCount;
 
   return (
-    <section className="mx-auto w-full max-w-[1400px] px-4 py-8">
+    <section className="mx-auto w-full max-w-[1200px] px-4 py-10">
+      <div className="mb-5 flex items-end justify-between gap-4">
+        <div>
+          <div className="inline-flex items-center gap-1.5 rounded-full border border-gold/40 bg-gold/10 px-2.5 py-0.5 text-[10.5px] font-bold uppercase tracking-[0.16em] text-gold">
+            <Crown className="size-3" />
+            Store of the Month
+          </div>
+          <h2 className="mt-2 text-2xl font-bold tracking-tight text-foreground md:text-3xl">
+            This month&rsquo;s top brand
+          </h2>
+        </div>
+      </div>
+
       <Link
         href={`/stores/${store.slug}`}
-        className="group relative block overflow-hidden rounded-2xl border border-gold/40 bg-gradient-to-br from-navy via-navy-mid to-navy shadow-xl transition-all hover:shadow-2xl"
+        aria-label={`View all offers for ${store.storeName}`}
+        className="group relative block overflow-hidden rounded-xl border border-border bg-card transition-all hover:-translate-y-0.5 hover:border-gold/40 hover:shadow-md"
       >
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(212,175,55,0.25),transparent_60%)]" />
-        <div className="relative flex flex-col gap-6 px-6 py-8 md:flex-row md:items-center md:gap-10 md:px-10 md:py-10">
-          <div className="flex size-24 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white shadow-lg md:size-32">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(196,154,60,0.10),transparent_55%)]"
+        />
+
+        <div className="relative flex flex-col gap-4 p-4 sm:flex-row sm:items-center sm:gap-5 sm:p-5">
+          <div className="relative flex size-16 shrink-0 items-center justify-center overflow-hidden rounded-md border border-border bg-white/95 sm:size-20">
             <Image
-              src={transformPath(store.image, 320)}
+              src={transformPath(store.image, 200)}
               alt={`${store.storeName} logo`}
               width={140}
-              height={80}
-              className="max-h-[72px] w-auto max-w-[75%] object-contain md:max-h-[96px]"
+              height={90}
+              className="max-h-[78%] w-auto max-w-[85%] object-contain"
             />
           </div>
 
-          <div className="flex-1">
-            <div className="inline-flex items-center gap-1.5 rounded-full border border-gold/50 bg-gold/15 px-2.5 py-1 text-[10.5px] font-bold uppercase tracking-[0.16em] text-gold">
-              <Crown className="size-3" />
-              Store of the Month
-            </div>
-            <h2 className="mt-2 text-2xl font-bold text-white md:text-3xl">
+          <div className="flex min-w-0 flex-1 flex-col gap-1">
+            <h3 className="text-lg font-bold leading-tight text-foreground sm:text-xl">
               {store.storeName}
-            </h2>
-            {store.category && (
-              <p className="mt-1 text-[13px] text-white/60">
-                {store.category.categoryName}
-              </p>
-            )}
-            <div className="mt-4 flex flex-wrap gap-2">
+            </h3>
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[12px] text-muted-foreground">
+              {store.category && <span>{store.category.categoryName}</span>}
+              {store.category && (couponCount > 0 || dealCount > 0) && (
+                <span className="text-border">·</span>
+              )}
               {couponCount > 0 && (
-                <span className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/5 px-3 py-1 text-[12px] text-white/80">
+                <span className="inline-flex items-center gap-1">
                   <Ticket className="size-3.5 text-gold" />
-                  <span className="font-semibold text-white">{couponCount}</span>
+                  <span className="font-semibold text-foreground">{couponCount}</span>
                   coupons
                 </span>
               )}
               {dealCount > 0 && (
-                <span className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/5 px-3 py-1 text-[12px] text-white/80">
+                <span className="inline-flex items-center gap-1">
                   <Tag className="size-3.5 text-gold" />
-                  <span className="font-semibold text-white">{dealCount}</span>
+                  <span className="font-semibold text-foreground">{dealCount}</span>
                   deals
                 </span>
               )}
             </div>
           </div>
 
-          <div className="shrink-0">
-            <div className="inline-flex items-center gap-1.5 rounded-full bg-gold px-5 py-2 text-[13px] font-bold text-navy transition-all group-hover:gap-2.5">
+          <div className="shrink-0 self-start sm:self-center">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-gold px-4 py-2 text-[13px] font-bold text-navy transition-all group-hover:gap-2.5">
               View all offers
               <ArrowRight className="size-4" />
-            </div>
+            </span>
           </div>
         </div>
       </Link>
