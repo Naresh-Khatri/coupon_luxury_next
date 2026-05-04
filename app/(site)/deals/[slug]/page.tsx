@@ -162,15 +162,27 @@ export default async function DealPage(
                   </span>
 
                   <div className="flex items-center gap-4">
-                    <div className="flex size-16 shrink-0 items-center justify-center rounded-xl bg-white p-2 shadow-[0_8px_24px_-12px_rgba(0,0,0,0.8)]">
-                      <Image
-                        src={transformPath(store.image, 240)}
-                        alt={`${store.storeName} logo`}
-                        width={56}
-                        height={56}
-                        className="max-h-full w-auto max-w-full object-contain"
-                      />
-                    </div>
+                    {dealInfo.coverImg ? (
+                      <div className="relative size-16 shrink-0 overflow-hidden rounded-xl bg-muted shadow-[0_8px_24px_-12px_rgba(0,0,0,0.8)]">
+                        <Image
+                          src={transformPath(dealInfo.coverImg, 240)}
+                          alt={`${store.storeName} — ${title}`}
+                          fill
+                          sizes="64px"
+                          className="object-cover"
+                        />
+                      </div>
+                    ) : (
+                      <div className="flex size-16 shrink-0 items-center justify-center rounded-xl bg-white p-2 shadow-[0_8px_24px_-12px_rgba(0,0,0,0.8)]">
+                        <Image
+                          src={transformPath(store.image, 240)}
+                          alt={`${store.storeName} logo`}
+                          width={56}
+                          height={56}
+                          className="max-h-full w-auto max-w-full object-contain"
+                        />
+                      </div>
+                    )}
                     <div className="min-w-0">
                       <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
                         {store.storeName}
@@ -246,15 +258,27 @@ export default async function DealPage(
                           className="group block py-3 first:pt-0 last:pb-0"
                         >
                           <div className="flex items-start gap-3">
-                            <div className="flex size-10 shrink-0 items-center justify-center rounded-md bg-white p-1.5">
-                              <Image
-                                src={transformPath(deal.store.image, 160)}
-                                alt={deal.store.storeName}
-                                width={32}
-                                height={32}
-                                className="max-h-full w-auto max-w-full object-contain"
-                              />
-                            </div>
+                            {deal.coverImg ? (
+                              <div className="relative size-10 shrink-0 overflow-hidden rounded-md bg-muted">
+                                <Image
+                                  src={transformPath(deal.coverImg, 160)}
+                                  alt={deal.store.storeName}
+                                  fill
+                                  sizes="40px"
+                                  className="object-cover"
+                                />
+                              </div>
+                            ) : (
+                              <div className="flex size-10 shrink-0 items-center justify-center rounded-md bg-white p-1.5">
+                                <Image
+                                  src={transformPath(deal.store.image, 160)}
+                                  alt={deal.store.storeName}
+                                  width={32}
+                                  height={32}
+                                  className="max-h-full w-auto max-w-full object-contain"
+                                />
+                              </div>
+                            )}
                             <div className="min-w-0 flex-1">
                               <p className="text-[10.5px] font-semibold uppercase tracking-[0.16em] text-gold/80">
                                 {deal.store.storeName}
@@ -304,7 +328,8 @@ export default async function DealPage(
                     type={deal.offerType}
                     endDate={deal.endDate}
                     showValidTill={false}
-                    storeImg={deal.store.image}
+                    storeImg={deal.coverImg || deal.store.image}
+                    storeLogo={deal.store.image}
                   />
                 ))}
               </div>

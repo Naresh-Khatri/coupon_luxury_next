@@ -129,6 +129,7 @@ export const getOffersList = cached(
           offerType: true,
           endDate: true,
           categoryId: true,
+          coverImg: true,
           uses: true,
           verifiedAt: true,
         },
@@ -253,6 +254,7 @@ export async function searchOffersByTitle(
       couponCode: true,
       discountType: true,
       discountValue: true,
+      coverImg: true,
     },
     with: {
       store: {

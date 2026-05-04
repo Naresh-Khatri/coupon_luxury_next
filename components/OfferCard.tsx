@@ -19,6 +19,7 @@ type OfferDetails = {
   description: string;
   TnC: string;
   image: string;
+  coverImg?: string | null;
   endDate: string;
   offerType: "coupon" | "deal";
   fromPage?: "stores" | "categories";
@@ -74,15 +75,33 @@ export default function OfferCard({ offerDetails }: { offerDetails: OfferDetails
       <div className="md:grid md:grid-cols-3">
         <div className="flex h-full items-center justify-center">
           {fromPage === "categories" && offerDetails.store ? (
-            <Link href={`/stores/${offerDetails.store.slug}`}>
-              <div className="overflow-hidden rounded-xl">
-                <Image
-                  src={offerDetails.store.image}
-                  alt="logo"
-                  width={200}
-                  height={100}
-                />
-              </div>
+            <Link
+              href={
+                offerDetails.coverImg
+                  ? `/deals/${slug}`
+                  : `/stores/${offerDetails.store.slug}`
+              }
+            >
+              {offerDetails.coverImg ? (
+                <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl bg-muted md:max-w-[220px]">
+                  <Image
+                    src={offerDetails.coverImg}
+                    alt={offerDetails.storeName}
+                    fill
+                    sizes="220px"
+                    className="object-cover"
+                  />
+                </div>
+              ) : (
+                <div className="overflow-hidden rounded-xl">
+                  <Image
+                    src={offerDetails.store.image}
+                    alt="logo"
+                    width={200}
+                    height={100}
+                  />
+                </div>
+              )}
             </Link>
           ) : (
             <div
@@ -132,7 +151,7 @@ export default function OfferCard({ offerDetails }: { offerDetails: OfferDetails
               <CodeRevealingButton
                 code={couponCode}
                 affURL={affURL}
-                image={image}
+                image={offerDetails.coverImg || image}
                 storeName={storeName}
                 slug={slug}
                 offerId={id}

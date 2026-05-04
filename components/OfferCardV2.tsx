@@ -25,6 +25,7 @@ type OfferDetails = {
   description: string;
   TnC: string;
   image: string;
+  coverImg?: string | null;
   endDate: string;
   offerType: "coupon" | "deal";
   fromPage?: "stores" | "categories";
@@ -89,23 +90,43 @@ export default function OfferCardV2({
         <div className="flex h-full items-center justify-center p-3">
           <div className="flex min-w-[70px] items-center justify-center">
             {fromPage === "categories" && offerDetails.store ? (
-              <Link href={`/stores/${offerDetails.store.slug}`}>
-                <div className="hidden sm:flex">
-                  <Image
-                    src={offerDetails.store.image}
-                    alt="logo"
-                    width={140}
-                    height={70}
-                  />
-                </div>
-                <div className="flex sm:hidden">
-                  <Image
-                    src={offerDetails.store.image}
-                    alt="logo"
-                    width={100}
-                    height={50}
-                  />
-                </div>
+              <Link
+                href={
+                  offerDetails.coverImg
+                    ? `/deals/${slug}`
+                    : `/stores/${offerDetails.store.slug}`
+                }
+              >
+                {offerDetails.coverImg ? (
+                  <div className="relative aspect-[4/3] h-[100px] w-[140px] overflow-hidden rounded-xl bg-muted sm:h-[110px] sm:w-[150px]">
+                    <Image
+                      src={offerDetails.coverImg}
+                      alt={offerDetails.storeName}
+                      fill
+                      sizes="160px"
+                      className="object-cover"
+                    />
+                  </div>
+                ) : (
+                  <>
+                    <div className="hidden sm:flex">
+                      <Image
+                        src={offerDetails.store.image}
+                        alt="logo"
+                        width={140}
+                        height={70}
+                      />
+                    </div>
+                    <div className="flex sm:hidden">
+                      <Image
+                        src={offerDetails.store.image}
+                        alt="logo"
+                        width={100}
+                        height={50}
+                      />
+                    </div>
+                  </>
+                )}
               </Link>
             ) : (
               <div className="banner-bg flex size-[100px] items-center justify-center rounded-[15px] p-2 text-center text-3xl font-extrabold leading-none text-white">

@@ -413,7 +413,8 @@ export default function CategoryFilter({
                 ...(offer as any),
                 categoryName: categoryInfo.categoryName,
                 storeName: offer.store?.storeName || "",
-                image: offer.store?.image ?? "",
+                image: (offer as any).coverImg || offer.store?.image || "",
+                coverImg: (offer as any).coverImg ?? null,
                 fromPage: "categories",
               }}
             />

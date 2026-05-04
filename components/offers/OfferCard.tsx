@@ -15,6 +15,7 @@ import {
 import { toast } from "sonner";
 import transformPath from "@/utils/transformImagePath";
 import { useActivateOffer } from "@/lib/useActivateOffer";
+import { cn } from "@/lib/utils";
 
 export type OfferCardData = {
   id: number | string;
@@ -28,6 +29,7 @@ export type OfferCardData = {
   endDate?: string | null;
   uses?: number | null;
   verifiedAt?: Date | string | null;
+  coverImg?: string | null;
   store: { storeName: string; slug: string; image: string };
 };
 
@@ -134,16 +136,46 @@ export default function OfferCard({ offer }: { offer: OfferCardData }) {
       </button>
 
       <Link
-        href={`/stores/${offer.store.slug}`}
-        className="flex h-[140px] items-center justify-center overflow-hidden border-b border-border bg-white/95 transition-colors"
+        href={
+          offer.coverImg ? `/deals/${offer.slug}` : `/stores/${offer.store.slug}`
+        }
+        className={cn(
+          "relative flex h-[140px] items-center justify-center overflow-hidden border-b border-border transition-colors",
+          offer.coverImg ? "bg-muted" : "bg-white/95"
+        )}
       >
-        <Image
-          src={transformPath(offer.store.image, 320)}
-          alt={offer.store.storeName}
-          width={160}
-          height={80}
-          className="max-h-[68px] w-auto max-w-[60%] object-contain transition-transform duration-500 group-hover:scale-105"
-        />
+        {offer.coverImg ? (
+          <>
+            <Image
+              src={transformPath(offer.coverImg, 480)}
+              alt={`${offer.store.storeName} — ${offer.title}`}
+              fill
+              sizes="(min-width: 1280px) 25vw, (min-width: 640px) 50vw, 100vw"
+              className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+            />
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/40 via-black/0 to-transparent"
+            />
+            <div className="absolute bottom-2 left-2 flex size-9 items-center justify-center overflow-hidden rounded-md bg-white/95 p-1 shadow-sm ring-1 ring-black/5">
+              <Image
+                src={transformPath(offer.store.image, 120)}
+                alt={`${offer.store.storeName} logo`}
+                width={32}
+                height={32}
+                className="max-h-full w-auto max-w-full object-contain"
+              />
+            </div>
+          </>
+        ) : (
+          <Image
+            src={transformPath(offer.store.image, 320)}
+            alt={offer.store.storeName}
+            width={160}
+            height={80}
+            className="max-h-[68px] w-auto max-w-[60%] object-contain transition-transform duration-500 group-hover:scale-105"
+          />
+        )}
       </Link>
 
       <div className="flex flex-1 flex-col gap-2 p-4">

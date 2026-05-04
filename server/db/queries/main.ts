@@ -117,6 +117,7 @@ export const getMainFeed = cached(
             offerType: true,
             endDate: true,
             categoryId: true,
+            coverImg: true,
           },
           with: {
             store: {
@@ -145,6 +146,7 @@ export const getMainFeed = cached(
             offerType: true,
             endDate: true,
             categoryId: true,
+            coverImg: true,
           },
           with: {
             store: {
@@ -200,6 +202,7 @@ export const getMainFeed = cached(
             categoryId: true,
             uses: true,
             verifiedAt: true,
+            coverImg: true,
           },
           with: {
             store: {

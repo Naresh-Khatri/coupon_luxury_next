@@ -26,6 +26,7 @@ type Deal = {
   couponCode?: string | null;
   offerType?: string;
   endDate?: string;
+  coverImg?: string | null;
   store: { storeName: string; slug: string; image: string };
 };
 
@@ -67,7 +68,8 @@ export default function DealsOfTheDay({ deals }: { deals: Deal[] }) {
                 type={deal.offerType}
                 endDate={deal.endDate}
                 showValidTill={false}
-                storeImg={deal.store.image}
+                storeImg={deal.coverImg || deal.store.image}
+                storeLogo={deal.store.image}
               />
             </motion.div>
           ))}

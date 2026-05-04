@@ -21,6 +21,7 @@ type OfferResult = {
   couponCode?: string | null;
   discountType?: string | null;
   discountValue?: number | null;
+  coverImg?: string | null;
   store: { id: number | string; storeName: string; slug: string; image: string };
 };
 
@@ -267,7 +268,8 @@ export default function GlobalSearch({
                   {results.coupons.map((o) => (
                     <ResultRow
                       key={`c-${o.id}`}
-                      image={o.store.image}
+                      image={o.coverImg || o.store.image}
+                      imageMode={o.coverImg ? "cover" : "logo"}
                       title={o.title}
                       subtitle={o.store.storeName}
                       meta={formatDiscount(o)}
@@ -287,7 +289,8 @@ export default function GlobalSearch({
                   {results.deals.map((o) => (
                     <ResultRow
                       key={`d-${o.id}`}
-                      image={o.store.image}
+                      image={o.coverImg || o.store.image}
+                      imageMode={o.coverImg ? "cover" : "logo"}
                       title={o.title}
                       subtitle={o.store.storeName}
                       meta={formatDiscount(o)}
@@ -368,13 +371,16 @@ function ResultRow({
   subtitle,
   meta,
   onClick,
+  imageMode = "logo",
 }: {
   image: string;
   title: string;
   subtitle?: string;
   meta?: string | null;
   onClick: () => void;
+  imageMode?: "logo" | "cover";
 }) {
+  const isCover = imageMode === "cover";
   return (
     <li>
       <button
@@ -384,13 +390,22 @@ function ResultRow({
           "flex w-full items-center gap-3 rounded-md px-2 py-2 text-left transition-colors hover:bg-white/5"
         )}
       >
-        <div className="relative flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-md border border-border bg-white">
+        <div
+          className={cn(
+            "relative flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-md border border-border",
+            isCover ? "bg-muted" : "bg-white"
+          )}
+        >
           <Image
             src={transformPath(image, 120)}
             alt=""
             width={40}
             height={40}
-            className="max-h-7 w-auto object-contain"
+            className={
+              isCover
+                ? "h-full w-full object-cover"
+                : "max-h-7 w-auto object-contain"
+            }
           />
         </div>
         <div className="flex min-w-0 flex-1 flex-col">
