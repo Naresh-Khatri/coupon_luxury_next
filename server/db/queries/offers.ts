@@ -22,7 +22,16 @@ export const getPublicOffers = cached(
     if (opts.featured) conds.push(eq(s.offers.featured, true));
     if (opts.categoryId) conds.push(eq(s.offers.categoryId, opts.categoryId));
     if (opts.offerType) conds.push(eq(s.offers.offerType, opts.offerType));
-    if (opts.country) conds.push(eq(s.offers.country, opts.country));
+    if (opts.country)
+      conds.push(
+        inArray(
+          s.offers.storeId,
+          db
+            .select({ id: s.stores.id })
+            .from(s.stores)
+            .where(eq(s.stores.country, opts.country))
+        )
+      );
     return db.query.offers.findMany({
       where: and(...conds),
       limit: opts.limit ?? 50,
@@ -70,7 +79,16 @@ export const getOffersList = cached(
 
     const conds = [eq(s.offers.active, true)];
     if (opts.offerType) conds.push(eq(s.offers.offerType, opts.offerType));
-    if (opts.country) conds.push(eq(s.offers.country, opts.country));
+    if (opts.country)
+      conds.push(
+        inArray(
+          s.offers.storeId,
+          db
+            .select({ id: s.stores.id })
+            .from(s.stores)
+            .where(eq(s.stores.country, opts.country))
+        )
+      );
     if (opts.categoryIds && opts.categoryIds.length > 0)
       conds.push(inArray(s.offers.categoryId, opts.categoryIds));
     if (opts.q && opts.q.trim())
@@ -213,7 +231,16 @@ export async function searchOffersByTitle(
     eq(s.offers.active, true),
     ilike(s.offers.title, `%${q}%`),
   ];
-  if (country) conds.push(eq(s.offers.country, country));
+  if (country)
+    conds.push(
+      inArray(
+        s.offers.storeId,
+        db
+          .select({ id: s.stores.id })
+          .from(s.stores)
+          .where(eq(s.stores.country, country))
+      )
+    );
   return db.query.offers.findMany({
     where: and(...conds),
     limit,

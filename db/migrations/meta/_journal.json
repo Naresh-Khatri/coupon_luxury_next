@@ -57,6 +57,13 @@
       "when": 1776430383808,
       "tag": "0007_cool_bloodstorm",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1777871883603,
+      "tag": "0008_stormy_king_cobra",
+      "breakpoints": true
     }
   ]
 }

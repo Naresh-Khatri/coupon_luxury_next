@@ -107,7 +107,7 @@ export const getTopStoresForOffers = (opts: {
       const limit = opts.limit ?? 10;
       const conds = [eq(s.offers.active, true)];
       if (opts.offerType) conds.push(eq(s.offers.offerType, opts.offerType));
-      if (opts.country) conds.push(eq(s.offers.country, opts.country));
+      if (opts.country) conds.push(eq(s.stores.country, opts.country));
       return db
         .select({
           id: s.stores.id,

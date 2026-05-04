@@ -1,5 +1,5 @@
 import { db, s } from "@/db";
-import { and, asc, desc, eq, ilike, sql } from "drizzle-orm";
+import { and, asc, desc, eq, ilike, inArray, sql } from "drizzle-orm";
 import { cached, CACHE_TAGS } from "../cache";
 
 export const getPublicCategories = cached(
@@ -37,7 +37,16 @@ export const getCategoryBySlug = (slug: string, country?: string | null) =>
           },
           offers: {
             where: country
-              ? and(eq(s.offers.active, true), eq(s.offers.country, country))
+              ? and(
+                  eq(s.offers.active, true),
+                  inArray(
+                    s.offers.storeId,
+                    db
+                      .select({ id: s.stores.id })
+                      .from(s.stores)
+                      .where(eq(s.stores.country, country))
+                  )
+                )
               : eq(s.offers.active, true),
             orderBy: desc(s.offers.updatedAt),
             with: {

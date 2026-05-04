@@ -154,7 +154,6 @@ export const offers = pgTable("offer", {
   couponCode: text("couponCode").default(""),
   startDate: text("startDate").notNull(),
   endDate: text("endDate").notNull(),
-  country: text("country").notNull(),
   uses: integer("uses").notNull().default(0),
   verifiedAt: timestamp("verifiedAt", { precision: 3 }),
   active: boolean("active").notNull().default(false),

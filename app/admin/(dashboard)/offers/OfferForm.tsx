@@ -52,7 +52,6 @@ const schema = z.object({
   couponCode: z.string().nullish(),
   startDate: z.string().default(""),
   endDate: z.string().default(""),
-  country: z.string().default("global"),
   storeId: z.number().int(),
   categoryId: z.number().int(),
   subCategoryId: z.number().int(),
@@ -77,7 +76,6 @@ export default function OfferForm({
   const { data: stores = [] } = trpc.admin.stores.list.useQuery();
   const { data: cats = [] } = trpc.admin.categories.list.useQuery();
   const { data: subs = [] } = trpc.admin.subCategories.list.useQuery();
-  const { data: countries = [] } = trpc.admin.countries.list.useQuery();
 
   const form = useForm<FormValues>({
     resolver: zodResolver(schema) as any,
@@ -93,7 +91,6 @@ export default function OfferForm({
       discountValue: 0,
       startDate: "",
       endDate: "",
-      country: "global",
       active: false,
       featured: false,
       ...initial,
@@ -212,30 +209,6 @@ export default function OfferForm({
           </Field>
           <Field label="End date">
             <Input type="date" {...register("endDate")} />
-          </Field>
-          <Field label="Country">
-            <Controller
-              control={control}
-              name="country"
-              render={({ field }) => (
-                <Select
-                  value={field.value ?? ""}
-                  onValueChange={field.onChange}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select country" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {countries.map((c) => (
-                      <SelectItem key={c.code} value={c.code}>
-                        {c.flagEmoji ? `${c.flagEmoji} ` : ""}
-                        {c.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              )}
-            />
           </Field>
         </FieldGrid>
       </SectionCard>

@@ -1,9 +1,19 @@
 import { db, s } from "@/db";
-import { and, asc, desc, eq } from "drizzle-orm";
+import { and, asc, desc, eq, inArray } from "drizzle-orm";
 import { cached, CACHE_TAGS } from "../cache";
 
 export const getMainFeed = cached(
   async (country?: string | null) => {
+    const countryStoreIds = country
+      ? inArray(
+          s.offers.storeId,
+          db
+            .select({ id: s.stores.id })
+            .from(s.stores)
+            .where(eq(s.stores.country, country))
+        )
+      : undefined;
+
     const storeWhere = country
       ? and(
           eq(s.stores.active, true),
@@ -12,31 +22,19 @@ export const getMainFeed = cached(
         )
       : and(eq(s.stores.active, true), eq(s.stores.featured, true));
 
-    const dealsWhere = country
-      ? and(
-          eq(s.offers.active, true),
-          eq(s.offers.featured, true),
-          eq(s.offers.offerType, "deal"),
-          eq(s.offers.country, country)
-        )
-      : and(
-          eq(s.offers.active, true),
-          eq(s.offers.featured, true),
-          eq(s.offers.offerType, "deal")
-        );
+    const dealsWhere = and(
+      eq(s.offers.active, true),
+      eq(s.offers.featured, true),
+      eq(s.offers.offerType, "deal"),
+      ...(countryStoreIds ? [countryStoreIds] : [])
+    );
 
-    const couponsWhere = country
-      ? and(
-          eq(s.offers.active, true),
-          eq(s.offers.featured, true),
-          eq(s.offers.offerType, "coupon"),
-          eq(s.offers.country, country)
-        )
-      : and(
-          eq(s.offers.active, true),
-          eq(s.offers.featured, true),
-          eq(s.offers.offerType, "coupon")
-        );
+    const couponsWhere = and(
+      eq(s.offers.active, true),
+      eq(s.offers.featured, true),
+      eq(s.offers.offerType, "coupon"),
+      ...(countryStoreIds ? [countryStoreIds] : [])
+    );
 
     const storeOfTheMonthWhere = country
       ? and(
@@ -46,13 +44,11 @@ export const getMainFeed = cached(
         )
       : and(eq(s.stores.active, true), eq(s.stores.storeOfTheMonth, true));
 
-    const editorsPicksWhere = country
-      ? and(
-          eq(s.offers.active, true),
-          eq(s.offers.featured, true),
-          eq(s.offers.country, country)
-        )
-      : and(eq(s.offers.active, true), eq(s.offers.featured, true));
+    const editorsPicksWhere = and(
+      eq(s.offers.active, true),
+      eq(s.offers.featured, true),
+      ...(countryStoreIds ? [countryStoreIds] : [])
+    );
 
     const [
       featuredStores,

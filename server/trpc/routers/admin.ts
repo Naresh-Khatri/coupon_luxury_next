@@ -88,7 +88,6 @@ const offerInput = z.object({
   couponCode: z.string().nullish(),
   startDate: z.string(),
   endDate: z.string(),
-  country: z.string(),
   categoryId: z.number().int(),
   subCategoryId: z.number().int(),
   storeId: z.number().int(),
@@ -281,7 +280,6 @@ export const adminRouter = router({
         offerType: { column: s.offers.offerType, kind: "text" },
         discountType: { column: s.offers.discountType, kind: "text" },
         couponCode: { column: s.offers.couponCode, kind: "text" },
-        country: { column: s.offers.country, kind: "text" },
         storeId: { column: s.offers.storeId, kind: "number" },
         categoryId: { column: s.offers.categoryId, kind: "number" },
         subCategoryId: { column: s.offers.subCategoryId, kind: "number" },
@@ -295,7 +293,6 @@ export const adminRouter = router({
         "title",
         "slug",
         "couponCode",
-        "country",
       ]);
       const orderBy = buildOrderBy(input, map);
       const [rows, countRow] = await Promise.all([
@@ -789,7 +786,7 @@ export const adminRouter = router({
           .set({ ...input.data, updatedAt: new Date() })
           .where(eq(s.countries.code, input.code))
           .returning();
-        revalidate(CACHE_TAGS.countries, CACHE_TAGS.stores, CACHE_TAGS.offers);
+        revalidate(CACHE_TAGS.countries, CACHE_TAGS.stores);
         return row;
       }),
     delete: adminProcedure
@@ -799,14 +796,10 @@ export const adminRouter = router({
           .select({ count: sql<number>`count(*)::int` })
           .from(s.stores)
           .where(eq(s.stores.country, input));
-        const [inUseOffer] = await db
-          .select({ count: sql<number>`count(*)::int` })
-          .from(s.offers)
-          .where(eq(s.offers.country, input));
-        if ((inUseStore?.count ?? 0) + (inUseOffer?.count ?? 0) > 0) {
+        if ((inUseStore?.count ?? 0) > 0) {
           throw new TRPCError({
             code: "BAD_REQUEST",
-            message: "Country is still referenced by stores or offers.",
+            message: "Country is still referenced by stores.",
           });
         }
         await db.delete(s.countries).where(eq(s.countries.code, input));
