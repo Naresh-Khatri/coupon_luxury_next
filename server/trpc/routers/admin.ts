@@ -10,6 +10,14 @@ import {
   type ColumnMap,
 } from "../list-helpers";
 import { revalidate, CACHE_TAGS } from "@/server/db/cache";
+import { slugify } from "@/lib/slugify";
+
+const slugField = () =>
+  z
+    .string()
+    .min(1)
+    .transform((v) => slugify(v))
+    .refine((v) => v.length > 0, "Slug must contain letters or numbers");
 import { imagekit, deleteImageByUrl, deleteOrphanedImages, extractImageKitUrls } from "@/lib/imagekit";
 import { getAllStores } from "@/server/db/queries/stores";
 import {
@@ -49,7 +57,7 @@ const metaFields = {
 
 const storeInput = z.object({
   storeName: z.string().min(1),
-  slug: z.string().min(1),
+  slug: slugField(),
   storeURL: z.string().url(),
   image: z.string().url(),
   pageHTML: z.string(),
@@ -68,7 +76,7 @@ const storeInput = z.object({
 
 const offerInput = z.object({
   title: z.string().min(1),
-  slug: z.string().min(1),
+  slug: slugField(),
   description: z.string(),
   coverImg: optionalUrl(),
   TnC: z.string(),
@@ -91,7 +99,7 @@ const offerInput = z.object({
 
 const categoryInput = z.object({
   categoryName: z.string().min(1),
-  slug: z.string().min(1),
+  slug: slugField(),
   description: z.string().nullish(),
   pageHTML: z.string().nullish(),
   active: z.boolean().default(false),
@@ -101,7 +109,7 @@ const categoryInput = z.object({
 
 const subCategoryInput = z.object({
   subCategoryName: z.string().min(1),
-  slug: z.string().min(1),
+  slug: slugField(),
   categoryId: z.number().int(),
   description: z.string().nullish(),
   active: z.boolean().default(false),
@@ -110,7 +118,7 @@ const subCategoryInput = z.object({
 
 const blogInput = z.object({
   title: z.string().min(1),
-  slug: z.string().min(1),
+  slug: slugField(),
   storeId: optionalId(),
   categoryId: optionalId(),
   imgAlt: z.string().nullish(),
