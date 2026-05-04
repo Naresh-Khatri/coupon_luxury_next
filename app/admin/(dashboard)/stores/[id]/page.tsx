@@ -13,30 +13,27 @@ export default function EditStorePage() {
   if (!data) return <div>Not found</div>;
 
   return (
-    <div className="space-y-5">
-      <h1 className="text-2xl font-bold">Edit Store</h1>
-      <StoreForm
-        storeId={storeId}
-        initial={{
-          storeName: data.storeName,
-          slug: data.slug,
-          storeURL: data.storeURL,
-          image: data.image,
-          pageHTML: data.pageHTML,
-          howToUse: (data.howToUse ?? []).map((value: string) => ({ value })),
-          faqs: data.faqs ?? [],
-          country: data.country,
-          categoryId: data.categoryId,
-          subCategoryId: data.subCategoryId,
-          active: data.active,
-          featured: data.featured,
-          storeOfTheMonth: data.storeOfTheMonth,
-          metaTitle: data.metaTitle,
-          metaDescription: data.metaDescription,
-          metaKeywords: data.metaKeywords,
-          metaSchema: data.metaSchema,
-        }}
-      />
-    </div>
+    <StoreForm
+      storeId={storeId}
+      initial={{
+        storeName: data.storeName,
+        slug: data.slug,
+        storeURL: data.storeURL,
+        image: data.image,
+        pageHTML: data.pageHTML,
+        howToUse: (data.howToUse ?? []).map((value: string) => ({ value })),
+        faqs: data.faqs ?? [],
+        country: data.country,
+        categoryId: data.categoryId,
+        subCategoryId: data.subCategoryId,
+        active: data.active,
+        featured: data.featured,
+        storeOfTheMonth: data.storeOfTheMonth,
+        metaTitle: data.metaTitle,
+        metaDescription: data.metaDescription,
+        metaKeywords: data.metaKeywords,
+        metaSchema: data.metaSchema,
+      }}
+    />
   );
 }

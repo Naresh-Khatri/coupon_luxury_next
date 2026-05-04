@@ -11,10 +11,5 @@ export default function EditSlidePage() {
 
   if (isLoading) return <div>Loading…</div>;
   if (!data) return <div>Not found</div>;
-  return (
-    <div className="space-y-5">
-      <h1 className="text-2xl font-bold">Edit Slide</h1>
-      <SlideForm id={slideId} initial={data as any} />
-    </div>
-  );
+  return <SlideForm id={slideId} initial={data as any} />;
 }

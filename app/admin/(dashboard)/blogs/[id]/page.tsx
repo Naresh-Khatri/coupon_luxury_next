@@ -12,10 +12,5 @@ export default function EditBlogPage() {
   if (isLoading) return <div>Loading…</div>;
   if (!data) return <div>Not found</div>;
 
-  return (
-    <div className="space-y-5">
-      <h1 className="text-2xl font-bold">Edit Blog</h1>
-      <BlogForm id={blogId} initial={data as any} />
-    </div>
-  );
+  return <BlogForm id={blogId} initial={data as any} />;
 }

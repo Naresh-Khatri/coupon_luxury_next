@@ -13,15 +13,12 @@ export default function EditOfferPage() {
   if (!data) return <div>Not found</div>;
 
   return (
-    <div className="space-y-5">
-      <h1 className="text-2xl font-bold">Edit Offer</h1>
-      <OfferForm
-        id={offerId}
-        initial={{
-          ...data,
-          offerType: data.offerType as "deal" | "coupon",
-        }}
-      />
-    </div>
+    <OfferForm
+      id={offerId}
+      initial={{
+        ...data,
+        offerType: data.offerType as "deal" | "coupon",
+      }}
+    />
   );
 }
