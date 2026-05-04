@@ -18,8 +18,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { trpc } from "@/lib/trpc/client";
+import { slugify } from "@/lib/slugify";
 import ImageKitUpload from "../_components/ImageKitUpload";
 import { resolveImage } from "../_components/uploadImage";
+import { SlugField } from "../_components/SlugField";
 import {
   PageHeader,
   SectionCard,
@@ -34,7 +36,11 @@ const CustomEditor = dynamic(() => import("@/components/CustomEditor"), {
 
 const schema = z.object({
   title: z.string().min(1),
-  slug: z.string().min(1),
+  slug: z
+    .string()
+    .min(1)
+    .transform((v) => slugify(v))
+    .refine((v) => v.length > 0, "Slug must contain letters or numbers"),
   description: z.string().default(""),
   coverImg: z.union([z.string().url(), z.instanceof(File)]).nullish(),
   TnC: z.string().default(""),
@@ -149,9 +155,12 @@ export default function OfferForm({
           <Field label="Title">
             <Input {...register("title")} />
           </Field>
-          <Field label="Slug">
-            <Input {...register("slug")} />
-          </Field>
+          <SlugField
+            form={form}
+            slugName="slug"
+            sourceName="title"
+            editing={!!id}
+          />
           <Field label="Type">
             <Controller
               control={control}

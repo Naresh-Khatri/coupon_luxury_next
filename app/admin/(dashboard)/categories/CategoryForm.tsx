@@ -18,6 +18,7 @@ import {
   FieldGrid,
   StickyFooter,
 } from "../_components/FormKit";
+import { SlugField } from "../_components/SlugField";
 
 const CustomEditor = dynamic(() => import("@/components/CustomEditor"), {
   ssr: false,
@@ -95,9 +96,12 @@ export default function CategoryForm({
           <Field label="Category name">
             <Input {...register("categoryName")} />
           </Field>
-          <Field label="Slug">
-            <Input {...register("slug")} />
-          </Field>
+          <SlugField
+            form={form}
+            slugName="slug"
+            sourceName="categoryName"
+            editing={!!id}
+          />
         </FieldGrid>
       </SectionCard>
 

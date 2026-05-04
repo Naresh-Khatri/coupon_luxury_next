@@ -28,6 +28,7 @@ import {
   FieldGrid,
   StickyFooter,
 } from "../_components/FormKit";
+import { SlugField } from "../_components/SlugField";
 
 const CustomEditor = dynamic(() => import("@/components/CustomEditor"), {
   ssr: false,
@@ -160,9 +161,12 @@ export default function StoreForm({
           <Field label="Store name">
             <Input {...register("storeName")} />
           </Field>
-          <Field label="Slug">
-            <Input {...register("slug")} />
-          </Field>
+          <SlugField
+            form={form}
+            slugName="slug"
+            sourceName="storeName"
+            editing={!!storeId}
+          />
           <Field label="Store URL">
             <Input {...register("storeURL")} placeholder="https://..." />
           </Field>

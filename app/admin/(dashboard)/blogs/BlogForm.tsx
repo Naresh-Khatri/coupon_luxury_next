@@ -27,6 +27,7 @@ import {
   FieldGrid,
   StickyFooter,
 } from "../_components/FormKit";
+import { SlugField } from "../_components/SlugField";
 
 const CustomEditor = dynamic(() => import("@/components/CustomEditor"), {
   ssr: false,
@@ -146,9 +147,12 @@ export default function BlogForm({
           <Field label="Title">
             <Input {...register("title")} />
           </Field>
-          <Field label="Slug">
-            <Input {...register("slug")} />
-          </Field>
+          <SlugField
+            form={form}
+            slugName="slug"
+            sourceName="title"
+            editing={!!id}
+          />
           <Field label="Image alt text">
             <Input {...register("imgAlt")} />
           </Field>

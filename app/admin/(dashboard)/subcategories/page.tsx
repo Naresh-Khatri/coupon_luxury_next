@@ -29,6 +29,7 @@ import {
 } from "@/components/ui/dialog";
 import { trpc } from "@/lib/trpc/client";
 import { PageHeader, Field } from "../_components/FormKit";
+import { SlugField } from "../_components/SlugField";
 import { BoolCell, RowActions } from "../_components/TableKit";
 import { useTableQuery } from "../_components/useTableQuery";
 import { TableSearch } from "../_components/TableSearch";
@@ -110,9 +111,12 @@ function SubCategoryDialog({
           <Field label="Name">
             <Input {...form.register("subCategoryName")} />
           </Field>
-          <Field label="Slug">
-            <Input {...form.register("slug")} />
-          </Field>
+          <SlugField
+            form={form}
+            slugName="slug"
+            sourceName="subCategoryName"
+            editing={!!id}
+          />
           <Field label="Category">
             <Controller
               control={form.control}
