@@ -74,14 +74,14 @@ export default async function StorePage(props: {
   const faqs = storeInfo.faqs ?? [];
   const faqJsonLd = faqs.length
     ? {
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        mainEntity: faqs.map((f) => ({
-          "@type": "Question",
-          name: f.q,
-          acceptedAnswer: { "@type": "Answer", text: f.a },
-        })),
-      }
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: faqs.map((f) => ({
+        "@type": "Question",
+        name: f.q,
+        acceptedAnswer: { "@type": "Answer", text: f.a },
+      })),
+    }
     : null;
   const breadcrumb = breadcrumbJsonLd([
     { name: "Home", path: "/" },
@@ -102,10 +102,10 @@ export default async function StorePage(props: {
   }, null);
   const lastValidatedLabel = lastVerifiedAt
     ? lastVerifiedAt.toLocaleDateString("en", {
-        month: "long",
-        day: "numeric",
-        year: "numeric",
-      })
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+    })
     : null;
 
   return (
@@ -155,7 +155,7 @@ export default async function StorePage(props: {
                 {storeInfo.category?.categoryName && (
                   <Link
                     href={`/categories/${storeInfo.category.slug}`}
-                    className="inline-flex items-center gap-1 rounded-full border border-gold/40 bg-gold/10 px-2.5 py-0.5 text-[10.5px] font-medium uppercase tracking-[0.14em] text-navy transition-colors hover:bg-gold/20"
+                    className="inline-flex items-center gap-1 rounded-full border border-gold/40 bg-gold/10 px-2.5 py-0.5 text-[10.5px] font-medium uppercase tracking-[0.14em] transition-colors hover:bg-gold/20"
                   >
                     {storeInfo.category.categoryName}
                   </Link>
