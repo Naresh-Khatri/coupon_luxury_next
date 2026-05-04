@@ -14,11 +14,13 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import transformPath from "@/utils/transformImagePath";
+import { useActivateOffer } from "@/lib/useActivateOffer";
 
 export type OfferCardData = {
   id: number | string;
   slug: string;
   title: string;
+  affURL: string;
   couponCode?: string | null;
   offerType: string;
   discountType?: string | null;
@@ -65,6 +67,19 @@ export default function OfferCard({ offer }: { offer: OfferCardData }) {
   const isCoupon = offer.offerType === "coupon" && !!offer.couponCode;
   const uses = offer.uses ?? 0;
   const verified = formatVerified(offer.verifiedAt);
+  const activate = useActivateOffer();
+  const offerNumericId =
+    typeof offer.id === "number" ? offer.id : Number(offer.id);
+  const handleActivate = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    activate({
+      offerId: Number.isFinite(offerNumericId) ? offerNumericId : undefined,
+      slug: offer.slug,
+      affURL: offer.affURL,
+      couponCode: isCoupon ? offer.couponCode : null,
+    });
+  };
 
   const shareOffer = async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -174,8 +189,9 @@ export default function OfferCard({ offer }: { offer: OfferCardData }) {
 
         <div className="mt-1 pt-1">
           {isCoupon ? (
-            <Link
-              href={`/deals/${offer.slug}`}
+            <button
+              type="button"
+              onClick={handleActivate}
               className="group/code flex w-full items-stretch overflow-hidden rounded-lg border-2 border-dashed border-gold/40 bg-gold/5 transition-all hover:border-gold hover:bg-gold/10"
             >
               <span className="flex flex-1 items-center justify-center gap-1.5 px-2 py-2 font-mono text-[12px] font-bold uppercase tracking-wider text-foreground">
@@ -187,16 +203,17 @@ export default function OfferCard({ offer }: { offer: OfferCardData }) {
                 Show Code
                 <ArrowUpRight className="size-3" />
               </span>
-            </Link>
+            </button>
           ) : (
-            <Link
-              href={`/redeem/${offer.slug}`}
+            <button
+              type="button"
+              onClick={handleActivate}
               className="inline-flex w-full items-center justify-center gap-1 rounded-lg bg-muted py-2 text-[11px] font-bold uppercase tracking-wider text-foreground transition-all hover:bg-white/5 hover:gap-1.5"
             >
               <Tag className="size-3" />
               View deal
               <ArrowUpRight className="size-3" />
-            </Link>
+            </button>
           )}
         </div>
       </div>

@@ -3,7 +3,6 @@
 import { useState } from "react";
 import Image from "next/image";
 import { Clipboard } from "lucide-react";
-import { toast } from "sonner";
 import {
   Dialog,
   DialogContent,
@@ -17,43 +16,36 @@ import {
 } from "@/components/ui/tooltip";
 import Confetti from "../Confetti";
 import styles from "./CodeRevealingButton.module.css";
-import { trpc } from "@/lib/trpc/client";
+import { useActivateOffer } from "@/lib/useActivateOffer";
 
 export default function CodeRevealingButton({
   code,
   affURL,
   storeName,
   image,
+  slug,
   offerId,
 }: {
   code: string;
   affURL: string;
   storeName: string;
   image: string;
+  slug: string;
   offerId?: number;
 }) {
   const [open, setOpen] = useState(false);
   const [hasCopied, setHasCopied] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
   const truncateCode = code ? "***" + code.slice(-4) : "";
-  const trackClick = trpc.public.trackOfferClick.useMutation();
+  const activate = useActivateOffer();
 
-  const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(code);
-      setHasCopied(true);
-      setShowConfetti(true);
-      toast.success("Copied", {
-        description: `Opening ${storeName} in new tab...`,
-      });
-      if (offerId) trackClick.mutate({ offerId });
-      setTimeout(() => {
-        window.open(affURL, "_blank");
-        setShowConfetti(false);
-      }, 2000);
-    } catch (err) {
-      toast.error("Could not copy code");
-    }
+  const handleCopy = () => {
+    setHasCopied(true);
+    setShowConfetti(true);
+    setTimeout(() => {
+      setShowConfetti(false);
+      activate({ offerId, slug, affURL, couponCode: code });
+    }, 1200);
   };
 
   return (

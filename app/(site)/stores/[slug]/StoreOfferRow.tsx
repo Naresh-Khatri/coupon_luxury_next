@@ -8,6 +8,7 @@ import {
   Users,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useActivateOffer } from "@/lib/useActivateOffer";
 
 export type StoreOfferRowData = {
   id: number | string;
@@ -15,6 +16,7 @@ export type StoreOfferRowData = {
   title: string;
   description?: string | null;
   couponCode?: string | null;
+  affURL: string;
   offerType: string;
   discountType?: string | null;
   discountValue?: number | null;
@@ -59,8 +61,18 @@ export default function StoreOfferRow({
   storeSlug: string;
 }) {
   const [expanded, setExpanded] = useState(false);
+  const activate = useActivateOffer();
 
   const isCoupon = offer.offerType === "coupon" && !!offer.couponCode;
+  const offerNumericId =
+    typeof offer.id === "number" ? offer.id : Number(offer.id);
+  const handleActivate = () =>
+    activate({
+      offerId: Number.isFinite(offerNumericId) ? offerNumericId : undefined,
+      slug: offer.slug,
+      affURL: offer.affURL,
+      couponCode: isCoupon ? offer.couponCode : null,
+    });
   const parts = discountParts(offer);
   const ends = formatEnd(offer.endDate);
   const uses = offer.uses ?? 0;
@@ -163,21 +175,13 @@ export default function StoreOfferRow({
 
         {/* CTA */}
         <div className="col-span-2 flex flex-col items-stretch gap-1.5 border-t border-border px-4 py-3 md:col-span-1 md:items-end md:justify-center md:border-l md:border-t-0 md:px-5">
-          {isCoupon ? (
-            <Link
-              href={`/deals/${offer.slug}`}
-              className="inline-flex items-center justify-center rounded-md bg-gold px-6 py-2.5 text-[12px] font-bold uppercase tracking-wider text-navy transition-colors hover:bg-gold-light md:min-w-[150px]"
-            >
-              Get Code
-            </Link>
-          ) : (
-            <Link
-              href={`/redeem/${offer.slug}`}
-              className="inline-flex items-center justify-center rounded-md bg-gold px-6 py-2.5 text-[12px] font-bold uppercase tracking-wider text-navy transition-colors hover:bg-gold-light md:min-w-[150px]"
-            >
-              Get Deal
-            </Link>
-          )}
+          <button
+            type="button"
+            onClick={handleActivate}
+            className="inline-flex items-center justify-center rounded-md bg-gold px-6 py-2.5 text-[12px] font-bold uppercase tracking-wider text-navy transition-colors hover:bg-gold-light md:min-w-[150px]"
+          >
+            {isCoupon ? "Get Code" : "Get Deal"}
+          </button>
           {ends && (
             <span className="text-center text-[11px] text-muted-foreground md:text-right">
               {ends}

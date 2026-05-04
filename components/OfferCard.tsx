@@ -6,8 +6,10 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "motion/react";
 import { ChevronDown, Info } from "lucide-react";
 import CodeRevealingButton from "./CodeRevealingButton/CodeRevealingButton";
+import { useActivateOffer } from "@/lib/useActivateOffer";
 
 type OfferDetails = {
+  id?: number;
   title: string;
   couponCode: string;
   affURL: string;
@@ -26,6 +28,7 @@ type OfferDetails = {
 
 export default function OfferCard({ offerDetails }: { offerDetails: OfferDetails }) {
   const {
+    id,
     title,
     couponCode,
     affURL,
@@ -41,6 +44,11 @@ export default function OfferCard({ offerDetails }: { offerDetails: OfferDetails
     storeName,
   } = offerDetails;
   const [isOpen, setIsOpen] = useState(false);
+  const activate = useActivateOffer();
+  const handleGetDeal = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    activate({ offerId: id, slug, affURL, couponCode: null });
+  };
 
   const discountLabel =
     discountType === "percentage" ? `${discountValue}%` : `$${discountValue}`;
@@ -126,19 +134,20 @@ export default function OfferCard({ offerDetails }: { offerDetails: OfferDetails
                 affURL={affURL}
                 image={image}
                 storeName={storeName}
+                slug={slug}
+                offerId={id}
               />
             ) : (
-              <Link href={`/deals/${slug}`} onClick={(e) => e.stopPropagation()}>
-                <motion.button
-                  type="button"
-                  whileHover={{ y: -2 }}
-                  whileTap={{ scale: 0.97 }}
-                  className="mb-5 inline-flex h-10 items-center justify-center rounded-xl bg-brand-900 px-14 text-[15px] font-semibold tracking-[0.5px] text-white shadow-lg transition-colors hover:bg-brand-800 active:bg-brand-700 md:h-12 md:text-base"
-                  style={{ boxShadow: "0 8px 24px rgba(0,114,160,0.35)" }}
-                >
-                  Get Deal
-                </motion.button>
-              </Link>
+              <motion.button
+                type="button"
+                onClick={handleGetDeal}
+                whileHover={{ y: -2 }}
+                whileTap={{ scale: 0.97 }}
+                className="mb-5 inline-flex h-10 items-center justify-center rounded-xl bg-brand-900 px-14 text-[15px] font-semibold tracking-[0.5px] text-white shadow-lg transition-colors hover:bg-brand-800 active:bg-brand-700 md:h-12 md:text-base"
+                style={{ boxShadow: "0 8px 24px rgba(0,114,160,0.35)" }}
+              >
+                Get Deal
+              </motion.button>
             )}
           </div>
         </div>

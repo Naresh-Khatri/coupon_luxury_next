@@ -12,6 +12,7 @@ import {
   Flame,
   ShieldCheck,
 } from "lucide-react";
+import { useActivateOffer } from "@/lib/useActivateOffer";
 
 type OfferDetails = {
   id?: number;
@@ -50,8 +51,11 @@ export default function OfferCardV2({
   offerDetails: OfferDetails;
 }) {
   const {
+    id,
     title,
     slug,
+    affURL,
+    couponCode,
     discountType,
     discountValue,
     TnC,
@@ -64,6 +68,17 @@ export default function OfferCardV2({
   const [isOpen, setIsOpen] = useState(false);
   const usesCount = uses ?? 0;
   const verified = formatVerified(verifiedAt);
+  const activate = useActivateOffer();
+  const isCoupon = offerType === "coupon" && !!couponCode;
+  const handleActivate = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    activate({
+      offerId: id,
+      slug,
+      affURL,
+      couponCode: isCoupon ? couponCode : null,
+    });
+  };
 
   return (
     <div
@@ -132,31 +147,13 @@ export default function OfferCardV2({
           </div>
 
           <div className="flex w-[170px] items-center justify-end">
-            {offerType === "coupon" ? (
-              <Link
-                href={`/deals/${slug}`}
-                onClick={(e) => e.stopPropagation()}
-              >
-                <button
-                  type="button"
-                  className="inline-flex h-9 items-center justify-center rounded-md bg-brand-900 px-7 text-white shadow-lg transition-colors hover:bg-brand-800 sm:h-12"
-                >
-                  Get Code
-                </button>
-              </Link>
-            ) : (
-              <Link
-                href={`/redeem/${slug}`}
-                onClick={(e) => e.stopPropagation()}
-              >
-                <button
-                  type="button"
-                  className="inline-flex h-9 items-center justify-center rounded-md bg-brand-900 px-7 text-white shadow-lg transition-colors hover:bg-brand-800 sm:h-12"
-                >
-                  Get Deal
-                </button>
-              </Link>
-            )}
+            <button
+              type="button"
+              onClick={handleActivate}
+              className="inline-flex h-9 items-center justify-center rounded-md bg-brand-900 px-7 text-white shadow-lg transition-colors hover:bg-brand-800 sm:h-12"
+            >
+              {isCoupon ? "Get Code" : "Get Deal"}
+            </button>
           </div>
         </div>
       </div>
