@@ -8,7 +8,6 @@ import transformPath from "@/utils/transformImagePath";
 
 export default function DealCard({
   storeImg,
-  storeLogo,
   storeName,
   storeSlug,
   dealSlug,
@@ -18,7 +17,6 @@ export default function DealCard({
 }: {
   affURL?: string;
   storeImg: string;
-  storeLogo?: string;
   storeName: string;
   storeSlug: string;
   dealSlug: string;
@@ -30,8 +28,6 @@ export default function DealCard({
 }) {
   const isCoupon = type === "coupon" || !!code;
   const eyebrow = isCoupon ? "Coupon\nCode" : "Best\nPrice";
-  const hasCover = !!storeLogo && storeLogo !== storeImg;
-  const logoSrc = hasCover ? storeLogo! : storeImg;
 
   return (
     <motion.article
@@ -45,26 +41,6 @@ export default function DealCard({
       }}
       className="group relative flex h-full w-full flex-col overflow-hidden rounded-2xl border border-border bg-card transition-colors hover:border-gold/40"
     >
-      {hasCover && (
-        <Link
-          href={`/deals/${dealSlug}`}
-          className="relative block aspect-[16/9] w-full overflow-hidden bg-muted"
-          title={title}
-        >
-          <Image
-            src={transformPath(storeImg, 640)}
-            alt={`${storeName} — ${title}`}
-            fill
-            sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-            className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
-          />
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/35 via-black/0 to-transparent"
-          />
-        </Link>
-      )}
-
       <div className="grid grid-cols-[minmax(84px,0.45fr)_1fr] gap-3 px-4 pt-4 pb-3">
         <div className="flex items-center justify-center border-r border-dashed border-border/80 pr-3">
           <span className="whitespace-pre-line text-center text-[12px] font-extrabold uppercase leading-[1.15] tracking-[0.14em] text-gold">
@@ -98,7 +74,7 @@ export default function DealCard({
             height={72}
             className="max-h-full w-auto max-w-full object-contain"
             alt={`${storeName} logo`}
-            src={transformPath(logoSrc, 160)}
+            src={transformPath(storeImg, 160)}
           />
         </Link>
 

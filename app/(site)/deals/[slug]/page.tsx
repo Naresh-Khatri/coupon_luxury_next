@@ -328,8 +328,7 @@ export default async function DealPage(
                     type={deal.offerType}
                     endDate={deal.endDate}
                     showValidTill={false}
-                    storeImg={deal.coverImg || deal.store.image}
-                    storeLogo={deal.store.image}
+                    storeImg={deal.store.image}
                   />
                 ))}
               </div>

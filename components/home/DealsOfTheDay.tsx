@@ -68,8 +68,7 @@ export default function DealsOfTheDay({ deals }: { deals: Deal[] }) {
                 type={deal.offerType}
                 endDate={deal.endDate}
                 showValidTill={false}
-                storeImg={deal.coverImg || deal.store.image}
-                storeLogo={deal.store.image}
+                storeImg={deal.store.image}
               />
             </motion.div>
           ))}
