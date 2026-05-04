@@ -2,7 +2,7 @@ import MainCarousel from "@/components/home/MainCarousel";
 import PopularStores from "@/components/home/PopularStores";
 import TopCoupons from "@/components/home/TopCoupons";
 import DealsOfTheDay from "@/components/home/DealsOfTheDay";
-import PopularCategoriesList from "@/components/home/PopularCategoriesList";
+import PopularList from "@/components/home/PopularList";
 import SubscribeBanner from "@/components/home/SubscribeBanner";
 import StoreOfTheMonth from "@/components/home/StoreOfTheMonth";
 import EditorsPicks from "@/components/home/EditorsPicks";
@@ -21,7 +21,23 @@ export default async function Home() {
     storeOfTheMonth,
     editorsPicks,
     trendingOffers,
+    popularStores,
   } = await getMainFeed(country);
+
+  const categoryItems = categories.map((c) => ({
+    id: c.id,
+    slug: c.slug,
+    name: c.categoryName,
+    count: c.offers.length,
+  }));
+
+  const storeItems = popularStores.map((st) => ({
+    id: st.id,
+    slug: st.slug,
+    name: st.storeName,
+    image: st.image,
+    count: st.offerCount,
+  }));
 
   return (
     <>
@@ -40,7 +56,22 @@ export default async function Home() {
       <EditorsPicks offers={editorsPicks} />
       <TopCoupons coupons={featuredCoupons} categories={categories} />
       <DealsOfTheDay deals={featuredDeals} />
-      <PopularCategoriesList categories={categories} />
+      <section className="bg-background">
+        <div className="mx-auto max-w-[1200px]">
+          <PopularList
+            title="Popular Categories"
+            items={categoryItems}
+            hrefBase="/categories"
+            defaultOpen={false}
+          />
+          <PopularList
+            title="Popular Stores"
+            items={storeItems}
+            hrefBase="/stores"
+            defaultOpen={false}
+          />
+        </div>
+      </section>
       <SubscribeBanner />
     </>
   );

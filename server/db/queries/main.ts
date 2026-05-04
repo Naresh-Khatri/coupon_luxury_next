@@ -1,5 +1,5 @@
 import { db, s } from "@/db";
-import { and, asc, desc, eq, inArray } from "drizzle-orm";
+import { and, asc, desc, eq, inArray, sql } from "drizzle-orm";
 import { cached, CACHE_TAGS } from "../cache";
 
 export const getMainFeed = cached(
@@ -56,6 +56,10 @@ export const getMainFeed = cached(
       ...(countryStoreIds ? [countryStoreIds] : [])
     );
 
+    const popularStoresWhere = country
+      ? and(eq(s.stores.active, true), eq(s.stores.country, country))
+      : eq(s.stores.active, true);
+
     const [
       featuredStores,
       categories,
@@ -65,6 +69,7 @@ export const getMainFeed = cached(
       storeOfTheMonth,
       editorsPicks,
       trendingOffers,
+      popularStores,
     ] =
       await Promise.all([
         db.query.stores.findMany({
@@ -95,7 +100,12 @@ export const getMainFeed = cached(
             slug: true,
             featured: true,
           },
-          with: { offers: { columns: { id: true } } },
+          with: {
+            offers: {
+              columns: { id: true },
+              where: eq(s.offers.active, true),
+            },
+          },
         }),
         db.query.slides.findMany({
           where: eq(s.slides.active, true),
@@ -253,6 +263,26 @@ export const getMainFeed = cached(
             },
           },
         }),
+        db
+          .select({
+            id: s.stores.id,
+            storeName: s.stores.storeName,
+            slug: s.stores.slug,
+            image: s.stores.image,
+            offerCount: sql<number>`count(${s.offers.id})::int`,
+          })
+          .from(s.stores)
+          .leftJoin(
+            s.offers,
+            and(
+              eq(s.offers.storeId, s.stores.id),
+              eq(s.offers.active, true)
+            )
+          )
+          .where(popularStoresWhere)
+          .groupBy(s.stores.id)
+          .orderBy(asc(s.stores.storeName))
+          .limit(60),
       ]);
     return {
       featuredStores,
@@ -263,6 +293,7 @@ export const getMainFeed = cached(
       storeOfTheMonth,
       editorsPicks,
       trendingOffers,
+      popularStores,
     };
   },
   ["main:feed"],
