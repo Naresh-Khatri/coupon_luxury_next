@@ -14,18 +14,20 @@ import StoreHowToUse from "./StoreHowToUse";
 import StoreFaqs from "./StoreFaqs";
 import SimilarStores from "./SimilarStores";
 import StoreCodesSummary from "./StoreCodesSummary";
+import CountryBadge from "@/components/CountryBadge";
 import {
   getStoreBySlug,
   getPublicStores,
   getSimilarStores,
 } from "@/server/db/queries/stores";
+import { getActiveCountries } from "@/server/db/queries/countries";
 import transformPath from "@/utils/transformImagePath";
 import { breadcrumbJsonLd, renderJsonLd } from "@/lib/seo";
 
 async function getData(slug: string) {
   const storeInfo = await getStoreBySlug(slug);
   if (!storeInfo) return null;
-  const [featuredStores, similarStores] = await Promise.all([
+  const [featuredStores, similarStores, countries] = await Promise.all([
     getPublicStores({ featured: true, limit: 8 }),
     getSimilarStores({
       categoryId: storeInfo.categoryId,
@@ -33,8 +35,11 @@ async function getData(slug: string) {
       country: storeInfo.country,
       limit: 8,
     }),
+    getActiveCountries(),
   ]);
-  return { storeInfo, featuredStores, similarStores };
+  const country =
+    countries.find((c) => c.code === storeInfo.country) ?? null;
+  return { storeInfo, featuredStores, similarStores, country };
 }
 
 export async function generateMetadata(props: {
@@ -69,7 +74,7 @@ export default async function StorePage(props: {
   const params = await props.params;
   const data = await getData(params.slug);
   if (!data) notFound();
-  const { storeInfo, featuredStores, similarStores } = data;
+  const { storeInfo, featuredStores, similarStores, country } = data;
   const howToUse = storeInfo.howToUse ?? [];
   const faqs = storeInfo.faqs ?? [];
   const faqJsonLd = faqs.length
@@ -159,6 +164,15 @@ export default async function StorePage(props: {
                   >
                     {storeInfo.category.categoryName}
                   </Link>
+                )}
+                {country && (
+                  <CountryBadge
+                    code={country.code}
+                    name={country.name}
+                    flagEmoji={country.flagEmoji}
+                    variant="chip"
+                    size={14}
+                  />
                 )}
               </div>
 

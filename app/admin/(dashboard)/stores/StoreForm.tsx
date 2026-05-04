@@ -21,6 +21,7 @@ import {
 import { trpc } from "@/lib/trpc/client";
 import ImageKitUpload from "../_components/ImageKitUpload";
 import { resolveImage } from "../_components/uploadImage";
+import CountryBadge from "@/components/CountryBadge";
 import {
   PageHeader,
   SectionCard,
@@ -185,8 +186,16 @@ export default function StoreForm({
                   <SelectContent>
                     {countries.map((c) => (
                       <SelectItem key={c.code} value={c.code}>
-                        {c.flagEmoji ? `${c.flagEmoji} ` : ""}
-                        {c.name}
+                        <span className="inline-flex items-center gap-2">
+                          <CountryBadge
+                            code={c.code}
+                            flagEmoji={c.flagEmoji}
+                            name={c.name}
+                            size={16}
+                            iconOnly
+                          />
+                          {c.name}
+                        </span>
                       </SelectItem>
                     ))}
                   </SelectContent>

@@ -11,6 +11,7 @@ import { PageHeader } from "../_components/FormKit";
 import { BoolCell, RowActions } from "../_components/TableKit";
 import { useTableQuery } from "../_components/useTableQuery";
 import { TableSearch } from "../_components/TableSearch";
+import CountryBadge from "@/components/CountryBadge";
 import { DataTable } from "@/components/data-table/data-table";
 import { DataTableAdvancedToolbar } from "@/components/data-table/data-table-advanced-toolbar";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
@@ -50,6 +51,17 @@ export default function StoresAdminPage() {
   });
   const { data: cats = [] } = trpc.admin.categories.list.useQuery();
   const { data: subs = [] } = trpc.admin.subCategories.list.useQuery();
+  const { data: countries = [] } = trpc.admin.countries.list.useQuery();
+  const countryByCode = React.useMemo(
+    () =>
+      new Map(
+        (countries as Array<{ code: string; name: string; flagEmoji: string | null }>).map((c) => [
+          c.code,
+          c,
+        ]),
+      ),
+    [countries],
+  );
 
   const del = trpc.admin.stores.delete.useMutation({
     onSuccess: () => {
@@ -144,7 +156,16 @@ export default function StoresAdminPage() {
         header: ({ column }) => (
           <DataTableColumnHeader column={column} label="Country" />
         ),
-        cell: ({ row }) => row.original.country,
+        cell: ({ row }) => {
+          const c = countryByCode.get(row.original.country);
+          return (
+            <CountryBadge
+              code={row.original.country}
+              name={c?.name ?? row.original.country.toUpperCase()}
+              flagEmoji={c?.flagEmoji ?? null}
+            />
+          );
+        },
         meta: { label: "Country", variant: "text", icon: Globe },
         enableColumnFilter: true,
       },
@@ -187,7 +208,7 @@ export default function StoresAdminPage() {
         enableHiding: false,
       },
     ],
-    [catOptions, subOptions, del],
+    [catOptions, subOptions, countryByCode, del],
   );
 
   const { table } = useDataTable<Row>({

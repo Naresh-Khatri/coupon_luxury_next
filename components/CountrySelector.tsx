@@ -10,6 +10,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 import { setCountryAction } from "@/app/actions/country";
+import CountryBadge from "./CountryBadge";
+
+const FLAG_SIZE = 16;
 
 type CountryOption = {
   code: string;
@@ -44,8 +47,14 @@ export default function CountrySelector({
           pending && "opacity-60"
         )}
       >
-        {current?.flagEmoji ? (
-          <span className="text-base leading-none">{current.flagEmoji}</span>
+        {current ? (
+          <CountryBadge
+            code={current.code}
+            flagEmoji={current.flagEmoji}
+            name={current.name}
+            size={FLAG_SIZE}
+            iconOnly
+          />
         ) : (
           <Globe className="size-4 text-white/70" />
         )}
@@ -73,11 +82,13 @@ export default function CountrySelector({
             onSelect={() => pick(c.code)}
           >
             <span className="flex items-center gap-2">
-              {c.flagEmoji ? (
-                <span className="text-base leading-none">{c.flagEmoji}</span>
-              ) : (
-                <span className="inline-block size-4" />
-              )}
+              <CountryBadge
+                code={c.code}
+                flagEmoji={c.flagEmoji}
+                name={c.name}
+                size={FLAG_SIZE}
+                iconOnly
+              />
               {c.name}
             </span>
             {selected === c.code && <Check className="size-4 text-teal" />}
