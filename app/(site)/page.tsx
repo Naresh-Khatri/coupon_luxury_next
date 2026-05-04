@@ -31,9 +31,7 @@ export default async function Home() {
           Find Your Luxury Deals: Exclusive Discounts and Offers on High-End
           Brands
         </h2>
-        <div className="mx-auto w-full max-w-[1400px] px-4 pt-6 pb-10">
-          <MainCarousel slides={slides} />
-        </div>
+        <MainCarousel slides={slides} />
       </section>
 
       {storeOfTheMonth && <StoreOfTheMonth store={storeOfTheMonth} />}
