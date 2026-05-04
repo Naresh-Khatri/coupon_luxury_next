@@ -164,7 +164,7 @@ export default function StoreOfferRow({
                 </p>
               )}
               <Link
-                href={isCoupon ? `/deals/${offer.slug}` : `/redeem/${offer.slug}`}
+                href={`/deals/${offer.slug}`}
                 className="mt-2 inline-block text-[12px] font-medium text-gold hover:text-gold-light"
               >
                 View full offer details &rarr;

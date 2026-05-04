@@ -198,14 +198,20 @@ export default async function DealPage(
                 <div className="flex items-center">
                   {isCoupon ? (
                     <CouponReveal
+                      offerId={dealInfo.id}
                       slug={dealInfo.slug}
                       couponCode={dealInfo.couponCode!}
+                      affURL={affURL}
                       storeName={store.storeName}
                       storeURL={store.storeURL}
                       verified={!!dealInfo.verifiedAt}
                     />
                   ) : (
-                    <DealCTA affURL={affURL} />
+                    <DealCTA
+                      affURL={affURL}
+                      offerId={dealInfo.id}
+                      slug={dealInfo.slug}
+                    />
                   )}
                 </div>
               </div>

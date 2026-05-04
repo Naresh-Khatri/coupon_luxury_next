@@ -2,19 +2,23 @@
 
 import { useState } from "react";
 import { ArrowUpRight } from "lucide-react";
-import { toast } from "sonner";
 import Confetti from "@/components/Confetti";
+import { useActivateOffer } from "@/lib/useActivateOffer";
 
-export default function DealCTA({ affURL }: { affURL: string }) {
+type Props = {
+  affURL: string;
+  offerId?: number;
+  slug: string;
+};
+
+export default function DealCTA({ affURL, offerId, slug }: Props) {
   const [clicked, setClicked] = useState(false);
+  const activate = useActivateOffer();
 
   const handleClick = () => {
-    toast.success("Deal applied in new tab!");
     setClicked(true);
-    setTimeout(() => {
-      window.open(affURL, "_blank");
-      setClicked(false);
-    }, 1500);
+    activate({ offerId, slug, affURL, couponCode: null });
+    setTimeout(() => setClicked(false), 1500);
   };
 
   return (

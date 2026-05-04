@@ -1,26 +1,31 @@
 "use client";
 
-import Link from "next/link";
 import { useState } from "react";
 import { Copy, Check, ArrowUpRight } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { useActivateOffer } from "@/lib/useActivateOffer";
 
 type Props = {
+  offerId?: number;
   slug: string;
   couponCode: string;
+  affURL: string;
   storeName: string;
   storeURL?: string | null;
   verified?: boolean;
 };
 
 export default function CouponReveal({
+  offerId,
   slug,
   couponCode,
+  affURL,
   storeName,
   verified,
 }: Props) {
   const [copied, setCopied] = useState(false);
+  const activate = useActivateOffer();
 
   const copy = async () => {
     try {
@@ -32,6 +37,9 @@ export default function CouponReveal({
       toast.error("Couldn't copy — please copy manually");
     }
   };
+
+  const goToStore = () =>
+    activate({ offerId, slug, affURL, couponCode });
 
   return (
     <div className="w-full space-y-5">
@@ -75,13 +83,14 @@ export default function CouponReveal({
       </button>
 
       <div className="flex flex-col items-center gap-2">
-        <Link
-          href={`/redeem/${slug}`}
+        <button
+          type="button"
+          onClick={goToStore}
           className="group inline-flex items-center gap-1.5 text-sm font-semibold text-gold underline-offset-4 hover:text-gold-light hover:underline"
         >
           Go to {storeName}
           <ArrowUpRight className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-        </Link>
+        </button>
         {verified && (
           <div className="flex items-center gap-3 text-[11px] font-medium uppercase tracking-[0.16em] text-muted-foreground">
             <span className="inline-flex items-center gap-1">
