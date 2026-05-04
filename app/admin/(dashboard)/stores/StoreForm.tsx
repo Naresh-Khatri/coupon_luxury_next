@@ -199,6 +199,7 @@ export default function StoreForm({
           <ImageKitUpload
             value={image || null}
             onChange={(v) => setValue("image", v ?? "", { shouldDirty: true })}
+            aspectRatio={2}
           />
         </Field>
       </SectionCard>

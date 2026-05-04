@@ -1,21 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Upload, X } from "lucide-react";
-import "react-advanced-cropper/dist/style.css";
-import {
-  Cropper,
-  createAspectRatio,
-  type CropperRef,
-} from "react-advanced-cropper";
+import { Crop as CropIcon, Upload, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import ImageCropperDialog from "./ImageCropperDialog";
 import type { PendingImage } from "./uploadImage";
 
 export default function ImageKitUpload({
@@ -31,11 +19,9 @@ export default function ImageKitUpload({
   accept?: string;
   aspectRatio?: number;
 }) {
-  const [cropSrc, setCropSrc] = useState<string | null>(null);
-  const [pendingName, setPendingName] = useState<string>("image.jpg");
+  const [cropSource, setCropSource] = useState<File | string | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const cropperRef = useRef<CropperRef>(null);
 
   useEffect(() => {
     if (!value) {
@@ -51,61 +37,67 @@ export default function ImageKitUpload({
     return () => URL.revokeObjectURL(url);
   }, [value]);
 
-  function openCropper(e: React.ChangeEvent<HTMLInputElement>) {
+  function onPickFile(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (inputRef.current) inputRef.current.value = "";
     if (!file) return;
-    const base = file.name.replace(/\.[^.]+$/, "");
-    setPendingName(`${base || "image"}.jpg`);
-    const reader = new FileReader();
-    reader.onload = () => setCropSrc(String(reader.result));
-    reader.readAsDataURL(file);
+    setCropSource(file);
   }
 
-  async function handleCrop() {
-    const canvas = cropperRef.current?.getCanvas();
-    if (!canvas) return;
-    const blob: Blob = await new Promise((resolve, reject) =>
-      canvas.toBlob(
-        (b) => (b ? resolve(b) : reject(new Error("canvas empty"))),
-        "image/jpeg",
-        0.92,
-      ),
-    );
-    const file = new File([blob], pendingName, { type: "image/jpeg" });
-    onChange(file);
-    setCropSrc(null);
+  function openRecrop() {
+    if (!value) return;
+    setCropSource(value as File | string);
   }
 
   return (
     <div className="space-y-2">
       {label && <p className="text-xs font-semibold">{label}</p>}
       {previewUrl ? (
-        <div className="relative w-40 overflow-hidden rounded-md border">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={previewUrl}
-            alt=""
-            className="h-40 w-40 object-cover"
-          />
-          <button
-            type="button"
-            onClick={() => onChange(null)}
-            className="absolute right-1 top-1 rounded-full bg-background/90 p-1 text-foreground"
-            aria-label="remove"
-          >
-            <X className="size-4" />
-          </button>
+        <div className="space-y-2">
+          <div className="relative w-40 overflow-hidden rounded-md border">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={previewUrl}
+              alt=""
+              className="h-40 w-40 object-cover"
+            />
+            <button
+              type="button"
+              onClick={() => onChange(null)}
+              className="absolute right-1 top-1 rounded-full bg-background/90 p-1 text-foreground"
+              aria-label="remove"
+            >
+              <X className="size-4" />
+            </button>
+          </div>
+          <div className="flex flex-wrap items-center gap-2">
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => inputRef.current?.click()}
+            >
+              <Upload className="size-4" />
+              Replace
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={openRecrop}
+            >
+              <CropIcon className="size-4" />
+              Recrop
+            </Button>
+            {aspectRatio && (
+              <span className="text-[11px] text-muted-foreground">
+                Cropped to {ratioLabel(aspectRatio)}
+              </span>
+            )}
+          </div>
         </div>
       ) : (
         <>
-          <input
-            ref={inputRef}
-            type="file"
-            accept={accept}
-            className="hidden"
-            onChange={openCropper}
-          />
           <Button
             type="button"
             variant="outline"
@@ -115,46 +107,45 @@ export default function ImageKitUpload({
             <Upload className="size-4" />
             Upload
           </Button>
+          {aspectRatio && (
+            <p className="text-[11px] text-muted-foreground">
+              Cropped to {ratioLabel(aspectRatio)}
+            </p>
+          )}
         </>
       )}
+      <input
+        ref={inputRef}
+        type="file"
+        accept={accept}
+        className="hidden"
+        onChange={onPickFile}
+      />
 
-      <Dialog
-        open={!!cropSrc}
-        onOpenChange={(o) => {
-          if (!o) setCropSrc(null);
+      <ImageCropperDialog
+        open={!!cropSource}
+        source={cropSource}
+        aspectRatio={aspectRatio}
+        onCancel={() => setCropSource(null)}
+        onCrop={(file) => {
+          onChange(file);
+          setCropSource(null);
         }}
-      >
-        <DialogContent className="sm:max-w-2xl">
-          <DialogHeader>
-            <DialogTitle>Crop image</DialogTitle>
-          </DialogHeader>
-          {cropSrc ? (
-            <div className="h-[60vh] overflow-hidden rounded-md bg-muted">
-              <Cropper
-                ref={cropperRef}
-                src={cropSrc}
-                className="h-full w-full"
-                aspectRatio={
-                  aspectRatio ? createAspectRatio(aspectRatio) : undefined
-                }
-              />
-            </div>
-          ) : null}
-          <DialogFooter>
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => setCropSrc(null)}
-            >
-              Cancel
-            </Button>
-            <Button type="button" onClick={handleCrop}>
-              <Upload className="size-4" />
-              Save
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      />
     </div>
   );
+}
+
+function ratioLabel(r: number): string {
+  const presets: Array<[number, string]> = [
+    [1, "1:1"],
+    [2, "2:1"],
+    [16 / 9, "16:9"],
+    [4 / 3, "4:3"],
+    [3 / 2, "3:2"],
+    [3 / 4, "3:4"],
+    [9 / 16, "9:16"],
+  ];
+  const m = presets.find(([v]) => Math.abs(v - r) < 0.005);
+  return m ? m[1] : r.toFixed(2);
 }

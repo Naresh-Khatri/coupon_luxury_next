@@ -300,6 +300,7 @@ export default function OfferForm({
             onChange={(v) =>
               setValue("coverImg", v ?? null, { shouldDirty: true })
             }
+            aspectRatio={4 / 3}
           />
         </Field>
         <Field label="Description">

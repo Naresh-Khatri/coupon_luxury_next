@@ -219,6 +219,7 @@ export default function BlogForm({
               onChange={(v) =>
                 setValue("coverImg", v ?? null, { shouldDirty: true })
               }
+              aspectRatio={16 / 9}
             />
           </Field>
           <Field label="Thumbnail">
@@ -227,6 +228,7 @@ export default function BlogForm({
               onChange={(v) =>
                 setValue("thumbnailImg", v ?? null, { shouldDirty: true })
               }
+              aspectRatio={16 / 9}
             />
           </Field>
         </FieldGrid>
