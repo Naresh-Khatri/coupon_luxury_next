@@ -158,6 +158,7 @@ export const offers = pgTable("offer", {
   verifiedAt: timestamp("verifiedAt", { precision: 3 }),
   active: boolean("active").notNull().default(false),
   featured: boolean("featured").notNull().default(false),
+  trending: boolean("trending").notNull().default(false),
   metaTitle: text("metaTitle"),
   metaDescription: text("metaDescription"),
   metaKeywords: text("metaKeywords"),

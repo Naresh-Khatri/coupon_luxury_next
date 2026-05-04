@@ -51,6 +51,7 @@ type Row = {
   storeId: number;
   active: boolean;
   featured: boolean;
+  trending: boolean;
   verifiedAt: string | Date | null;
   store?: { id: number; storeName: string; slug: string } | null;
 };
@@ -64,6 +65,7 @@ const COL_IDS = [
   "discountValue",
   "active",
   "featured",
+  "trending",
 ];
 
 type StoreOption = { label: string; value: string };
@@ -359,6 +361,21 @@ export default function OffersAdminPage() {
         enableColumnFilter: true,
       },
       {
+        id: "trending",
+        accessorKey: "trending",
+        header: ({ column }) => (
+          <DataTableColumnHeader column={column} label="Trending" />
+        ),
+        cell: ({ row }) => (
+          <BoolCell
+            value={row.original.trending}
+            label={{ on: "Trending", off: "—" }}
+          />
+        ),
+        meta: { label: "Trending", variant: "boolean", icon: ToggleLeft },
+        enableColumnFilter: true,
+      },
+      {
         id: "verifiedAt",
         accessorKey: "verifiedAt",
         header: ({ column }) => (
@@ -440,7 +457,7 @@ export default function OffersAdminPage() {
         }
       />
       {!data ? (
-        <DataTableSkeleton columnCount={8} rowCount={10} />
+        <DataTableSkeleton columnCount={9} rowCount={10} />
       ) : (
         <DataTable table={table}>
           <DataTableAdvancedToolbar table={table}>

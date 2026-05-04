@@ -93,6 +93,7 @@ const offerInput = z.object({
   storeId: z.number().int(),
   active: z.boolean().default(false),
   featured: z.boolean().default(false),
+  trending: z.boolean().default(false),
   ...metaFields,
 });
 
@@ -286,6 +287,7 @@ export const adminRouter = router({
         discountValue: { column: s.offers.discountValue, kind: "number" },
         active: { column: s.offers.active, kind: "boolean" },
         featured: { column: s.offers.featured, kind: "boolean" },
+        trending: { column: s.offers.trending, kind: "boolean" },
         createdAt: { column: s.offers.createdAt, kind: "date" },
         updatedAt: { column: s.offers.updatedAt, kind: "date" },
       };

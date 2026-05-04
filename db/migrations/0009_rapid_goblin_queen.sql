@@ -1,0 +1,1 @@
+ALTER TABLE "offer" ADD COLUMN "trending" boolean DEFAULT false NOT NULL;

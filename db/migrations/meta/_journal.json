@@ -64,6 +64,13 @@
       "when": 1777871883603,
       "tag": "0008_stormy_king_cobra",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1777872711262,
+      "tag": "0009_rapid_goblin_queen",
+      "breakpoints": true
     }
   ]
 }

@@ -6,6 +6,7 @@ import PopularCategoriesList from "@/components/home/PopularCategoriesList";
 import SubscribeBanner from "@/components/home/SubscribeBanner";
 import StoreOfTheMonth from "@/components/home/StoreOfTheMonth";
 import EditorsPicks from "@/components/home/EditorsPicks";
+import TrendingOffers from "@/components/home/TrendingOffers";
 import { getMainFeed } from "@/server/db/queries/main";
 import { getSelectedCountry } from "@/lib/country";
 
@@ -19,6 +20,7 @@ export default async function Home() {
     categories,
     storeOfTheMonth,
     editorsPicks,
+    trendingOffers,
   } = await getMainFeed(country);
 
   return (
@@ -36,6 +38,7 @@ export default async function Home() {
 
       {storeOfTheMonth && <StoreOfTheMonth store={storeOfTheMonth} />}
       <PopularStores featuredStores={featuredStores} />
+      <TrendingOffers offers={trendingOffers} />
       <EditorsPicks offers={editorsPicks} />
       <TopCoupons coupons={featuredCoupons} categories={categories} />
       <DealsOfTheDay deals={featuredDeals} />

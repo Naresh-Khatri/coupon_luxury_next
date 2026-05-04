@@ -57,6 +57,7 @@ const schema = z.object({
   subCategoryId: z.number().int(),
   active: z.boolean().default(false),
   featured: z.boolean().default(false),
+  trending: z.boolean().default(false),
   metaTitle: z.string().nullish(),
   metaDescription: z.string().nullish(),
   metaKeywords: z.string().nullish(),
@@ -93,6 +94,7 @@ export default function OfferForm({
       endDate: "",
       active: false,
       featured: false,
+      trending: false,
       ...initial,
     } as FormValues,
   });
@@ -109,7 +111,7 @@ export default function OfferForm({
     onSuccess: () => {
       toast.success("Updated");
       utils.admin.offers.list.invalidate();
-      router.push("/admin/offers");
+      if (id) utils.admin.offers.byId.invalidate(id);
     },
     onError: (e) => toast.error(e.message),
   });
@@ -357,6 +359,19 @@ export default function OfferForm({
                   onCheckedChange={field.onChange}
                 />
                 Featured
+              </label>
+            )}
+          />
+          <Controller
+            control={control}
+            name="trending"
+            render={({ field }) => (
+              <label className="flex items-center gap-2 text-sm">
+                <Switch
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+                Trending
               </label>
             )}
           />

@@ -50,6 +50,12 @@ export const getMainFeed = cached(
       ...(countryStoreIds ? [countryStoreIds] : [])
     );
 
+    const trendingWhere = and(
+      eq(s.offers.active, true),
+      eq(s.offers.trending, true),
+      ...(countryStoreIds ? [countryStoreIds] : [])
+    );
+
     const [
       featuredStores,
       categories,
@@ -58,6 +64,7 @@ export const getMainFeed = cached(
       featuredCoupons,
       storeOfTheMonth,
       editorsPicks,
+      trendingOffers,
     ] =
       await Promise.all([
         db.query.stores.findMany({
@@ -215,6 +222,37 @@ export const getMainFeed = cached(
             },
           },
         }),
+        db.query.offers.findMany({
+          where: trendingWhere,
+          orderBy: [desc(s.offers.uses), desc(s.offers.updatedAt)],
+          limit: 8,
+          columns: {
+            id: true,
+            slug: true,
+            title: true,
+            URL: true,
+            affURL: true,
+            discountType: true,
+            discountValue: true,
+            couponCode: true,
+            offerType: true,
+            endDate: true,
+            categoryId: true,
+            uses: true,
+            verifiedAt: true,
+            coverImg: true,
+          },
+          with: {
+            store: {
+              columns: {
+                id: true,
+                image: true,
+                storeName: true,
+                slug: true,
+              },
+            },
+          },
+        }),
       ]);
     return {
       featuredStores,
@@ -224,6 +262,7 @@ export const getMainFeed = cached(
       featuredCoupons,
       storeOfTheMonth,
       editorsPicks,
+      trendingOffers,
     };
   },
   ["main:feed"],
